@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Documentos Requeridos</title>
-    <link rel="icon" href="img/icono.png">
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="icon" href="../assets/img/icono.png">
+    <link rel="stylesheet" href="../assets/css/estilo.css">
 </head>
 
 <body class="fondo">
@@ -18,10 +18,12 @@
             <li>RIF (PDF o DOC)</li>
             <li>Foto tipo carnet (Imagen, PDF o DOC)</li>
         </ul>
+        <div class="botones">
+            <a href="../index.php" class="btn">Volver al inicio</a>
+            <a href="login.php" class="btn">Iniciar sesión</a>
+            <a href="registro.php" class="btn-secundario">Registrarse</a>
+        </div>
     </div>
-
-<button onclick="window.location.href='index.php'">Volver al inicio</button>
-<button onclick="window.location.href='login.php'">Ir a iniciar sesión</button>
 
 </body>
 </html>

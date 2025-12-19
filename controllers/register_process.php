@@ -1,48 +1,72 @@
 <?php
-include("config/conexion.php");
+session_start();
+include_once __DIR__ . '/../config/conexion.php';
 
-if (isset($_POST['registrar'])) {
+// Solo aceptar POST desde el formulario
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['registrar'])) {
+    header('Location: ../views/registro.php');
+    exit;
+}
 
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $cedula = $_POST['cedula'];
-    $correo = $_POST['correo'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$nombre = trim($_POST['nombre'] ?? '');
+$apellido = trim($_POST['apellido'] ?? '');
+$cedula = trim($_POST['cedula'] ?? '');
+$correo = trim($_POST['correo'] ?? '');
+$password_plain = $_POST['password'] ?? '';
 
-    $sql = "INSERT INTO estudiante (nombre, apellido, cedula, correo, password)
-            VALUES ('$nombre', '$apellido', '$cedula', '$correo', '$password')";
+if ($nombre === '' || $apellido === '' || $cedula === '' || $correo === '' || $password_plain === '') {
+    header('Location: ../views/registro.php?error=empty');
+    exit;
+}
 
-    if ($conexion->query($sql)) {
-        echo "Registro exitoso";
-    } else {
-        echo "Error: " . $conexion->error;
+$password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
+
+// Inserción segura con prepared statement
+// Comprobar duplicados por correo o cédula
+$check = $conn->prepare("SELECT correo, cedula FROM estudiante WHERE correo = ? OR cedula = ? LIMIT 1");
+if ($check) {
+    $check->bind_param('ss', $correo, $cedula);
+    $check->execute();
+    $res_check = $check->get_result();
+    if ($res_check && $res_check->num_rows > 0) {
+        $existing = $res_check->fetch_assoc();
+        if (!empty($existing['correo']) && $existing['correo'] === $correo) {
+            $check->close();
+            header('Location: ../views/registro.php?error=correo_exists');
+            exit;
+        }
+        if (!empty($existing['cedula']) && $existing['cedula'] === $cedula) {
+            $check->close();
+            header('Location: ../views/registro.php?error=cedula_exists');
+            exit;
+        }
+        $check->close();
+        header('Location: ../views/registro.php?error=exists');
+        exit;
     }
+    $check->close();
 } else {
-    echo "No se ha enviado el formulario de registro.";
+    error_log('Prepare failed (check duplicates): ' . $conn->error);
+    header('Location: ../views/registro.php?error=db');
+    exit;
+}
+
+$stmt = $conn->prepare("INSERT INTO estudiante (nombre, apellido, cedula, correo, password) VALUES (?, ?, ?, ?, ?)");
+if (!$stmt) {
+    error_log('Prepare failed (register): ' . $conn->error);
+    header('Location: ../views/registro.php?error=db');
+    exit;
+}
+
+$stmt->bind_param('sssss', $nombre, $apellido, $cedula, $correo, $password_hashed);
+if ($stmt->execute()) {
+    $stmt->close();
+    header('Location: ../views/registro.php?registered=1');
+    exit;
+} else {
+    error_log('Execute failed (register): ' . $stmt->error);
+    $stmt->close();
+    header('Location: ../views/registro.php?error=exists');
+    exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <link rel="icon" href="img/icono.png">
-    <link rel="stylesheet" href="css/estilos.css">
-</head>
-<body>
-    
-<form action="registro.php" method="POST">
-    <input type="text" name="nombre" placeholder="Nombre" required>
-    <input type="text" name="apellido" placeholder="Apellido" required>
-    <input type="text" name="cedula" placeholder="Cédula" required>
-    <input type="email" name="correo" placeholder="Correo" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-    <button type="submit" name="registrar">Registrarse</button>
-</form>
-
-<button onclick="window.location.href='index.php'">Volver al inicio</button>
-<button onclick="window.location.href='login.php'">Ir a iniciar sesión</button>
-</body>
-</html>

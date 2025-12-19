@@ -1,10 +1,53 @@
 <?php
 session_start();
-include("config/conexion.php");
+include("../config/conexion.php");
 
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
+}
+
+// Cargar tipos de documento desde la BD
+$tipos = [];
+$tipo_stmt = $conn->prepare("SELECT id_tipo_documento, nombre_documento FROM tipo_documento ORDER BY id_tipo_documento");
+if ($tipo_stmt) {
+    $tipo_stmt->execute();
+    $res = $tipo_stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
+        $tipos[] = $row;
+    }
+    $tipo_stmt->close();
+}
+
+// Si no hay tipos, insertar valores por defecto y recargar
+if (empty($tipos)) {
+    $defaults = [
+        [1, 'Constancia de inscripción'],
+        [2, 'Récord académico'],
+        [3, 'Cédula'],
+        [4, 'RIF'],
+        [5, 'Foto tipo carnet']
+    ];
+    $ins = $conn->prepare("INSERT INTO tipo_documento (id_tipo_documento, nombre_documento) VALUES (?, ?)");
+    if ($ins) {
+        foreach ($defaults as $d) {
+            $ins->bind_param('is', $d[0], $d[1]);
+            @ $ins->execute();
+        }
+        $ins->close();
+    }
+
+    // recargar
+    $tipos = [];
+    $tipo_stmt = $conn->prepare("SELECT id_tipo_documento, nombre_documento FROM tipo_documento ORDER BY id_tipo_documento");
+    if ($tipo_stmt) {
+        $tipo_stmt->execute();
+        $res = $tipo_stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $tipos[] = $row;
+        }
+        $tipo_stmt->close();
+    }
 }
 ?>
 
@@ -13,24 +56,25 @@ if (!isset($_SESSION['usuario_id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Subir Documentos</title>
-    <link rel="icon" href="img/icono.png">
-    <link rel="stylesheet" href="css/estilos.css">
-</head>
+    <link rel="stylesheet" href="../assets/css/estilo.css">
+    <link rel="icon" href="../assets/img/icono.png">
+    </head>
 
-<body>
+    <body class="fondo">
 
-<h2>Subir documentos para la beca</h2>
+    <div class="contenedor">
 
-<form method="POST" enctype="multipart/form-data">
+    <h2>Subir documentos para la beca</h2>
+
+    <form method="POST" enctype="multipart/form-data">
 
     <label>Tipo de documento:</label>
     <select name="tipo_documento" required>
         <option value="">Seleccione</option>
-        <option value="1">Constancia de inscripción</option>
-        <option value="2">Récord académico</option>
-        <option value="3">Cédula</option>
-        <option value="4">RIF</option>
-        <option value="5">Foto tipo carnet</option>
+        <?php foreach ($tipos as $t): ?>
+            <option value="<?php echo (int)
+$t['id_tipo_documento']; ?>"><?php echo htmlspecialchars($t['nombre_documento']); ?></option>
+        <?php endforeach; ?>
     </select>
 
     <br><br>
@@ -41,14 +85,19 @@ if (!isset($_SESSION['usuario_id'])) {
     <br><br>
 
     <button type="submit" name="subir">Subir documento</button>
-</form>
+    </form>
 
-<a href="dashboard.php">Volver al panel</a>
+    <div class="botones">
+        <button class="btn" onclick="window.location.href='dashboard.php'" type="button">Volver al panel</button>
+    </div>
+
+    </div> <!-- .contenedor -->
 
 </body>
 </html>
 
 <?php
+
 if (isset($_POST['subir'])) {
 
     $id_estudiante = $_SESSION['usuario_id'];
@@ -76,32 +125,78 @@ if (isset($_POST['subir'])) {
         exit;
     }
 
-    // Carpeta según tipo de documento
-    $carpetas = [
-        1 => "uploads/constancia/",
-        2 => "uploads/record/",
-        3 => "uploads/cedula/",
-        4 => "uploads/rif/",
-        5 => "uploads/foto/"
+    // Base de uploads (ruta absoluta)
+    $baseUploads = __DIR__ . '/../assets/uploads/';
+
+    // Mapear tipos a subcarpetas (nombres con slash final)
+    $folders = [
+        1 => 'constancia/',
+        2 => 'record/',
+        3 => 'cedula/',
+        4 => 'rif/',
+        5 => 'foto/'
     ];
 
-    $destino = $carpetas[$id_tipo] . time() . "_" . $nombre;
+    if (!isset($folders[$id_tipo])) {
+        echo "Tipo de documento inválido";
+        exit;
+    }
+
+    $subfolder = $folders[$id_tipo];
+    $absDir = $baseUploads . $subfolder;
+
+    // Crear directorio si no existe
+    if (!is_dir($absDir)) {
+        if (!mkdir($absDir, 0777, true)) {
+            echo "No se pudo crear la carpeta de destino";
+            exit;
+        }
+    }
+
+    // Nombre seguro y único
+    $safeName = preg_replace('/[^A-Za-z0-9_.-]/', '_', basename($nombre));
+    $uniqueName = time() . '_' . mt_rand(1000,9999) . '_' . $safeName;
+
+    $destPath = $absDir . $uniqueName; // ruta absoluta para mover
+    $dbPath = 'assets/uploads/' . $subfolder . $uniqueName; // ruta relativa a guardar en BD
 
     // Mover archivo
-    if (move_uploaded_file($tmp, $destino)) {
+    if (is_uploaded_file($tmp) && move_uploaded_file($tmp, $destPath)) {
 
-        $sql = "INSERT INTO documento 
-                (ruta_archivo, id_estudiante, id_tipo_documento)
-                VALUES ('$destino', '$id_estudiante', '$id_tipo')";
+        // Validar que el tipo de documento exista en la tabla tipo_documento
+        $tipoId = (int)$id_tipo;
+        $chk = $conn->prepare("SELECT id_tipo_documento FROM tipo_documento WHERE id_tipo_documento = ? LIMIT 1");
+        if (!$chk) {
+            echo "Error en la validación del tipo de documento";
+            exit;
+        }
+        $chk->bind_param('i', $tipoId);
+        $chk->execute();
+        $resTipo = $chk->get_result();
+        $chk->close();
 
-        if ($conn->query($sql)) {
-            echo "Documento subido correctamente";
+        if (!$resTipo || $resTipo->num_rows === 0) {
+            echo "Tipo de documento no válido en la base de datos";
+            exit;
+        }
+
+        // Guardar con estado inicial 'pendiente'
+        $estado = 'pendiente';
+        $stmt = $conn->prepare("INSERT INTO documento (ruta_archivo, id_estudiante, id_tipo_documento, estado) VALUES (?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param('siis', $dbPath, $id_estudiante, $tipoId, $estado);
+            if ($stmt->execute()) {
+                echo "Documento subido correctamente";
+            } else {
+                echo "Error al guardar en la base de datos";
+            }
+            $stmt->close();
         } else {
-            echo "Error al guardar en la base de datos";
+            echo "Error en la consulta a la base de datos";
         }
 
     } else {
-        echo "Error al subir el archivo";
+        echo "Error al subir el archivo. Verifica permisos y que la carpeta exista.";
     }
 }
 ?>

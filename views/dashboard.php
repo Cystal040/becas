@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexion.php");
+include_once __DIR__ . '/../config/conexion.php';
 
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
@@ -26,11 +26,12 @@ $resultado = $conexion->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Panel del Estudiante</title>
-    <link rel="icon" href="img/icono.png">
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="../assets/css/estilo.css">
+    <link rel="icon" href="../assets/img/icono.png">
 </head>
+<body class="fondo">
 
-<body>
+<div class="contenedor">
 
 <h2>Bienvenido, <?php echo $nombre; ?></h2>
 
@@ -38,6 +39,7 @@ $resultado = $conexion->query($sql);
 
 <hr>
 
+<div class="card">
 <h3>Documentos solicitados</h3>
 <ul>
     <li>Constancia de inscripción (PDF)</li>
@@ -47,13 +49,16 @@ $resultado = $conexion->query($sql);
     <li>Foto tipo carnet</li>
 </ul>
 
-<a href="subir_documentos.php">Subir documento</a>
+<div class="botones">
+    <a class="btn-secundario" href="subir_documentos.php">Subir documento</a>
+</div>
+</div>
 
 <hr>
 
 <h3>Mis documentos</h3>
 
-<table border="1" cellpadding="8">
+<table>
     <tr>
         <th>Documento</th>
         <th>Estado</th>
@@ -64,7 +69,10 @@ $resultado = $conexion->query($sql);
         <?php while ($fila = $resultado->fetch_assoc()) { ?>
             <tr>
                 <td><?php echo $fila['nombre_documento']; ?></td>
-                <td><?php echo ucfirst($fila['estado']); ?></td>
+                <?php
+                    $estado_display = ($fila['estado'] === 'pendiente') ? 'En espera' : ucfirst($fila['estado']);
+                ?>
+                <td><?php echo $estado_display; ?></td>
                 <td><?php echo $fila['fecha_subida']; ?></td>
             </tr>
         <?php } ?>
@@ -73,11 +81,15 @@ $resultado = $conexion->query($sql);
             <td colspan="3">No has subido documentos aún.</td>
         </tr>
     <?php } ?>
-</table>
+    </table>
 
-<br>
+    <br>
 
-<a href="logout.php">Cerrar sesión</a>
+    <div class="botones">
+        <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
+    </div>
+
+</div> <!-- .contenedor -->
 
 </body>
 </html>
