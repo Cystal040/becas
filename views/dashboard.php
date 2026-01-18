@@ -12,13 +12,55 @@ $nombre = $_SESSION['usuario_nombre'];
 ?>
 
 <?php
-$sql = "SELECT d.id_documento, td.nombre_documento, d.estado, d.fecha_subida
+// Cargar todos los tipos de documento y el estado (si existe) para este estudiante
+$tipos = [];
+$tipo_stmt = $conn->prepare("SELECT id_tipo_documento, nombre_documento FROM tipo_documento ORDER BY id_tipo_documento");
+if ($tipo_stmt) {
+    $tipo_stmt->execute();
+    $res = $tipo_stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
+        $tipos[] = $row;
+    }
+    $tipo_stmt->close();
+}
+
+$status_map = []; // id_tipo => estado (string) o null
+$doc_stmt = $conn->prepare("SELECT estado, fecha_subida FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+if ($doc_stmt) {
+    foreach ($tipos as $t) {
+        $tipoId = (int)$t['id_tipo_documento'];
+        $doc_stmt->bind_param('ii', $id_estudiante, $tipoId);
+        $doc_stmt->execute();
+        $resd = $doc_stmt->get_result();
+        if ($resd && $resd->num_rows > 0) {
+            $r = $resd->fetch_assoc();
+            $status_map[$tipoId] = $r['estado'];
+        } else {
+            $status_map[$tipoId] = null;
+        }
+    }
+    $doc_stmt->close();
+}
+
+// Obtener la lista de documentos subidos (para la tabla de abajo)
+$stmt = $conn->prepare("SELECT d.id_documento, td.nombre_documento, d.estado, d.fecha_subida
         FROM documento d
         INNER JOIN tipo_documento td 
         ON d.id_tipo_documento = td.id_tipo_documento
-        WHERE d.id_estudiante = '$id_estudiante'";
-
-$resultado = $conexion->query($sql);
+        WHERE d.id_estudiante = ?
+        ORDER BY d.fecha_subida DESC");
+if ($stmt) {
+    $stmt->bind_param('i', $id_estudiante);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $stmt->close();
+} else {
+    $resultado = $conexion->query("SELECT d.id_documento, td.nombre_documento, d.estado, d.fecha_subida
+        FROM documento d
+        INNER JOIN tipo_documento td 
+        ON d.id_tipo_documento = td.id_tipo_documento
+        WHERE d.id_estudiante = '$id_estudiante'");
+}
 ?>
 
 <!DOCTYPE html>
