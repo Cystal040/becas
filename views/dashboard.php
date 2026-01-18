@@ -162,10 +162,10 @@ if ($stmt) {
                         <small> — enviado: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($fsub))); ?></small>
                     <?php elseif ($st === 'aprobado'): ?>
                         <strong style="color:#2ecc71;">Aprobado</strong>
-                        <?php if (!empty($frev)): ?><small> — aprobado: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($frev))); ?></small><?php endif; ?>
+                        <small> — fecha: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($fsub))); ?></small>
                     <?php elseif ($st === 'rechazado'): ?>
                         <strong style="color:#e74c3c;">Rechazado</strong>
-                        <?php if (!empty($frev)): ?><small> — rechazado: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($frev))); ?></small><?php endif; ?>
+                        <small> — fecha: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($fsub))); ?></small>
                     <?php else: ?>
                         <strong><?php echo htmlspecialchars($st); ?></strong>
                     <?php endif; ?>

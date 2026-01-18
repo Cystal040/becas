@@ -16,15 +16,8 @@ if ($id <= 0 || !in_array($estado, ['aprobado','rechazado'])) {
     exit;
 }
 
-// Asegurarse de que exista la columna `fecha_revision` para almacenar cuándo se revisó
-$colCheck = $conn->query("SHOW COLUMNS FROM documento LIKE 'fecha_revision'");
-if ($colCheck && $colCheck->num_rows === 0) {
-    // Intentar añadir la columna (silencioso si falla en entornos antiguos)
-    @$conn->query("ALTER TABLE documento ADD COLUMN fecha_revision DATETIME NULL");
-}
-
-// Actualizar estado y marcar la fecha de revisión
-$stmt = $conn->prepare("UPDATE documento SET estado = ?, fecha_revision = NOW() WHERE id_documento = ?");
+// Actualizar estado (sin modificar esquema de base de datos)
+$stmt = $conn->prepare("UPDATE documento SET estado = ? WHERE id_documento = ?");
 if ($stmt) {
     $stmt->bind_param('si', $estado, $id);
     $stmt->execute();
