@@ -1,7 +1,19 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 PROJECT_DIR="C:\Users\USUARIO\Documents\gg\becas"
 # Ruta de tu proyecto
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+PROJECT_DIR="/c/Users/Josue/Documents/becas"
+=======
+# Ruta de tu proyecto
+>>>>>>> 11d132e85c2a95c816b28db7a7badbb3755902b7
+PROJECT_DIR="/c/Users/Administrator/Documents/becas"
+>>>>>>> abcd1752c099e47b57e14b995621f49bec1bd52b
+>>>>>>> e689d6fa423bd11d3f00ea5b5956ac7949a6b915
 BRANCH="main"
 
 cd "$PROJECT_DIR" || exit
@@ -24,4 +36,8 @@ while true; do
 
     # Espera 30 segundos antes de revisar otra vez
     sleep 30
+<<<<<<< HEAD
 done
+=======
+done
+>>>>>>> 11d132e85c2a95c816b28db7a7badbb3755902b7
