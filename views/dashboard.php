@@ -97,12 +97,18 @@ if ($stmt) {
     </div>
 
     <?php
-    // Contar documentos revisados (aprobado o rechazado)
-    $reviewed_count = 0;
+    // Contar documentos revisados (aprobado o rechazado) y calcular notificaciones no vistas
+    $vistas = isset($_SESSION['vistas_docs']) && is_array($_SESSION['vistas_docs']) ? $_SESSION['vistas_docs'] : [];
+    $reviewed_list = []; // lista de doc ids revisados
     foreach ($status_map as $s) {
         if (is_array($s) && in_array($s['estado'], ['aprobado','rechazado'])) {
-            $reviewed_count++;
+            $reviewed_list[] = $s['id'];
         }
+    }
+    $reviewed_count = count($reviewed_list);
+    $unseen_count = 0;
+    foreach ($reviewed_list as $did) {
+        if (!in_array($did, $vistas)) { $unseen_count++; }
     }
     // Lista de tipos faltantes
     $faltantes = [];
@@ -116,12 +122,30 @@ if ($stmt) {
 
     <div style="display:flex;align-items:center;gap:12px;">
         <div style="position:relative;">
-            <a href="#notificaciones" style="text-decoration:none;color:inherit;">
+            <a href="#" id="notifToggle" style="text-decoration:none;color:inherit;">
                 <span style="font-size:22px;">🔔</span>
-                <?php if ($reviewed_count > 0): ?>
-                    <span style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;margin-left:-10px;"><?php echo $reviewed_count; ?></span>
+                <?php if ($unseen_count > 0): ?>
+                    <span id="notifBadge" style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;margin-left:-10px;"><?php echo $unseen_count; ?></span>
                 <?php endif; ?>
             </a>
+            <div id="notifDropdown" style="display:none;position:absolute;right:0;top:28px;background:#fff;color:#000;border:1px solid #ddd;border-radius:6px;padding:10px;min-width:260px;z-index:40;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+                <strong>Notificaciones</strong>
+                <hr style="margin:8px 0;">
+                <?php if (empty($reviewed_list)): ?>
+                    <div style="color:#666;">No hay notificaciones nuevas.</div>
+                <?php else: ?>
+                    <ul style="list-style:none;padding:0;margin:0;">
+                    <?php foreach ($status_map as $tpk => $info): ?>
+                        <?php if (is_array($info) && in_array($info['estado'], ['aprobado','rechazado'])): ?>
+                            <li style="margin-bottom:8px;">
+                                <div style="font-weight:600;"><?php echo htmlspecialchars($tipos[$tpk]['nombre_documento'] ?? 'Documento'); ?></div>
+                                <div style="font-size:13px;color:#333;">Estado: <?php echo htmlspecialchars(ucfirst($info['estado'])); ?> — enviado: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))); ?></div>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
         </div>
 
         <div style="text-align:right;">
