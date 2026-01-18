@@ -16,7 +16,6 @@ if ($id <= 0 || !in_array($estado, ['aprobado','rechazado'])) {
     exit;
 }
 
-// Actualizar estado (sin modificar esquema de base de datos)
 $stmt = $conn->prepare("UPDATE documento SET estado = ? WHERE id_documento = ?");
 if ($stmt) {
     $stmt->bind_param('si', $estado, $id);
