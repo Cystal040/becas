@@ -9,10 +9,8 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $id_estudiante = $_SESSION['usuario_id'];
 $nombre = $_SESSION['usuario_nombre'];
-?>
 
-<?php
-// Cargar todos los tipos de documento y el estado (si existe) para este estudiante
+// Cargar tipos de documento
 $tipos = [];
 $tipo_stmt = $conn->prepare("SELECT id_tipo_documento, nombre_documento FROM tipo_documento ORDER BY id_tipo_documento");
 if ($tipo_stmt) {
@@ -22,6 +20,75 @@ if ($tipo_stmt) {
         $tipos[] = $row;
     }
     $tipo_stmt->close();
+}
+
+// Obtener último documento por tipo para este estudiante
+$status_map = []; // id_tipo => row
+$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, ruta_archivo, estado, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
+if ($doc_stmt) {
+    $doc_stmt->bind_param('i', $id_estudiante);
+    $doc_stmt->execute();
+    $resd = $doc_stmt->get_result();
+    while ($row = $resd->fetch_assoc()) {
+        $tid = (int)$row['id_tipo_documento'];
+        if (!isset($status_map[$tid])) {
+            $status_map[$tid] = $row;
+        }
+    }
+    $doc_stmt->close();
+}
+
+// Map id -> nombre
+$tipos_map = [];
+foreach ($tipos as $t) { $tipos_map[(int)$t['id_tipo_documento']] = $t['nombre_documento']; }
+
+// Notificaciones (sesión)
+$vistas = isset($_SESSION['vistas_docs']) && is_array($_SESSION['vistas_docs']) ? $_SESSION['vistas_docs'] : [];
+$reviewed_list = [];
+foreach ($status_map as $s) {
+    if (is_array($s) && in_array($s['estado'], ['aprobado','rechazado'])) {
+        $reviewed_list[] = (int)$s['id_documento'];
+    }
+}
+$unseen_count = 0;
+foreach ($reviewed_list as $did) {
+    if (!in_array($did, $vistas)) { $unseen_count++; }
+}
+
+// Contadores resumen
+$counts = ['aprobado'=>0,'pendiente'=>0,'rechazado'=>0,'faltante'=>0];
+foreach ($tipos as $t) {
+    $tid = (int)$t['id_tipo_documento'];
+    $info = $status_map[$tid] ?? null;
+    if (!$info) { $counts['faltante']++; }
+    else {
+        if ($info['estado'] === 'aprobado') $counts['aprobado']++;
+        elseif ($info['estado'] === 'pendiente') $counts['pendiente']++;
+        elseif ($info['estado'] === 'rechazado') $counts['rechazado']++;
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel del Estudiante</title>
+    <link rel="stylesheet" href="../assets/css/estilo.css">
+    <link rel="icon" href="../assets/img/icono.png">
+    <style>
+        /* Pequeños ajustes locales para el panel */
+        .sidebar-link { display:block; padding:6px 4px; color:inherit; }
+        .card { padding:12px; background:rgba(255,255,255,0.02); border-radius:8px; margin-bottom:12px; }
+        table th, table td { padding:8px 6px; }
+        table tr { border-bottom:1px solid #f3f3f3; }
+        .btn { background:#2d89ef;color:#fff;padding:6px 10px;border-radius:6px;text-decoration:none; }
+        .btn-secundario { background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:6px;text-decoration:none;color:inherit; }
+    </style>
+</head>
+<body class="fondo">
+
 <div class="contenedor" style="display:flex;gap:18px;align-items:flex-start;">
 
     <!-- Sidebar / Menu -->
@@ -31,10 +98,10 @@ if ($tipo_stmt) {
             <small style="color:var(--muted);">Estudiante</small>
         </div>
         <nav style="display:flex;flex-direction:column;gap:8px;">
-            <a href="dashboard.php" style="text-decoration:none;">🏠 Resumen</a>
-            <a href="mis_envios.php" style="text-decoration:none;">📄 Mis envíos</a>
-            <a href="subir_documentos.php" style="text-decoration:none;">➕ Subir documento</a>
-            <a href="../logout.php" style="text-decoration:none;">🚪 Cerrar sesión</a>
+            <a class="sidebar-link" href="dashboard.php">🏠 Resumen</a>
+            <a class="sidebar-link" href="mis_envios.php">📄 Mis envíos</a>
+            <a class="sidebar-link" href="subir_documentos.php">➕ Subir documento</a>
+            <a class="sidebar-link" href="../logout.php">🚪 Cerrar sesión</a>
         </nav>
         <hr style="margin:12px 0;">
         <div>
@@ -46,25 +113,10 @@ if ($tipo_stmt) {
     <!-- Main content -->
     <main style="flex:1;">
 
-        <!-- Resumen general -->
-        <?php
-        $counts = ['aprobado'=>0,'pendiente'=>0,'rechazado'=>0,'faltante'=>0];
-        foreach ($tipos as $t) {
-            $tid = (int)$t['id_tipo_documento'];
-            $info = $status_map[$tid] ?? null;
-            if (!$info) { $counts['faltante']++; }
-            else {
-                if ($info['estado'] === 'aprobado') $counts['aprobado']++;
-                elseif ($info['estado'] === 'pendiente') $counts['pendiente']++;
-                elseif ($info['estado'] === 'rechazado') $counts['rechazado']++;
-            }
-        }
-        ?>
-
         <div style="display:flex;gap:12px;margin-bottom:12px;">
-            <div style="flex:1;padding:12px;background:#ecf9f1;border-radius:8px;">
+            <div style="flex:1;" class="card">
                 <div style="font-size:18px;font-weight:600;">Resumen de documentos</div>
-                <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;">
+                <div style="margin-top:8px;display:flex;gap:18px;flex-wrap:wrap;">
                     <div>✅ Aprobados: <strong><?php echo $counts['aprobado']; ?></strong></div>
                     <div>🟡 En espera: <strong><?php echo $counts['pendiente']; ?></strong></div>
                     <div>❌ Rechazados: <strong><?php echo $counts['rechazado']; ?></strong></div>
@@ -72,22 +124,21 @@ if ($tipo_stmt) {
                 </div>
             </div>
 
-            <div style="width:260px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;">
+            <div style="width:260px;" class="card">
                 <div style="font-weight:600;">Mensajes</div>
                 <div style="margin-top:8px;color:var(--muted);">Revisa los documentos rechazados y vuelve a subirlos con el formato correcto.</div>
             </div>
         </div>
 
-        <!-- Tabla principal de documentos (compacta) -->
         <div class="card">
             <h3>Documentos requeridos</h3>
             <table style="width:100%;border-collapse:collapse;">
-                <tr style="text-align:left;border-bottom:1px solid #eee;padding:8px 0;"><th>Documento</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr>
+                <tr style="text-align:left;"><th>Documento</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr>
                 <?php foreach ($tipos as $t): ?>
                     <?php $tid = (int)$t['id_tipo_documento']; $info = $status_map[$tid] ?? null; ?>
-                    <tr style="border-bottom:1px solid #f3f3f3;">
-                        <td style="padding:10px 6px"><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
-                        <td style="padding:10px 6px">
+                    <tr>
+                        <td><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
+                        <td>
                             <?php if (!$info): ?>
                                 <span style="color:#7f8c8d;">⬜ No enviado</span>
                             <?php else: ?>
@@ -98,8 +149,8 @@ if ($tipo_stmt) {
                                     else echo '<span>'.htmlspecialchars(ucfirst($st)).'</span>'; ?>
                             <?php endif; ?>
                         </td>
-                        <td style="padding:10px 6px"><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
-                        <td style="padding:10px 6px">
+                        <td><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
+                        <td>
                             <?php if (!$info): ?>
                                 <a class="btn" href="subir_documentos.php?tipo=<?php echo $tid; ?>">➕ Subir</a>
                             <?php else: ?>
@@ -123,6 +174,9 @@ if ($tipo_stmt) {
     </main>
 
 </div> <!-- .contenedor -->
+
+</body>
+</html>
             <ul>
                 <li>Constancia de inscripción (PDF)</li>
                 <li>Récord académico (PDF)</li>
