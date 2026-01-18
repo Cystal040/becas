@@ -20,7 +20,7 @@ if ($tipo_stmt) {
 }
 
 $status_map = [];
-$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, estado, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
+$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, ruta_archivo, estado, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
 if ($doc_stmt) {
     $doc_stmt->bind_param('i', $id_estudiante);
     $doc_stmt->execute();
@@ -54,30 +54,41 @@ foreach ($tipos as $t) {
 <div class="contenedor">
     <h2>Mis envíos</h2>
 
-    <div class="card">
-        <h3>Documentos pendientes</h3>
-        <?php if (empty($faltantes)): ?>
-            <div>Has enviado todos los documentos.</div>
-        <?php else: ?>
-            <ul>
-                <?php foreach ($faltantes as $f): ?>
-                    <li><?php echo htmlspecialchars($f); ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </div>
-
-    <hr>
-
-    <h3>Historial de envíos (últimos por tipo)</h3>
-    <table>
-        <tr><th>Documento</th><th>Estado</th><th>Fecha de subida</th></tr>
+    <!-- Compact table: Documento | Estado | Fecha | Acción -->
+    <table style="width:100%;border-collapse:collapse;">
+        <tr style="text-align:left;border-bottom:1px solid #eee;padding:8px 0;"><th>Documento</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr>
         <?php foreach ($tipos as $t): ?>
             <?php $tid = (int)$t['id_tipo_documento']; $info = $status_map[$tid] ?? null; ?>
-            <tr>
-                <td><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
-                <td><?php echo $info ? htmlspecialchars(ucfirst($info['estado'])) : 'Sin enviar'; ?></td>
-                <td><?php echo $info ? htmlspecialchars($info['fecha_subida']) : '-'; ?></td>
+            <tr style="border-bottom:1px solid #f3f3f3;">
+                <td style="padding:10px 6px"><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
+                <td style="padding:10px 6px">
+                    <?php if (!$info): ?>
+                        <span style="color:#7f8c8d;">⬜ No enviado</span>
+                    <?php else: ?>
+                        <?php $st = $info['estado'];
+                            if ($st === 'aprobado') echo '<span style="color:#27ae60">🟢 Aprobado</span>'; 
+                            elseif ($st === 'pendiente') echo '<span style="color:#f1c40f">🟡 En revisión</span>'; 
+                            elseif ($st === 'rechazado') echo '<span style="color:#c0392b">❌ Rechazado</span>'; 
+                            else echo '<span>'.htmlspecialchars(ucfirst($st)).'</span>'; ?>
+                    <?php endif; ?>
+                </td>
+                <td style="padding:10px 6px"><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
+                <td style="padding:10px 6px">
+                    <?php if (!$info): ?>
+                        <a class="btn" href="subir_documentos.php">➕ Subir</a>
+                    <?php else: ?>
+                        <?php if (!empty($info['ruta_archivo'])): ?>
+                            <a class="btn-secundario" href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>" target="_blank">Ver</a>
+                        <?php endif; ?>
+                        <?php if ($info['estado'] === 'rechazado'): ?>
+                            <a class="btn" href="subir_documentos.php" style="margin-left:6px;">🔄 Volver a subir</a>
+                        <?php elseif ($info['estado'] === 'pendiente'): ?>
+                            <span style="color:#95a5a6;margin-left:6px;">⏳ En espera</span>
+                        <?php else: ?>
+                            <span style="color:#95a5a6;margin-left:6px;">🔒 Bloqueado</span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
