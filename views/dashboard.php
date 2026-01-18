@@ -31,10 +31,10 @@ $has_fecha_revision = ($colCheck && $colCheck->num_rows > 0);
 // id_tipo => ['estado'=>..., 'fecha_subida'=>..., 'fecha_revision'=>...]
 $status_map = [];
 if ($has_fecha_revision) {
-    $doc_stmt = $conn->prepare("SELECT estado, fecha_subida, fecha_revision FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+    $doc_stmt = $conn->prepare("SELECT id_documento, estado, fecha_subida, fecha_revision FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
 } else {
     // Si no existe la columna, seleccionar solo las columnas disponibles
-    $doc_stmt = $conn->prepare("SELECT estado, fecha_subida FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+    $doc_stmt = $conn->prepare("SELECT id_documento, estado, fecha_subida FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
 }
 if ($doc_stmt) {
     foreach ($tipos as $t) {
@@ -45,6 +45,7 @@ if ($doc_stmt) {
         if ($resd && $resd->num_rows > 0) {
             $r = $resd->fetch_assoc();
             $status_map[$tipoId] = [
+                'id' => (int)$r['id_documento'],
                 'estado' => $r['estado'],
                 'fecha_subida' => $r['fecha_subida'],
                 'fecha_revision' => $has_fecha_revision ? ($r['fecha_revision'] ?? null) : null,
