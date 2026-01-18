@@ -127,6 +127,33 @@ if ($stmt) {
 
     <br>
 
+    <hr>
+
+    <div class="card">
+    <h3>Estado de envíos</h3>
+    <ul>
+        <?php foreach ($tipos as $t): ?>
+            <?php $tid = (int)$t['id_tipo_documento']; $st = $status_map[$tid] ?? null; ?>
+            <li>
+                <?php echo htmlspecialchars($t['nombre_documento']); ?>: 
+                <?php if ($st === null): ?>
+                    <strong style="color:#f39c12;">Falta enviar</strong>
+                <?php else: ?>
+                    <?php if ($st === 'pendiente'): ?>
+                        <strong style="color:#3498db;">Enviado (En espera)</strong>
+                    <?php elseif ($st === 'aprobado'): ?>
+                        <strong style="color:#2ecc71;">Aprobado</strong>
+                    <?php elseif ($st === 'rechazado'): ?>
+                        <strong style="color:#e74c3c;">Rechazado</strong>
+                    <?php else: ?>
+                        <strong><?php echo htmlspecialchars($st); ?></strong>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    </div>
+
     <div class="botones">
         <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
     </div>
