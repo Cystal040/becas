@@ -1,4 +1,0 @@
-# becas
-matate mponfellis
-suicidate
-
