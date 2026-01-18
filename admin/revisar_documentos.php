@@ -7,13 +7,14 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Obtener documentos (todos) unidos a estudiante y tipo
+// Obtener solo documentos pendientes unidos a estudiante y tipo
 $sql = "SELECT d.id_documento, d.ruta_archivo, d.estado, d.fecha_subida,
-                e.nombre, e.apellido, td.nombre_documento
-        FROM documento d
-        LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante
-        LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento
-        ORDER BY d.fecha_subida DESC";
+        e.nombre, e.apellido, td.nombre_documento
+    FROM documento d
+    LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante
+    LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento
+    WHERE d.estado = 'pendiente'
+    ORDER BY d.fecha_subida DESC";
 $resultado = $conn->query($sql);
 ?>
 
