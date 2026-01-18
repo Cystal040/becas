@@ -182,7 +182,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ids: ids})
             }).then(function(r){ return r.json(); }).then(function(j){
-                if (j.ok && badge) { badge.style.display = 'none'; }
+                if (j.ok) {
+                    if (badge) { badge.style.display = 'none'; }
+                    // clear dropdown list and show empty message
+                    dropdown.innerHTML = '<strong>Notificaciones</strong><hr style="margin:8px 0;"><div style="color:#666;">No hay notificaciones nuevas.</div>';
+                }
             }).catch(function(){ /* no-op */ });
         } else {
             dropdown.style.display = 'none';
