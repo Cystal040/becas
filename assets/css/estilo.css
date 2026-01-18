@@ -107,3 +107,30 @@ a:hover{ text-decoration:underline; }
 
 /* Evitar mezclar estilos antiguos */
 .btn-old{ display:none; }
+
+/* Estilos adicionales para vistas de envíos */
+.table-compact{ width:100%; border-collapse:collapse; overflow:hidden; border-radius:8px; }
+.table-compact thead{ background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+.table-compact th, .table-compact td{ padding:10px 12px; vertical-align:middle; color:var(--muted); }
+.table-compact th{ color:#fff; font-weight:600; }
+.table-compact tr{ transition: background .12s ease, transform .06s ease; }
+.table-compact tr:hover{ background: rgba(255,255,255,0.02); transform: translateY(-1px); }
+
+.table-actions a{ margin-right:8px; }
+
+.status-dot{ display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle; }
+.status-aprobado .status-dot{ background:var(--success); }
+.status-pendiente .status-dot{ background:#f1c40f; }
+.status-rechazado .status-dot{ background:#c0392b; }
+
+/* Ajustes botones compactos */
+.btn-small{ padding:6px 10px; font-size:14px; border-radius:6px; }
+.btn-secundario{ padding:8px 12px; }
+
+/* Tabla responsive: permitir scroll horizontal en pantallas pequeñas */
+.table-responsive{ overflow:auto; -webkit-overflow-scrolling:touch; }
+
+@media (max-width:640px){
+    .table-compact th, .table-compact td{ padding:8px 10px; font-size:14px; }
+    .contenedor{ padding:18px; }
+}
