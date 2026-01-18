@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ruta de tu proyecto
-PROJECT_DIR="/c/Users/Josue/Documents/becas"
+PROJECT_DIR="/c/Users/Administrator/Documents/becas"
 BRANCH="main"
 
 cd "$PROJECT_DIR" || exit
@@ -24,5 +24,5 @@ while true; do
     fi
 
     # Espera 60 segundos antes de revisar otra vez
-    sleep 60
+    sleep 10
 done
