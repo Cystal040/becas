@@ -89,9 +89,58 @@ if ($stmt) {
 
 <div class="contenedor">
 
-<h2>Bienvenido, <?php echo $nombre; ?></h2>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+    <div>
+        <h2>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h2>
+        <p style="margin:4px 0 0; color:var(--muted);">Panel de estudiante — gestiona tus envíos y revisiones.</p>
+    </div>
 
-<p>Desde este panel puedes subir y revisar tus documentos para la beca.</p>
+    <?php
+    // Contar documentos revisados (aprobado o rechazado)
+    $reviewed_count = 0;
+    foreach ($status_map as $s) {
+        if (is_array($s) && in_array($s['estado'], ['aprobado','rechazado'])) {
+            $reviewed_count++;
+        }
+    }
+    // Lista de tipos faltantes
+    $faltantes = [];
+    foreach ($tipos as $t) {
+        $tid = (int)$t['id_tipo_documento'];
+        if (!isset($status_map[$tid]) || $status_map[$tid] === null) {
+            $faltantes[] = $t['nombre_documento'];
+        }
+    }
+    ?>
+
+    <div style="display:flex;align-items:center;gap:12px;">
+        <div style="position:relative;">
+            <a href="#notificaciones" style="text-decoration:none;color:inherit;">
+                <span style="font-size:22px;">🔔</span>
+                <?php if ($reviewed_count > 0): ?>
+                    <span style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;margin-left:-10px;"><?php echo $reviewed_count; ?></span>
+                <?php endif; ?>
+            </a>
+        </div>
+
+        <div style="text-align:right;">
+            <a class="btn" href="subir_documentos.php">Subir documento</a>
+            <a class="btn-secundario" href="documentos.php" style="margin-left:8px;">Mis envíos</a>
+        </div>
+    </div>
+
+</div>
+
+<?php if (!empty($faltantes)): ?>
+    <div style="margin-top:12px;padding:12px;background:rgba(255,235,205,0.15);border-left:4px solid #f39c12;border-radius:6px;">
+        <strong>Documentos pendientes:</strong>
+        <span style="margin-left:8px;"><?php echo htmlspecialchars(implode(', ', $faltantes)); ?></span>
+    </div>
+<?php else: ?>
+    <div style="margin-top:12px;padding:12px;background:rgba(220,255,220,0.12);border-left:4px solid #2ecc71;border-radius:6px;">
+        <strong>¡Tienes todos los documentos enviados!</strong>
+    </div>
+<?php endif; ?>
 
 <hr>
 
