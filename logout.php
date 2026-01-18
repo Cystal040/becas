@@ -1,7 +1,7 @@
 <?php
 // Logout unificado: limpia sesión de admin y/o estudiante y redirige a la página principal
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+	session_start();
 }
 
 // Eliminar claves de usuario en sesión
