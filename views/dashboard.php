@@ -24,9 +24,18 @@ if ($tipo_stmt) {
     $tipo_stmt->close();
 }
 
+// Comprobar si la columna `fecha_revision` existe para evitar errores en instalaciones antiguas
+$colCheck = $conn->query("SHOW COLUMNS FROM documento LIKE 'fecha_revision'");
+$has_fecha_revision = ($colCheck && $colCheck->num_rows > 0);
+
 // id_tipo => ['estado'=>..., 'fecha_subida'=>..., 'fecha_revision'=>...]
 $status_map = [];
-$doc_stmt = $conn->prepare("SELECT estado, fecha_subida, fecha_revision FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+if ($has_fecha_revision) {
+    $doc_stmt = $conn->prepare("SELECT estado, fecha_subida, fecha_revision FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+} else {
+    // Si no existe la columna, seleccionar solo las columnas disponibles
+    $doc_stmt = $conn->prepare("SELECT estado, fecha_subida FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+}
 if ($doc_stmt) {
     foreach ($tipos as $t) {
         $tipoId = (int)$t['id_tipo_documento'];
@@ -38,7 +47,7 @@ if ($doc_stmt) {
             $status_map[$tipoId] = [
                 'estado' => $r['estado'],
                 'fecha_subida' => $r['fecha_subida'],
-                'fecha_revision' => $r['fecha_revision'] ?? null,
+                'fecha_revision' => $has_fecha_revision ? ($r['fecha_revision'] ?? null) : null,
             ];
         } else {
             $status_map[$tipoId] = null;
