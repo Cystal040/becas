@@ -23,6 +23,9 @@ if ($tipo_stmt) {
     }
     $tipo_stmt->close();
 }
+// Crear mapa id->nombre para acceso por id
+$tipos_map = [];
+foreach ($tipos as $t) { $tipos_map[(int)$t['id_tipo_documento']] = $t['nombre_documento']; }
 
 // Comprobar si la columna `fecha_revision` existe para evitar errores en instalaciones antiguas
 $colCheck = $conn->query("SHOW COLUMNS FROM documento LIKE 'fecha_revision'");
@@ -138,7 +141,7 @@ if ($stmt) {
                     <?php foreach ($status_map as $tpk => $info): ?>
                         <?php if (is_array($info) && in_array($info['estado'], ['aprobado','rechazado'])): ?>
                             <li style="margin-bottom:8px;">
-                                <div style="font-weight:600;"><?php echo htmlspecialchars($tipos[$tpk]['nombre_documento'] ?? 'Documento'); ?></div>
+                                <div style="font-weight:600;"><?php echo htmlspecialchars($tipos_map[$tpk] ?? 'Documento'); ?></div>
                                 <div style="font-size:13px;color:#333;">Estado: <?php echo htmlspecialchars(ucfirst($info['estado'])); ?> — enviado: <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))); ?></div>
                             </li>
                         <?php endif; ?>
@@ -150,22 +153,51 @@ if ($stmt) {
 
         <div style="text-align:right;">
             <a class="btn" href="subir_documentos.php">Subir documento</a>
-            <a class="btn-secundario" href="documentos.php" style="margin-left:8px;">Mis envíos</a>
+            <a class="btn-secundario" href="mis_envios.php" style="margin-left:8px;">Mis envíos</a>
         </div>
     </div>
 
 </div>
 
-<?php if (!empty($faltantes)): ?>
-    <div style="margin-top:12px;padding:12px;background:rgba(255,235,205,0.15);border-left:4px solid #f39c12;border-radius:6px;">
-        <strong>Documentos pendientes:</strong>
-        <span style="margin-left:8px;"><?php echo htmlspecialchars(implode(', ', $faltantes)); ?></span>
-    </div>
-<?php else: ?>
-    <div style="margin-top:12px;padding:12px;background:rgba(220,255,220,0.12);border-left:4px solid #2ecc71;border-radius:6px;">
-        <strong>¡Tienes todos los documentos enviados!</strong>
-    </div>
-<?php endif; ?>
+<script>
+// Toggle notifications dropdown and mark as seen via AJAX
+document.addEventListener('DOMContentLoaded', function(){
+    var toggle = document.getElementById('notifToggle');
+    var dropdown = document.getElementById('notifDropdown');
+    var badge = document.getElementById('notifBadge');
+    if (!toggle) return;
+    toggle.addEventListener('click', function(e){
+        e.preventDefault();
+        if (dropdown.style.display === 'none') {
+            dropdown.style.display = 'block';
+            // gather reviewed ids from PHP-rendered list via data attributes (collect from status_map)
+            var ids = [];
+            <?php foreach ($status_map as $s): if (is_array($s) && in_array($s['estado'], ['aprobado','rechazado'])): ?>
+                ids.push(<?php echo (int)$s['id']; ?>);
+            <?php endif; endforeach; ?>
+            if (ids.length === 0) return;
+            // send POST to mark as seen
+            fetch('../controllers/mark_notifications.php', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ids: ids})
+            }).then(function(r){ return r.json(); }).then(function(j){
+                if (j.ok && badge) { badge.style.display = 'none'; }
+            }).catch(function(){ /* no-op */ });
+        } else {
+            dropdown.style.display = 'none';
+        }
+    });
+    // click outside to close
+    document.addEventListener('click', function(e){
+        if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<!-- Banner de faltantes convertido en opción en 'Mis envíos' -->
 
 <hr>
 
