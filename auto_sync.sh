@@ -24,5 +24,5 @@ while true; do
     fi
 
     # Espera 60 segundos antes de revisar otra vez
-    sleep 1
+    sleep 5
 done
