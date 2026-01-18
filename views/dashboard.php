@@ -22,205 +22,107 @@ if ($tipo_stmt) {
         $tipos[] = $row;
     }
     $tipo_stmt->close();
-}
-// Crear mapa id->nombre para acceso por id
-$tipos_map = [];
-foreach ($tipos as $t) {
-    $tipos_map[(int) $t['id_tipo_documento']] = $t['nombre_documento'];
-}
+<div class="contenedor" style="display:flex;gap:18px;align-items:flex-start;">
 
-// Comprobar si la columna `fecha_revision` existe para evitar errores en instalaciones antiguas
-$colCheck = $conn->query("SHOW COLUMNS FROM documento LIKE 'fecha_revision'");
-$has_fecha_revision = ($colCheck && $colCheck->num_rows > 0);
+    <!-- Sidebar / Menu -->
+    <aside style="width:220px;background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;">
+        <div style="margin-bottom:12px;">
+            <strong><?php echo htmlspecialchars($nombre); ?></strong><br>
+            <small style="color:var(--muted);">Estudiante</small>
+        </div>
+        <nav style="display:flex;flex-direction:column;gap:8px;">
+            <a href="dashboard.php" style="text-decoration:none;">🏠 Resumen</a>
+            <a href="mis_envios.php" style="text-decoration:none;">📄 Mis envíos</a>
+            <a href="subir_documentos.php" style="text-decoration:none;">➕ Subir documento</a>
+            <a href="../logout.php" style="text-decoration:none;">🚪 Cerrar sesión</a>
+        </nav>
+        <hr style="margin:12px 0;">
+        <div>
+            <strong>Notificaciones</strong>
+            <?php if ($unseen_count > 0): ?> <span style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;margin-left:8px;"><?php echo $unseen_count; ?></span><?php endif; ?>
+        </div>
+    </aside>
 
-// id_tipo => ['estado'=>..., 'fecha_subida'=>..., 'fecha_revision'=>...]
-$status_map = [];
-if ($has_fecha_revision) {
-    $doc_stmt = $conn->prepare("SELECT id_documento, estado, fecha_subida, fecha_revision FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
-} else {
-    // Si no existe la columna, seleccionar solo las columnas disponibles
-    $doc_stmt = $conn->prepare("SELECT id_documento, estado, fecha_subida FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
-}
-if ($doc_stmt) {
-    foreach ($tipos as $t) {
-        $tipoId = (int) $t['id_tipo_documento'];
-        $doc_stmt->bind_param('ii', $id_estudiante, $tipoId);
-        $doc_stmt->execute();
-        $resd = $doc_stmt->get_result();
-        if ($resd && $resd->num_rows > 0) {
-            $r = $resd->fetch_assoc();
-            $status_map[$tipoId] = [
-                'id' => (int) $r['id_documento'],
-                'estado' => $r['estado'],
-                'fecha_subida' => $r['fecha_subida'],
-                'fecha_revision' => $has_fecha_revision ? ($r['fecha_revision'] ?? null) : null,
-            ];
-        } else {
-            $status_map[$tipoId] = null;
+    <!-- Main content -->
+    <main style="flex:1;">
+
+        <!-- Resumen general -->
+        <?php
+        $counts = ['aprobado'=>0,'pendiente'=>0,'rechazado'=>0,'faltante'=>0];
+        foreach ($tipos as $t) {
+            $tid = (int)$t['id_tipo_documento'];
+            $info = $status_map[$tid] ?? null;
+            if (!$info) { $counts['faltante']++; }
+            else {
+                if ($info['estado'] === 'aprobado') $counts['aprobado']++;
+                elseif ($info['estado'] === 'pendiente') $counts['pendiente']++;
+                elseif ($info['estado'] === 'rechazado') $counts['rechazado']++;
+            }
         }
-    }
-    $doc_stmt->close();
-}
+        ?>
 
-// Obtener la lista de documentos subidos (para la tabla de abajo)
-$stmt = $conn->prepare("SELECT d.id_documento, td.nombre_documento, d.estado, d.fecha_subida
-        FROM documento d
-        INNER JOIN tipo_documento td 
-        ON d.id_tipo_documento = td.id_tipo_documento
-        WHERE d.id_estudiante = ?
-        ORDER BY d.fecha_subida DESC");
-if ($stmt) {
-    $stmt->bind_param('i', $id_estudiante);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $stmt->close();
-} else {
-    $resultado = $conexion->query("SELECT d.id_documento, td.nombre_documento, d.estado, d.fecha_subida
-        FROM documento d
-        INNER JOIN tipo_documento td 
-        ON d.id_tipo_documento = td.id_tipo_documento
-        WHERE d.id_estudiante = '$id_estudiante'");
-}
-?>
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Panel del Estudiante</title>
-    <link rel="stylesheet" href="../assets/css/estilo.css">
-    <link rel="icon" href="../assets/img/icono.png">
-</head>
-
-<body class="fondo">
-
-    <div class="contenedor">
-
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-            <div>
-                <h2>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h2>
-                <p style="margin:4px 0 0; color:var(--muted);">Panel de estudiante — gestiona tus envíos y revisiones.
-                </p>
-            </div>
-
-            <?php
-            // Contar documentos revisados (aprobado o rechazado) y calcular notificaciones no vistas
-            $vistas = isset($_SESSION['vistas_docs']) && is_array($_SESSION['vistas_docs']) ? $_SESSION['vistas_docs'] : [];
-            $reviewed_list = []; // lista de doc ids revisados
-            foreach ($status_map as $s) {
-                if (is_array($s) && in_array($s['estado'], ['aprobado', 'rechazado'])) {
-                    $reviewed_list[] = $s['id'];
-                }
-            }
-            $reviewed_count = count($reviewed_list);
-            $unseen_count = 0;
-            foreach ($reviewed_list as $did) {
-                if (!in_array($did, $vistas)) {
-                    $unseen_count++;
-                }
-            }
-            // Lista de tipos faltantes
-            $faltantes = [];
-            foreach ($tipos as $t) {
-                $tid = (int) $t['id_tipo_documento'];
-                if (!isset($status_map[$tid]) || $status_map[$tid] === null) {
-                    $faltantes[] = $t['nombre_documento'];
-                }
-            }
-            ?>
-
-            <div style="display:flex;align-items:center;gap:12px;">
-                <div style="position:relative;">
-                    <a href="#" id="notifToggle" style="text-decoration:none;color:inherit;">
-                        <span style="font-size:22px;">🔔</span>
-                        <?php if ($unseen_count > 0): ?>
-                            <span id="notifBadge"
-                                style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;margin-left:-10px;"><?php echo $unseen_count; ?></span>
-                        <?php endif; ?>
-                    </a>
-                    <div id="notifDropdown"
-                        style="display:none;position:absolute;right:0;top:28px;background:#fff;color:#000;border:1px solid #ddd;border-radius:6px;padding:10px;min-width:260px;z-index:40;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
-                        <strong>Notificaciones</strong>
-                        <hr style="margin:8px 0;">
-                        <?php if (empty($reviewed_list)): ?>
-                            <div style="color:#666;">No hay notificaciones nuevas.</div>
-                        <?php else: ?>
-                            <ul style="list-style:none;padding:0;margin:0;">
-                                <?php foreach ($status_map as $tpk => $info): ?>
-                                    <?php if (is_array($info) && in_array($info['estado'], ['aprobado', 'rechazado'])): ?>
-                                        <li style="margin-bottom:8px;">
-                                            <div style="font-weight:600;">
-                                                <?php echo htmlspecialchars($tipos_map[$tpk] ?? 'Documento'); ?></div>
-                                            <div style="font-size:13px;color:#333;">Estado:
-                                                <?php echo htmlspecialchars(ucfirst($info['estado'])); ?> — enviado:
-                                                <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))); ?>
-                                            </div>
-                                        </li>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <div style="text-align:right;">
-                    <a class="btn" href="subir_documentos.php">Subir documento</a>
-                    <a class="btn-secundario" href="mis_envios.php" style="margin-left:8px;">Mis envíos</a>
+        <div style="display:flex;gap:12px;margin-bottom:12px;">
+            <div style="flex:1;padding:12px;background:#ecf9f1;border-radius:8px;">
+                <div style="font-size:18px;font-weight:600;">Resumen de documentos</div>
+                <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;">
+                    <div>✅ Aprobados: <strong><?php echo $counts['aprobado']; ?></strong></div>
+                    <div>🟡 En espera: <strong><?php echo $counts['pendiente']; ?></strong></div>
+                    <div>❌ Rechazados: <strong><?php echo $counts['rechazado']; ?></strong></div>
+                    <div>⬜ Pendientes: <strong><?php echo $counts['faltante']; ?></strong></div>
                 </div>
             </div>
 
+            <div style="width:260px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;">
+                <div style="font-weight:600;">Mensajes</div>
+                <div style="margin-top:8px;color:var(--muted);">Revisa los documentos rechazados y vuelve a subirlos con el formato correcto.</div>
+            </div>
         </div>
 
-        <script>
-            // Toggle notifications dropdown and mark as seen via AJAX
-            document.addEventListener('DOMContentLoaded', function () {
-                var toggle = document.getElementById('notifToggle');
-                var dropdown = document.getElementById('notifDropdown');
-                var badge = document.getElementById('notifBadge');
-                if (!toggle) return;
-                toggle.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (dropdown.style.display === 'none') {
-                        dropdown.style.display = 'block';
-                        // gather reviewed ids from PHP-rendered list via data attributes (collect from status_map)
-                        var ids = [];
-                        <?php foreach ($status_map as $s):
-                            if (is_array($s) && in_array($s['estado'], ['aprobado', 'rechazado'])): ?>
-                                ids.push(<?php echo (int) $s['id']; ?>);
-                            <?php endif; endforeach; ?>
-                        if (ids.length === 0) return;
-                        // send POST to mark as seen
-                        fetch('../controllers/mark_notifications.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ ids: ids })
-                        }).then(function (r) { return r.json(); }).then(function (j) {
-                            if (j.ok) {
-                                if (badge) { badge.style.display = 'none'; }
-                                // clear dropdown list and show empty message
-                                dropdown.innerHTML = '<strong>Notificaciones</strong><hr style="margin:8px 0;"><div style="color:#666;">No hay notificaciones nuevas.</div>';
-                            }
-                        }).catch(function () { /* no-op */ });
-                    } else {
-                        dropdown.style.display = 'none';
-                    }
-                });
-                // click outside to close
-                document.addEventListener('click', function (e) {
-                    if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-                        dropdown.style.display = 'none';
-                    }
-                });
-            });
-        </script>
-
-        <!-- Banner de faltantes convertido en opción en 'Mis envíos' -->
-
-        <hr>
-
+        <!-- Tabla principal de documentos (compacta) -->
         <div class="card">
-            <h3>Documentos solicitados</h3>
+            <h3>Documentos requeridos</h3>
+            <table style="width:100%;border-collapse:collapse;">
+                <tr style="text-align:left;border-bottom:1px solid #eee;padding:8px 0;"><th>Documento</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr>
+                <?php foreach ($tipos as $t): ?>
+                    <?php $tid = (int)$t['id_tipo_documento']; $info = $status_map[$tid] ?? null; ?>
+                    <tr style="border-bottom:1px solid #f3f3f3;">
+                        <td style="padding:10px 6px"><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
+                        <td style="padding:10px 6px">
+                            <?php if (!$info): ?>
+                                <span style="color:#7f8c8d;">⬜ No enviado</span>
+                            <?php else: ?>
+                                <?php $st = $info['estado'];
+                                    if ($st === 'aprobado') echo '<span style="color:#27ae60">🟢 Aprobado</span>'; 
+                                    elseif ($st === 'pendiente') echo '<span style="color:#f1c40f">🟡 En revisión</span>'; 
+                                    elseif ($st === 'rechazado') echo '<span style="color:#c0392b">❌ Rechazado</span>'; 
+                                    else echo '<span>'.htmlspecialchars(ucfirst($st)).'</span>'; ?>
+                            <?php endif; ?>
+                        </td>
+                        <td style="padding:10px 6px"><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
+                        <td style="padding:10px 6px">
+                            <?php if (!$info): ?>
+                                <a class="btn" href="subir_documentos.php?tipo=<?php echo $tid; ?>">➕ Subir</a>
+                            <?php else: ?>
+                                <?php if (!empty($info['ruta_archivo'])): ?>
+                                    <a class="btn-secundario" href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>" target="_blank">Ver</a>
+                                <?php endif; ?>
+                                <?php if ($info['estado'] === 'rechazado'): ?>
+                                    <a class="btn" href="subir_documentos.php?tipo=<?php echo $tid; ?>" style="margin-left:6px;">🔄 Volver a subir</a>
+                                <?php elseif ($info['estado'] === 'pendiente'): ?>
+                                    <span style="color:#95a5a6;margin-left:6px;">⏳ En espera</span>
+                                <?php else: ?>
+                                    <span style="color:#95a5a6;margin-left:6px;">🔒 Bloqueado</span>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+
+    </main>
+
+</div> <!-- .contenedor -->
             <ul>
                 <li>Constancia de inscripción (PDF)</li>
                 <li>Récord académico (PDF)</li>
