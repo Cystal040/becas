@@ -93,10 +93,21 @@ foreach ($tipos as $t) {
 
     <!-- Sidebar / Menu -->
     <aside style="width:220px;background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;">
-        <div style="margin-bottom:12px;">
-            <strong><?php echo htmlspecialchars($nombre); ?></strong><br>
-            <small style="color:var(--muted);">Estudiante</small>
-        </div>
+        <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <strong><?php echo htmlspecialchars($nombre); ?></strong><br>
+                    <small style="color:var(--muted);">Estudiante</small>
+                </div>
+                <div>
+                    <a class="notif-bell" id="notifBell" href="mis_envios.php" title="Notificaciones">
+                        <!-- bell SVG -->
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 005 14h14a1 1 0 00.707-1.707L18 11.586V8a6 6 0 00-6-6zm0 18a2.5 2.5 0 002.45-2H9.55A2.5 2.5 0 0012 20z"/></svg>
+                        <?php if ($unseen_count > 0): ?>
+                            <span class="notif-badge" id="notifCount"><?php echo $unseen_count; ?></span>
+                        <?php endif; ?>
+                    </a>
+                </div>
+            </div>
         <nav style="display:flex;flex-direction:column;gap:8px;">
             <a class="sidebar-link" href="dashboard.php">🏠 Resumen</a>
             <a class="sidebar-link" href="mis_envios.php">📄 Mis envíos</a>
@@ -177,6 +188,30 @@ foreach ($tipos as $t) {
 
 </body>
 </html>
+<script>
+// Marcar notificaciones vistas al hacer click en la campana
+document.addEventListener('DOMContentLoaded', function(){
+    var bell = document.getElementById('notifBell');
+    if (!bell) return;
+    bell.addEventListener('click', function(e){
+        try {
+            // ids para marcar: pasar desde PHP
+            var ids = <?php echo json_encode($reviewed_list, JSON_HEX_TAG); ?> || [];
+            if (ids.length === 0) return; // nada que marcar
+            fetch('../controllers/mark_notifications.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: ids })
+            }).then(function(resp){ return resp.json(); }).then(function(data){
+                // quitar contador visual si OK
+                var badge = document.getElementById('notifCount');
+                if (badge) badge.style.display = 'none';
+            }).catch(function(){ /* silently fail */ });
+        } catch(err){ /* ignore */ }
+        // allow navigation to mis_envios.php
+    });
+});
+</script>
             <ul>
                 <li>Constancia de inscripción (PDF)</li>
                 <li>Récord académico (PDF)</li>
