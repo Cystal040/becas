@@ -13,10 +13,37 @@ $col_q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE 
 if ($col_q && $col_q->num_rows > 0) { $has_estado = true; }
 if ($col_q) { $col_q->close(); }
 
-$select_cols = "d.id_documento, d.ruta_archivo, d.fecha_subida, e.nombre, e.apellido, td.nombre_documento";
+// Detectar columna FK en `documento` que apunte al estudiante (si existe)
+$doc_student_col = null;
+$possible_doc_cols = ['id_estudiante','estudiante_id','id_usuario','usuario_id','user_id','student_id'];
+foreach ($possible_doc_cols as $c) {
+    $q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'documento' AND COLUMN_NAME = '" . $c . "'");
+    if ($q && $q->num_rows > 0) { $doc_student_col = $c; }
+    if ($q) { $q->close(); }
+    if ($doc_student_col) break;
+}
+
+// Detectar PK en tabla estudiante
+$est_pk = null;
+$possible_est_cols = ['id_estudiante','id','usuario_id','id_usuario'];
+foreach ($possible_est_cols as $c) {
+    $q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'estudiante' AND COLUMN_NAME = '" . $c . "'");
+    if ($q && $q->num_rows > 0) { $est_pk = $c; }
+    if ($q) { $q->close(); }
+    if ($est_pk) break;
+}
+
+$join_student = ($doc_student_col && $est_pk);
+
+$select_cols = "d.id_documento, d.ruta_archivo, d.fecha_subida, td.nombre_documento";
+if ($join_student) { $select_cols = "d.id_documento, d.ruta_archivo, d.fecha_subida, e.nombre, e.apellido, td.nombre_documento"; }
 if ($has_estado) { $select_cols .= ", d.estado"; }
 
-$sql = "SELECT " . $select_cols . "\n    FROM documento d\n    LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante\n    LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento";
+$sql = "SELECT " . $select_cols . "\n    FROM documento d\n";
+if ($join_student) {
+    $sql .= "    LEFT JOIN estudiante e ON d." . $doc_student_col . " = e." . $est_pk . "\n";
+}
+$sql .= "    LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento";
 if ($has_estado) {
     $sql .= "\n    WHERE d.estado = 'pendiente'";
 }
@@ -58,9 +85,9 @@ if (!$resultado) {
 
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($fila['nombre'] . ' ' . $fila['apellido']); ?></td>
-                    <td><?php echo htmlspecialchars($fila['nombre_documento']); ?></td>
-                    <td><?php echo ($fila['estado'] === 'pendiente') ? 'En espera' : ucfirst($fila['estado']); ?></td>
+                            <td><?php echo isset($fila['nombre']) ? htmlspecialchars($fila['nombre'] . ' ' . ($fila['apellido'] ?? '')) : '-'; ?></td>
+                            <td><?php echo htmlspecialchars($fila['nombre_documento'] ?? '-'); ?></td>
+                            <td><?php if (isset($fila['estado'])) { echo ($fila['estado'] === 'pendiente') ? 'En espera' : ucfirst($fila['estado']); } else { echo 'N/A'; } ?></td>
                     <td><?php if (!empty($fila['ruta_archivo'])): ?><a
                                 href="../<?php echo htmlspecialchars($fila['ruta_archivo']); ?>"
                                 target="_blank">Ver</a><?php endif; ?></td>
