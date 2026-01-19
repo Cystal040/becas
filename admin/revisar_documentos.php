@@ -7,15 +7,29 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Obtener solo documentos pendientes unidos a estudiante y tipo
-$sql = "SELECT d.id_documento, d.ruta_archivo, d.fecha_subida,
-        e.nombre, e.apellido, td.nombre_documento
-    FROM documento d
-    LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante
-    LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento
-    WHERE d.estado = 'pendiente'
-    ORDER BY d.fecha_subida DESC";
+// Obtener documentos (comprobar si la columna 'estado' existe para evitar errores en esquemas distintos)
+$has_estado = false;
+$col_q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'documento' AND COLUMN_NAME = 'estado'");
+if ($col_q && $col_q->num_rows > 0) { $has_estado = true; }
+if ($col_q) { $col_q->close(); }
+
+$select_cols = "d.id_documento, d.ruta_archivo, d.fecha_subida, e.nombre, e.apellido, td.nombre_documento";
+if ($has_estado) { $select_cols .= ", d.estado"; }
+
+$sql = "SELECT " . $select_cols . "\n    FROM documento d\n    LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante\n    LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento";
+if ($has_estado) {
+    $sql .= "\n    WHERE d.estado = 'pendiente'";
+}
+$sql .= "\n    ORDER BY d.fecha_subida DESC";
+
 $resultado = $conn->query($sql);
+if (!$resultado) {
+    error_log('admin/revisar_documentos.php SQL error: ' . $conn->error);
+    // Crear un resultado vacío para que el resto del código no falle
+    $resultado = new class {
+        public function fetch_assoc() { return false; }
+    };
+}
 ?>
 
 <!DOCTYPE html>
