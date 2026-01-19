@@ -24,7 +24,7 @@ if ($tipo_stmt) {
 
 // Obtener último documento por tipo para este estudiante
 $status_map = []; // id_tipo => row
-$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, ruta_archivo, estado, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
+$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, ruta_archivo, estados, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
 if ($doc_stmt) {
     $doc_stmt->bind_param('i', $id_estudiante);
     $doc_stmt->execute();
