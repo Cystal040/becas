@@ -62,58 +62,58 @@ foreach ($tipos as $t) {
 
         <!-- Compact table: Documento | Estado | Fecha | Acción -->
         <div class="table-responsive">
-        <table class="table-compact">
-            <thead>
-            <tr>
-                <th>Documento</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-                <th>Acción</th>
-            </tr>
-            </thead>
-            <?php foreach ($tipos as $t): ?>
-                <?php $tid = (int) $t['id_tipo_documento'];
-                $info = $status_map[$tid] ?? null; ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
-                    <td>
-                        <?php if (!$info): ?>
-                            <span class="status-pendiente">⬜ No enviado</span>
-                        <?php else: ?>
-                            <?php $st = $info['estado'];
-                            if ($st === 'aprobado')
-                                echo '<span class="status-aprobado">🟢 Aprobado</span>';
-                            elseif ($st === 'pendiente')
-                                echo '<span class="status-pendiente">🟡 En revisión</span>';
-                            elseif ($st === 'rechazado')
-                                echo '<span class="status-rechazado">❌ Rechazado</span>';
-                            else
-                                echo '<span>' . htmlspecialchars(ucfirst($st)) . '</span>'; ?>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?>
-                    </td>
-                    <td class="table-actions">
-                        <?php if (!$info): ?>
-                            <a class="btn" href="subir_documentos.php">➕ Subir</a>
-                        <?php else: ?>
-                            <?php if (!empty($info['ruta_archivo'])): ?>
-                                <a class="btn-secundario btn-small" href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>"
-                                    target="_blank">Ver</a>
-                            <?php endif; ?>
-                            <?php if ($info['estado'] === 'rechazado'): ?>
-                                <a class="btn btn-small" href="subir_documentos.php">🔄 Volver a subir</a>
-                            <?php elseif ($info['estado'] === 'pendiente'): ?>
-                                <span style="color:#95a5a6;">⏳ En espera</span>
+            <table class="table-compact">
+                <thead>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <?php foreach ($tipos as $t): ?>
+                    <?php $tid = (int) $t['id_tipo_documento'];
+                    $info = $status_map[$tid] ?? null; ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($t['nombre_documento']); ?></td>
+                        <td>
+                            <?php if (!$info): ?>
+                                <span class="status-pendiente">⬜ No enviado</span>
                             <?php else: ?>
-                                <span style="color:#95a5a6;">🔒 Bloqueado</span>
+                                <?php $st = $info['estado'];
+                                if ($st === 'aprobado')
+                                    echo '<span class="status-aprobado">🟢 Aprobado</span>';
+                                elseif ($st === 'pendiente')
+                                    echo '<span class="status-pendiente">🟡 En revisión</span>';
+                                elseif ($st === 'rechazado')
+                                    echo '<span class="status-rechazado">❌ Rechazado</span>';
+                                else
+                                    echo '<span>' . htmlspecialchars(ucfirst($st)) . '</span>'; ?>
                             <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
+                        </td>
+                        <td>
+                            <?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?>
+                        </td>
+                        <td class="table-actions">
+                            <?php if (!$info): ?>
+                                <a class="btn" href="subir_documentos.php">➕ Subir</a>
+                            <?php else: ?>
+                                <?php if (!empty($info['ruta_archivo'])): ?>
+                                    <a class="btn-secundario btn-small"
+                                        href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>" target="_blank">Ver</a>
+                                <?php endif; ?>
+                                <?php if ($info['estado'] === 'rechazado'): ?>
+                                    <a class="btn btn-small" href="subir_documentos.php">🔄 Volver a subir</a>
+                                <?php elseif ($info['estado'] === 'pendiente'): ?>
+                                    <span style="color:#95a5a6;">⏳ En espera</span>
+                                <?php else: ?>
+                                    <span style="color:#95a5a6;">🔒 Bloqueado</span>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
 
         <div class="botones" style="margin-top:12px;">
