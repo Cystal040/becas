@@ -24,18 +24,39 @@ if ($tipo_stmt) {
 
 // Obtener último documento por tipo para este estudiante
 $status_map = []; // id_tipo => row
-$doc_stmt = $conn->prepare("SELECT id_documento, id_tipo_documento, ruta_archivo, fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC");
-if ($doc_stmt) {
-    $doc_stmt->bind_param('i', $id_estudiante);
-    $doc_stmt->execute();
-    $resd = $doc_stmt->get_result();
-    while ($row = $resd->fetch_assoc()) {
-        $tid = (int)$row['id_tipo_documento'];
-        if (!isset($status_map[$tid])) {
-            $status_map[$tid] = $row;
+
+// Detectar el nombre de la columna que referencia al estudiante en la tabla `documento`.
+$student_column = null;
+$col_q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'documento'");
+if ($col_q) {
+    while ($c = $col_q->fetch_assoc()) {
+        $cn = $c['COLUMN_NAME'];
+        if (in_array($cn, ['id_estudiante','estudiante_id','id_usuario','usuario_id','user_id','student_id'])) {
+            $student_column = $cn;
+            break;
         }
     }
-    $doc_stmt->close();
+    $col_q->close();
+}
+
+if ($student_column) {
+    $sql = "SELECT id_documento, id_tipo_documento, ruta_archivo, estado, fecha_subida, fecha_revision FROM documento WHERE `" . $student_column . "` = ? ORDER BY fecha_subida DESC";
+    $doc_stmt = $conn->prepare($sql);
+    if ($doc_stmt) {
+        $doc_stmt->bind_param('i', $id_estudiante);
+        $doc_stmt->execute();
+        $resd = $doc_stmt->get_result();
+        while ($row = $resd->fetch_assoc()) {
+            $tid = (int)$row['id_tipo_documento'];
+            if (!isset($status_map[$tid])) {
+                $status_map[$tid] = $row;
+            }
+        }
+        $doc_stmt->close();
+    }
+} else {
+    // No se encontró columna conocida: evitar error fatal y continuar con mapa vacío.
+    error_log('dashboard.php: columna de estudiante no encontrada en tabla documento');
 }
 
 // Map id -> nombre
