@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 // Obtener solo documentos pendientes unidos a estudiante y tipo
-$sql = "SELECT d.id_documento, d.ruta_archivo, d.estado, d.fecha_subida,
+$sql = "SELECT d.id_documento, d.ruta_archivo, d.fecha_subida,
         e.nombre, e.apellido, td.nombre_documento
     FROM documento d
     LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante
