@@ -31,7 +31,7 @@ if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['usuario_nombre'] = $usuario['nombre'] ?? '';
             ini_set('session.gc_maxlifetime', 0);
             ini_set('session.cookie_lifetime', 0);
-            header("Location: ../views/dashboard.php");
+            header("Location: ../views/Interfaz_estudiante.php");
             $stmt->close();
             exit;
         } else { echo "<h3>Contraseña incorrecta</h3>"; }
