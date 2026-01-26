@@ -20,7 +20,10 @@ if ($userInput === '' || $password === '') {
 if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
     // Intento como estudiante por correo
     $stmt = $conn->prepare("SELECT id_estudiante, nombre, password FROM estudiante WHERE correo = ? LIMIT 1");
-    if (!$stmt) { error_log('Prepare estudiante failed: '.$conn->error); exit; }
+    if (!$stmt) {
+        error_log('Prepare estudiante failed: ' . $conn->error);
+        exit;
+    }
     $stmt->bind_param('s', $userInput);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -34,14 +37,21 @@ if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
             header("Location: ../views/Interfaz_estudiante.php");
             $stmt->close();
             exit;
-        } else { echo "<h3>Contraseña incorrecta</h3>"; }
-    } else { echo "<h3>No existe una cuenta con ese correo</h3>"; }
+        } else {
+            echo "<h3>Contraseña incorrecta</h3>";
+        }
+    } else {
+        echo "<h3>No existe una cuenta con ese correo</h3>";
+    }
     $stmt->close();
 
 } else {
     // Intento como admin por usuario
     $stmt = $conn->prepare("SELECT id_admin, usuario, password FROM administrador WHERE usuario = ? LIMIT 1");
-    if (!$stmt) { error_log('Prepare admin failed: '.$conn->error); exit; }
+    if (!$stmt) {
+        error_log('Prepare admin failed: ' . $conn->error);
+        exit;
+    }
     $stmt->bind_param('s', $userInput);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -55,8 +65,12 @@ if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
             header("Location: ../admin/admin_panel.php");
             $stmt->close();
             exit;
-        } else { echo "<h3>Contraseña incorrecta</h3>"; }
-    } else { echo "<h3>Usuario no encontrado</h3>"; }
+        } else {
+            echo "<h3>Contraseña incorrecta</h3>";
+        }
+    } else {
+        echo "<h3>Usuario no encontrado</h3>";
+    }
     $stmt->close();
 }
 ?>
