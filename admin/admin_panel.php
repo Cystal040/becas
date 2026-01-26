@@ -50,6 +50,34 @@ if ($r) { $t = $r->fetch_assoc(); $solicitudes_pendientes = (int) ($t['c'] ?? 0)
         </header>
 
         <main>
+            <!-- Resumen rápido -->
+            <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
+                <div class="card">
+                    <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
+                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $totalStudents; ?></p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:#fff;margin-bottom:6px;">🟡 En espera</h3>
+                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $pendientes; ?></p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:#fff;margin-bottom:6px;">✅ Aprobados</h3>
+                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $aprobados; ?></p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:#fff;margin-bottom:6px;">❌ Rechazados</h3>
+                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $rechazados; ?></p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:#fff;margin-bottom:6px;">Solicitudes pendientes</h3>
+                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $solicitudes_pendientes; ?></p>
+                </div>
+            </section>
+
             <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
                 <a class="card" href="revisar_documentos.php" style="text-decoration:none;">
                     <h3 style="color:#fff;margin-bottom:8px;">Revisar documentos</h3>
