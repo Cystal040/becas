@@ -11,14 +11,9 @@ $q_where = [];
 $params = [];
 $types = '';
 
-// Filtros de búsqueda
-$nombre = trim($_GET['nombre'] ?? '');
+// Búsqueda solo por cédula
 $cedula = trim($_GET['cedula'] ?? '');
-$correo = trim($_GET['correo'] ?? '');
-
-if ($nombre !== '') { $q_where[] = "(nombre LIKE ? OR apellido LIKE ? OR CONCAT(nombre,' ',apellido) LIKE ?)"; $params[] = "%$nombre%"; $params[] = "%$nombre%"; $params[] = "%$nombre%"; $types .= 'sss'; }
 if ($cedula !== '') { $q_where[] = "cedula LIKE ?"; $params[] = "%$cedula%"; $types .= 's'; }
-if ($correo !== '') { $q_where[] = "correo LIKE ?"; $params[] = "%$correo%"; $types .= 's'; }
 
 $sql = "SELECT id_estudiante, nombre, apellido, cedula, correo FROM estudiante";
 if (!empty($q_where)) { $sql .= ' WHERE ' . implode(' AND ', $q_where); }
@@ -48,10 +43,8 @@ if ($stmt) {
 <div class="contenedor">
     <h2>Listado de estudiantes</h2>
 
-    <form method="GET" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-        <input type="text" name="nombre" placeholder="Nombre" value="<?php echo htmlspecialchars($nombre); ?>">
-        <input type="text" name="cedula" placeholder="Cédula" value="<?php echo htmlspecialchars($cedula); ?>">
-        <input type="text" name="correo" placeholder="Correo" value="<?php echo htmlspecialchars($correo); ?>">
+    <form method="GET" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
+        <input type="text" name="cedula" placeholder="Cédula" value="<?php echo htmlspecialchars($cedula ?? ''); ?>">
         <button class="btn" type="submit">Buscar</button>
         <a class="btn-secundario" href="estudiantes.php">Limpiar</a>
     </form>
