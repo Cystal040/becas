@@ -92,12 +92,12 @@ if (!$resultado) {
                                 href="../<?php echo htmlspecialchars($fila['ruta_archivo']); ?>"
                                 target="_blank">Ver</a><?php endif; ?></td>
                     <td>
-                        <form action="actualizar_estado.php" method="POST" style="display:inline">
+                        <form class="confirm-action-form" action="actualizar_estado.php" method="POST" style="display:inline">
                             <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
                             <input type="hidden" name="estado" value="aprobado">
                             <button class="btn" type="submit">✔ Aprobar</button>
                         </form>
-                        <form action="actualizar_estado.php" method="POST" style="display:inline; margin-left:8px;">
+                        <form class="confirm-action-form" action="actualizar_estado.php" method="POST" style="display:inline; margin-left:8px;">
                             <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
                             <input type="hidden" name="estado" value="rechazado">
                             <button class="btn-secundario" type="submit">✖ Rechazar</button>
@@ -117,3 +117,15 @@ if (!$resultado) {
 </body>
 
 </html>
+
+<script>
+// Confirmar acciones en la lista de documentos (sin observación)
+document.querySelectorAll('.confirm-action-form').forEach(function(f){
+    f.addEventListener('submit', function(e){
+        e.preventDefault();
+        var estado = f.querySelector('input[name="estado"]').value;
+        var msg = (estado === 'aprobado') ? '¿Está seguro que desea APROBAR este documento?' : '¿Está seguro que desea RECHAZAR este documento?';
+        if (confirm(msg)) { f.submit(); }
+    });
+});
+</script>

@@ -63,17 +63,51 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
         ?>
     </div>
 
-    <form action="actualizar_estado.php" method="POST" style="margin-top:12px;">
-        <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
-        <label>Observación (opcional):</label>
-        <textarea name="observacion" rows="4" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
+        <form id="form-approve" action="actualizar_estado.php" method="POST" style="margin-top:12px;">
+            <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
+            <label>Observación (opcional):</label>
+            <textarea id="obs-approve" name="observacion" rows="4" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
 
-        <div style="display:flex;gap:8px;">
-            <input type="hidden" name="estado" value="aprobado">
-            <button class="btn" type="submit">✔ Aceptar</button>
-        </div>
-    </form>
+            <div style="display:flex;gap:8px;">
+                <input type="hidden" name="estado" value="aprobado">
+                <button class="btn" type="submit">✔ Aprobar</button>
+            </div>
+        </form>
+        <form id="form-reject" action="actualizar_estado.php" method="POST" style="margin-top:8px;">
+            <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
+            <input type="hidden" name="estado" value="rechazado">
+            <label>Motivo / observación (recomendado):</label>
+            <textarea id="obs-reject" name="observacion" rows="3" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
+            <button class="btn-secundario" type="submit">✖ Rechazar</button>
+        </form>
     <div class="botones" style="margin-top:12px;"><a class="btn-secundario" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">⬅ Volver al perfil</a></div>
 </div>
 </body>
 </html>
+
+<script>
+// Confirmaciones antes de aprobar/rechazar en la vista individual
+document.getElementById('form-approve').addEventListener('submit', function(e){
+    e.preventDefault();
+    var obs = document.getElementById('obs-approve').value.trim();
+    var msg = '¿Está seguro que desea APROBAR este documento?';
+    if (obs) {
+        msg = "Observación detectada:\n\n" + obs + "\n\n" + msg + "\n\nConfirmar?";
+    }
+    if (confirm(msg)) {
+        e.target.submit();
+    }
+});
+
+document.getElementById('form-reject').addEventListener('submit', function(e){
+    e.preventDefault();
+    var obs = document.getElementById('obs-reject').value.trim();
+    var msg = '¿Está seguro que desea RECHAZAR este documento?';
+    if (obs) {
+        msg = "Observación detectada:\n\n" + obs + "\n\n" + msg + "\n\nConfirmar?";
+    }
+    if (confirm(msg)) {
+        e.target.submit();
+    }
+});
+</script>
