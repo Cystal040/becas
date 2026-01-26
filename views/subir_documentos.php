@@ -32,7 +32,7 @@ if (empty($tipos)) {
     if ($ins) {
         foreach ($defaults as $d) {
             $ins->bind_param('is', $d[0], $d[1]);
-            @ $ins->execute();
+            @$ins->execute();
         }
         $ins->close();
     }
@@ -53,47 +53,50 @@ if (empty($tipos)) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Subir Documentos</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
-    </head>
+</head>
 
-    <body class="fondo">
+<body class="fondo">
 
     <div class="contenedor">
 
-    <h2>Subir documentos para la beca</h2>
+        <h2>Subir documentos para la beca</h2>
 
-    <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data">
 
-    <label>Tipo de documento:</label>
-    <select name="tipo_documento" required>
-        <option value="">Seleccione</option>
-        <?php foreach ($tipos as $t): ?>
-            <option value="<?php echo (int)
-$t['id_tipo_documento']; ?>"><?php echo htmlspecialchars($t['nombre_documento']); ?></option>
-        <?php endforeach; ?>
-    </select>
+            <label>Tipo de documento:</label>
+            <select name="tipo_documento" required>
+                <option value="">Seleccione</option>
+                <?php foreach ($tipos as $t): ?>
+                    <option value="<?php echo (int) 
+                        $t['id_tipo_documento']; ?>"><?php echo htmlspecialchars($t['nombre_documento']); ?></option>
+                <?php endforeach; ?>
+            </select>
 
-    <br><br>
+            <br><br>
 
-    <label>Archivo:</label>
-    <input type="file" name="archivo" required>
+            <label>Archivo:</label>
+            <input type="file" name="archivo" required>
 
-    <br><br>
+            <br><br>
 
-    <button type="submit" name="subir">Subir documento</button>
-    </form>
+            <button type="submit" name="subir">Subir documento</button>
+        </form>
 
-    <div class="botones">
-        <button class="btn" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al panel</button>
-    </div>
+        <div class="botones">
+            <button class="btn" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al
+                panel</button>
+        </div>
 
     </div> <!-- .contenedor -->
 
 </body>
+
 </html>
 
 <?php
@@ -155,7 +158,7 @@ if (isset($_POST['subir'])) {
 
     // Nombre seguro y único
     $safeName = preg_replace('/[^A-Za-z0-9_.-]/', '_', basename($nombre));
-    $uniqueName = time() . '_' . mt_rand(1000,9999) . '_' . $safeName;
+    $uniqueName = time() . '_' . mt_rand(1000, 9999) . '_' . $safeName;
 
     $destPath = $absDir . $uniqueName; // ruta absoluta para mover
     $dbPath = 'assets/uploads/' . $subfolder . $uniqueName; // ruta relativa a guardar en BD
@@ -164,7 +167,7 @@ if (isset($_POST['subir'])) {
     if (is_uploaded_file($tmp) && move_uploaded_file($tmp, $destPath)) {
 
         // Validar que el tipo de documento exista en la tabla tipo_documento
-        $tipoId = (int)$id_tipo;
+        $tipoId = (int) $id_tipo;
         $chk = $conn->prepare("SELECT id_tipo_documento FROM tipo_documento WHERE id_tipo_documento = ? LIMIT 1");
         if (!$chk) {
             echo "Error en la validación del tipo de documento";
