@@ -117,7 +117,7 @@ foreach ($tipos as $t) {
         </div>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario" href="dashboard.php">⬅ Volver</a>
+            <a class="btn-secundario" href="Interfaz_estudiante.php">⬅ Volver</a>
             <a class="btn" href="subir_documentos.php">Subir documento</a>
         </div>
     </div>
