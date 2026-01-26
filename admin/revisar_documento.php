@@ -70,18 +70,9 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
 
         <div style="display:flex;gap:8px;">
             <input type="hidden" name="estado" value="aprobado">
-            <button class="btn" type="submit">✔ Aprobar</button>
+            <button class="btn" type="submit">✔ Aceptar</button>
         </div>
     </form>
-
-    <form action="actualizar_estado.php" method="POST" style="margin-top:8px;">
-        <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
-        <input type="hidden" name="estado" value="rechazado">
-        <label>Motivo / observación (recomendado):</label>
-        <textarea name="observacion" rows="3" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
-        <button class="btn-secundario" type="submit">✖ Rechazar</button>
-    </form>
-
     <div class="botones" style="margin-top:12px;"><a class="btn-secundario" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">⬅ Volver al perfil</a></div>
 </div>
 </body>
