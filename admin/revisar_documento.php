@@ -28,7 +28,7 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
     <title>Revisar documento</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
- </head>
+</head>
 <body class="fondo">
 <div class="contenedor">
     <h2>Revisar documento</h2>
