@@ -38,7 +38,7 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
         <p><strong>Tipo:</strong> <?php echo htmlspecialchars($row['nombre_documento'] ?? ''); ?></p>
         <p><strong>Estado:</strong> <?php echo htmlspecialchars($row['estado'] ?? 'N/A'); ?></p>
         <p><strong>Subido:</strong> <?php echo htmlspecialchars($row['fecha_subida'] ?? ''); ?></p>
-        <p><strong>Archivo:</strong> <?php if (!empty($row['ruta_archivo'])): ?><a href="../<?php echo htmlspecialchars($row['ruta_archivo']); ?>" target="_blank">Ver / Descargar</a><?php endif; ?></p>
+        <p><strong>Archivo:</strong> <?php if (!empty($row['ruta_archivo'])): ?><a href="../<?php echo htmlspecialchars($row['ruta_archivo']); ?>" target="_blank">Ver</a><?php endif; ?></p>
     </div>
 
     <h3 style="margin-top:14px;">Historial de acciones</h3>
