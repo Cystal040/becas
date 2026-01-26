@@ -79,6 +79,11 @@ if ($r) { $t = $r->fetch_assoc(); $solicitudes_pendientes = (int) ($t['c'] ?? 0)
             </section>
 
             <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+                <a class="card" href="estudiantes.php" style="text-decoration:none;">
+                    <h3 style="color:#fff;margin-bottom:8px;">Estudiantes</h3>
+                    <p style="color:var(--muted);margin:0;">Ver y buscar todos los estudiantes registrados.</p>
+                </a>
+
                 <a class="card" href="revisar_documentos.php" style="text-decoration:none;">
                     <h3 style="color:#fff;margin-bottom:8px;">Revisar documentos</h3>
                     <p style="color:var(--muted);margin:0;">Ver y gestionar los documentos pendientes de los estudiantes.</p>

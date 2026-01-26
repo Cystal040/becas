@@ -181,6 +181,22 @@ if (isset($_POST['subir'])) {
         }
 
         // Guardar con estado inicial 'pendiente'
+        // Evitar que se suba si ya existe un documento aprobado del mismo tipo para este estudiante
+        $checkApproved = $conn->prepare("SELECT estado FROM documento WHERE id_estudiante = ? AND id_tipo_documento = ? ORDER BY fecha_subida DESC LIMIT 1");
+        if ($checkApproved) {
+            $checkApproved->bind_param('ii', $id_estudiante, $tipoId);
+            $checkApproved->execute();
+            $rchk = $checkApproved->get_result();
+            if ($rchk && $rchk->num_rows > 0) {
+                $rrow = $rchk->fetch_assoc();
+                if (isset($rrow['estado']) && $rrow['estado'] === 'aprobado') {
+                    echo "No puede subir este documento porque ya existe una versión aprobada.";
+                    exit;
+                }
+            }
+            $checkApproved->close();
+        }
+
         $estado = 'pendiente';
         $stmt = $conn->prepare("INSERT INTO documento (ruta_archivo, id_estudiante, id_tipo_documento, estado) VALUES (?, ?, ?, ?)");
         if ($stmt) {
