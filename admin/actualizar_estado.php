@@ -16,7 +16,6 @@ if ($id <= 0 || !in_array($estado, ['aprobado','rechazado'])) {
     exit;
 }
 
-// Asegurarse de que la columna 'estado' (y columnas relacionadas) existen en la tabla documento.
 $cols_q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'documento'");
 $existing = [];
 if ($cols_q) {
