@@ -105,15 +105,3 @@ if (!$resultado) {
 </body>
 
 </html>
-
-<script>
-// Confirmar acciones en la lista de documentos (sin observación)
-document.querySelectorAll('.confirm-action-form').forEach(function(f){
-    f.addEventListener('submit', function(e){
-        e.preventDefault();
-        var estado = f.querySelector('input[name="estado"]').value;
-        var msg = (estado === 'aprobado') ? '¿Está seguro que desea APROBAR este documento?' : '¿Está seguro que desea RECHAZAR este documento?';
-        if (confirm(msg)) { f.submit(); }
-    });
-});
-</script>
