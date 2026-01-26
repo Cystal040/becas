@@ -104,7 +104,8 @@ foreach ($tipos as $t) {
                                         echo '<span>' . htmlspecialchars(ucfirst($st)) . '</span>'; ?>
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
+                            <td><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
