@@ -94,11 +94,7 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
 // Confirmaciones antes de aprobar/rechazar en la vista individual
 document.getElementById('form-approve').addEventListener('submit', function(e){
     e.preventDefault();
-    var obs = document.getElementById('obs-approve').value.trim();
     var msg = '¿Está seguro que desea APROBAR este documento?';
-    if (obs) {
-        msg = "Observación detectada:\n\n" + obs + "\n\n" + msg + "\n\nConfirmar?";
-    }
     if (confirm(msg)) {
         e.target.submit();
     }
@@ -106,13 +102,22 @@ document.getElementById('form-approve').addEventListener('submit', function(e){
 
 document.getElementById('form-reject').addEventListener('submit', function(e){
     e.preventDefault();
-    var obs = document.getElementById('obs-reject').value.trim();
     var msg = '¿Está seguro que desea RECHAZAR este documento?';
-    if (obs) {
-        msg = "Observación detectada:\n\n" + obs + "\n\n" + msg + "\n\nConfirmar?";
-    }
     if (confirm(msg)) {
         e.target.submit();
     }
+});
+
+// Confirmación para envío de observación (incluye preview)
+document.getElementById('form-observacion').addEventListener('submit', function(e){
+    e.preventDefault();
+    var obs = document.getElementById('obs-only').value.trim();
+    if (!obs) {
+        if (!confirm('Enviar observación vacía. ¿Desea continuar?')) return;
+    } else {
+        var msg = 'Observación a enviar:\n\n' + obs + '\n\nConfirmar envío?';
+        if (!confirm(msg)) return;
+    }
+    e.target.submit();
 });
 </script>
