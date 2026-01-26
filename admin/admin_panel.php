@@ -89,6 +89,11 @@ if ($r) { $t = $r->fetch_assoc(); $solicitudes_pendientes = (int) ($t['c'] ?? 0)
                     <p style="color:var(--muted);margin:0;">Ver y gestionar los documentos pendientes de los estudiantes.</p>
                 </a>
 
+                <a class="card" href="historial.php" style="text-decoration:none;">
+                    <h3 style="color:#fff;margin-bottom:8px;">Historial</h3>
+                    <p style="color:var(--muted);margin:0;">Ver el registro de acciones administrativas sobre documentos.</p>
+                </a>
+
                 <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
                     <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
                 </div>
