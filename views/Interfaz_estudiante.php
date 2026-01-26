@@ -82,7 +82,6 @@ foreach ($tipos as $t) {
                             <th>Documento</th>
                             <th>Estado</th>
                             <th>Fecha subida</th>
-                            <th>Acción</th>
                         </tr>
                     </thead>
                     <?php foreach ($tipos as $t): ?>
@@ -105,21 +104,7 @@ foreach ($tipos as $t) {
                                         echo '<span>' . htmlspecialchars(ucfirst($st)) . '</span>'; ?>
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?>
-                            </td>
-                            <td>
-                                <?php if (!$info): ?>
-                                    <a class="btn" href="subir_documentos.php">➕ Subir</a>
-                                <?php else: ?>
-                                    <?php if (!empty($info['ruta_archivo'])): ?>
-                                        <a class="btn-secundario btn-small"
-                                            href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>" target="_blank">Ver</a>
-                                    <?php endif; ?>
-                                    <?php if ($info['estado'] === 'rechazado'): ?>
-                                        <a class="btn btn-small" href="subir_documentos.php">🔄 Volver a subir</a>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            </td>
+                            <td><?php echo $info ? htmlspecialchars(date('d/m/Y H:i', strtotime($info['fecha_subida']))) : '-'; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -127,7 +112,7 @@ foreach ($tipos as $t) {
         </section>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario" href="dashboard.php">⬅ Volver</a>
+            <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
             <a class="btn" href="subir_documentos.php">Subir documento</a>
         </div>
     </div>
