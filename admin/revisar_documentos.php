@@ -95,7 +95,7 @@ if (!$resultado) {
                         <form class="confirm-action-form" action="actualizar_estado.php" method="POST" style="display:inline">
                             <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
                             <input type="hidden" name="estado" value="aprobado">
-                            <button class="btn" type="submit">✔ Aprobar</button>
+                            <button class="btn" type="submit">✔ Aceptar</button>
                         </form>
                         <form class="confirm-action-form" action="actualizar_estado.php" method="POST" style="display:inline; margin-left:8px;">
                             <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
