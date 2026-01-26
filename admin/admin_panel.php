@@ -12,7 +12,6 @@ $totalStudents = 0;
 $pendientes = 0;
 $aprobados = 0;
 $rechazados = 0;
-$solicitudes_pendientes = 0; // estudiantes con al menos un doc pendiente
 
 $r = $conn->query("SELECT COUNT(*) AS total FROM estudiante");
 if ($r) { $t = $r->fetch_assoc(); $totalStudents = (int) ($t['total'] ?? 0); $r->close(); }
@@ -26,8 +25,7 @@ if ($r) { $t = $r->fetch_assoc(); $aprobados = (int) ($t['c'] ?? 0); $r->close()
 $r = $conn->query("SELECT COUNT(*) AS c FROM documento WHERE estado = 'rechazado'");
 if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(); }
 
-$r = $conn->query("SELECT COUNT(DISTINCT id_estudiante) AS c FROM documento WHERE estado = 'pendiente'");
-if ($r) { $t = $r->fetch_assoc(); $solicitudes_pendientes = (int) ($t['c'] ?? 0); $r->close(); }
+
 ?>
 
 <!DOCTYPE html>
@@ -72,10 +70,7 @@ if ($r) { $t = $r->fetch_assoc(); $solicitudes_pendientes = (int) ($t['c'] ?? 0)
                     <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $rechazados; ?></p>
                 </div>
 
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">Solicitudes pendientes</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $solicitudes_pendientes; ?></p>
-                </div>
+                <!-- Tarjeta de "Solicitudes pendientes" eliminada (redundante con En espera) -->
             </section>
 
             <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">

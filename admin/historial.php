@@ -19,7 +19,7 @@ $res = $conn->query($sql);
     <title>Historial de acciones</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
- </head>
+</head>
 <body class="fondo">
 <div class="contenedor">
     <h2>Historial de acciones</h2>
