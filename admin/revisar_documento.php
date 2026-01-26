@@ -41,27 +41,7 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
         <p><strong>Archivo:</strong> <?php if (!empty($row['ruta_archivo'])): ?><a href="../<?php echo htmlspecialchars($row['ruta_archivo']); ?>" target="_blank">Ver</a><?php endif; ?></p>
     </div>
 
-    <h3 style="margin-top:14px;">Historial de acciones</h3>
-    <div class="card" style="margin-bottom:10px;">
-        <?php
-        $hist = $conn->prepare("SELECT h.accion, h.observacion, h.fecha, a.usuario AS admin_usuario FROM historial_acciones h LEFT JOIN administrador a ON h.admin_id = a.id_admin WHERE h.id_documento = ? ORDER BY h.fecha DESC");
-        if ($hist) {
-            $hist->bind_param('i', $id);
-            $hist->execute();
-            $hr = $hist->get_result();
-        } else { $hr = null; }
-        if ($hr && $hr->num_rows > 0) {
-            echo '<ul style="margin:0;padding-left:16px;">';
-            while ($hh = $hr->fetch_assoc()) {
-                echo '<li><strong>' . htmlspecialchars(ucfirst($hh['accion'])) . '</strong> por ' . htmlspecialchars($hh['admin_usuario'] ?? '#') . ' — ' . htmlspecialchars($hh['fecha']) . '<br>' . htmlspecialchars($hh['observacion'] ?? '') . '</li>';
-            }
-            echo '</ul>';
-        } else {
-            echo '<p style="margin:0;color:var(--muted);">No hay historial para este documento.</p>';
-        }
-        if ($hist) $hist->close();
-        ?>
-    </div>
+    <!-- Historial de acciones ocultado en esta vista (se mantiene en admin/historial.php) -->
         <hr style="margin:14px 0;">
         <h3>Enviar</h3>
         <form id="form-observacion" action="agregar_observacion.php" method="POST" style="margin-top:8px;">
