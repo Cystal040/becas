@@ -27,17 +27,6 @@ include("config/conexion.php");
         </nav>
     </header>
 
-    <!-- Hero / Cita principal -->
-    <section style="margin:8px auto 20px; max-width:var(--max-width); padding:28px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
-        <h1 style="font-size:2rem; margin:0 0 8px 0;">Sistema de Gestión de Becas</h1>
-        <p style="margin:0 0 16px;color:var(--muted);font-size:1.05rem;">Accede a los módulos de la UNEFA y gestiona tus solicitudes de beca.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
-            <a class="btn" href="#unefa" target="_blank">Ir a UNEFA</a>
-            <a class="btn" href="views/registro.php">Optar por beca</a>
-            <a class="btn-secundario" href="views/documentos.php">Ver requisitos</a>
-        </div>
-    </section>
-
     <main class="contenedor">
         <h2>Bienvenido</h2>
         <p>Bienvenido al Sistema de Becas de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Bolivariana (UNEFA).</p>
@@ -55,7 +44,6 @@ include("config/conexion.php");
         </section>
 
         <div class="botones" style="margin-top:18px;">
-            <a href="views/registro.php" class="btn">Crear cuenta</a>
             <a href="views/documentos.php" class="btn-secundario">Documentos requeridos</a>
         </div>
     </main>
