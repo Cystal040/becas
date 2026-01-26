@@ -88,7 +88,7 @@ $t['id_tipo_documento']; ?>"><?php echo htmlspecialchars($t['nombre_documento'])
     </form>
 
     <div class="botones">
-        <button class="btn" onclick="window.location.href='dashboard.php'" type="button">Volver al panel</button>
+        <button class="btn" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al panel</button>
     </div>
 
     </div> <!-- .contenedor -->
