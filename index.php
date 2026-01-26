@@ -32,7 +32,6 @@ include("config/conexion.php");
         <p>Envía tus documentos para aplicar a las becas de forma rápida y segura.</p>
 
         <div class="botones">
-            <a href="views/registro.php" class="btn">Crear cuenta</a>
             <a href="views/documentos.php" class="btn-secundario">Documentos requeridos</a>
         </div>
     </main>
