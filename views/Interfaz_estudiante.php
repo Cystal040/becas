@@ -126,34 +126,55 @@ foreach ($tipos as $t) {
     <div id="toast-container" aria-live="polite" style="position:fixed;right:16px;bottom:16px;z-index:9999"></div>
 
     <style>
-    .toast { background:#333;color:#fff;padding:10px 14px;border-radius:6px;margin-top:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:320px;opacity:0;transform:translateY(10px);transition:all .25s ease; }
-    .toast.show { opacity:1; transform:translateY(0); }
-    .toast.success { background: linear-gradient(90deg,#2ecc71,#27ae60); }
-    .toast.error { background: linear-gradient(90deg,#e74c3c,#c0392b); }
+        .toast {
+            background: #333;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 320px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        .toast.error {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
     </style>
 
     <script>
-    (function(){
-        function showToast(msg, type){
-            if(!msg) return;
-            var c = document.getElementById('toast-container');
-            var t = document.createElement('div');
-            t.className = 'toast ' + (type==='error' ? 'error' : 'success');
-            t.textContent = msg;
-            c.appendChild(t);
-            // force reflow
-            void t.offsetWidth;
-            t.classList.add('show');
-            setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ c.removeChild(t); },300); }, 4200);
-        }
-        // Server-provided flashes
-        <?php if (!empty($flash_success)): ?>
-            showToast(<?php echo json_encode($flash_success); ?>, 'success');
-        <?php endif; ?>
-        <?php if (!empty($flash_error)): ?>
-            showToast(<?php echo json_encode($flash_error); ?>, 'error');
-        <?php endif; ?>
-    })();
+        (function () {
+            function showToast(msg, type) {
+                if (!msg) return;
+                var c = document.getElementById('toast-container');
+                var t = document.createElement('div');
+                t.className = 'toast ' + (type === 'error' ? 'error' : 'success');
+                t.textContent = msg;
+                c.appendChild(t);
+                // force reflow
+                void t.offsetWidth;
+                t.classList.add('show');
+                setTimeout(function () { t.classList.remove('show'); setTimeout(function () { c.removeChild(t); }, 300); }, 4200);
+            }
+            // Server-provided flashes
+            <?php if (!empty($flash_success)): ?>
+                showToast(<?php echo json_encode($flash_success); ?>, 'success');
+            <?php endif; ?>
+            <?php if (!empty($flash_error)): ?>
+                showToast(<?php echo json_encode($flash_error); ?>, 'error');
+            <?php endif; ?>
+        })();
     </script>
 </body>
 
