@@ -7,6 +7,11 @@
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
+    <style>
+        /* Centrar el contenedor de login en esta página */
+        body.fondo { display:flex; align-items:center; justify-content:center; padding:0; }
+        .contenedor { margin:0; width:100%; max-width:520px; }
+    </style>
 </head>
 
 <body class="fondo">
@@ -50,7 +55,6 @@
                 <a href="#" onclick="alert('Contacto: soporte@unefa.edu.ve')">Ayuda</a>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- Toast container -->
