@@ -202,9 +202,13 @@ if (isset($_POST['subir'])) {
         if ($stmt) {
             $stmt->bind_param('siis', $dbPath, $id_estudiante, $tipoId, $estado);
             if ($stmt->execute()) {
-                echo "Documento subido correctamente";
+                $_SESSION['flash_success'] = 'Documento subido correctamente.';
+                header('Location: Interfaz_estudiante.php');
+                exit;
             } else {
-                echo "Error al guardar en la base de datos";
+                $_SESSION['flash_error'] = 'Error al guardar en la base de datos.';
+                header('Location: Interfaz_estudiante.php');
+                exit;
             }
             $stmt->close();
         } else {
@@ -212,7 +216,9 @@ if (isset($_POST['subir'])) {
         }
 
     } else {
-        echo "Error al subir el archivo. Verifica permisos y que la carpeta exista.";
+        $_SESSION['flash_error'] = 'Error al subir el archivo. Verifica permisos y que la carpeta exista.';
+        header('Location: Interfaz_estudiante.php');
+        exit;
     }
 }
 ?>

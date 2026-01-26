@@ -10,6 +10,11 @@ if (!isset($_SESSION['usuario_id'])) {
 $id_estudiante = $_SESSION['usuario_id'];
 $nombre_usuario = $_SESSION['usuario_nombre'] ?? '';
 
+// Mostrar flash messages (si existen)
+$flash_success = $_SESSION['flash_success'] ?? null;
+$flash_error = $_SESSION['flash_error'] ?? null;
+unset($_SESSION['flash_success'], $_SESSION['flash_error']);
+
 // Cargar tipos de documento
 $tipos = [];
 $tipo_stmt = $conn->prepare("SELECT id_tipo_documento, nombre_documento FROM tipo_documento ORDER BY id_tipo_documento");
@@ -59,6 +64,17 @@ foreach ($tipos as $t) {
 <body class="fondo">
     <div class="contenedor">
         <h1>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+
+        <?php if (!empty($flash_success)): ?>
+            <div class="flash flash-success" style="background:#e6ffed;border:1px solid #b7f0c6;padding:8px;margin:8px 0;">
+                <?php echo htmlspecialchars($flash_success); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($flash_error)): ?>
+            <div class="flash flash-error" style="background:#ffecec;border:1px solid #f0b7b7;padding:8px;margin:8px 0;">
+                <?php echo htmlspecialchars($flash_error); ?>
+            </div>
+        <?php endif; ?>
 
         <section style="margin-top:12px;">
             <h3>Documentos faltantes</h3>

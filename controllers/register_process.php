@@ -61,7 +61,9 @@ if (!$stmt) {
 $stmt->bind_param('sssss', $nombre, $apellido, $cedula, $correo, $password_hashed);
 if ($stmt->execute()) {
     $stmt->close();
-    header('Location: ../views/registro.php?registered=1');
+    // Set flash message and redirect to login
+    $_SESSION['flash_success'] = 'Registro completado. Ahora puedes iniciar sesión.';
+    header('Location: ../views/login.php');
     exit;
 } else {
     error_log('Execute failed (register): ' . $stmt->error);
