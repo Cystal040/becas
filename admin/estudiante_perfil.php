@@ -60,6 +60,9 @@ if ($doc_stmt) { $doc_stmt->bind_param('i', $id); $doc_stmt->execute(); $docs = 
                 <td><?php if (!empty($d['ruta_archivo'])): ?><a href="../<?php echo htmlspecialchars($d['ruta_archivo']); ?>" target="_blank">Ver</a><?php endif; ?></td>
                 <td>
                     <a class="btn-small" href="revisar_documento.php?id=<?php echo (int)$d['id_documento']; ?>">Revisar</a>
+                    <?php if (!empty($d['estado']) && $d['estado'] !== 'pendiente'): ?>
+                        <a class="btn-small" style="margin-left:8px;" href="editar_documento.php?id=<?php echo (int)$d['id_documento']; ?>">Editar</a>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endwhile; else: ?>
