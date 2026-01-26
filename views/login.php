@@ -12,7 +12,16 @@
 <body class="fondo">
 
     <div class="contenedor">
-        <h2>Iniciar sesión</h2>
+        <div class="login-header" style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <a href="../index.php" style="display:inline-block;">
+                <img src="../assets/img/icono.png" alt="UNEFA" style="height:58px;object-fit:contain;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12);">
+            </a>
+            <div>
+                <h2 style="margin:0;">Portal de Becas UNEFA</h2>
+                <p style="margin:2px 0 0 0;color:var(--muted);font-size:0.95rem;">Inicia sesión para gestionar tus documentos</p>
+            </div>
+        </div>
+
         <?php
         session_start();
         $flash_success = $_SESSION['flash_success'] ?? null;
@@ -20,24 +29,28 @@
         unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         ?>
 
-        <form action="../controllers/login_process.php" method="POST">
+        <div class="login-card" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.08);max-width:420px;">
+            <form action="../controllers/login_process.php" method="POST">
 
-            <label>Usuario o correo:</label>
-            <input type="text" name="user" placeholder="Usuario o correo" required>
+                <label>Usuario o correo:</label>
+                <input type="text" name="user" placeholder="Usuario o correo" required>
 
-            <label>Contraseña:</label>
-            <input type="password" name="password" required>
+                <label>Contraseña:</label>
+                <input type="password" name="password" required>
 
-            <div class="botones">
-                <button class="btn" type="submit">Entrar</button>
-                <button class="btn-secundario" type="button" onclick="window.location.href='../index.php'">Volver al
-                    inicio</button>
+                <div class="botones" style="display:flex;gap:10px;margin-top:10px;">
+                    <button class="btn" type="submit">Entrar</button>
+                    <button class="btn-secundario" type="button" onclick="window.location.href='../index.php'">Inicio</button>
+                    <a class="btn" href="registro.php" style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
+                </div>
+            </form>
+
+            <div style="margin-top:12px; display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;">
+                <a href="documentos.php">Documentos requeridos</a>
+                <a href="#" onclick="alert('Contacto: soporte@unefa.edu.ve')">Ayuda</a>
             </div>
-        </form>
-
-        <div style="margin-top:12px; text-align:center;">
-            <a href="registro.php">Crear cuenta</a>
         </div>
+    </div>
     </div>
 
     <!-- Toast container -->
