@@ -44,7 +44,7 @@ include("config/conexion.php");
         </section>
 
         <div class="botones" style="margin-top:18px;">
-            // <a href="views/tipo_becas.php" class="btn">Becas disponibles</a>
+        <!--<a href="views/tipo_becas.php" class="btn">Becas disponibles</a> -->
             <a href="views/documentos.php" class="btn-secundario">Documentos requeridos</a>
         </div>
     </main>
