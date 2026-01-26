@@ -65,20 +65,25 @@ if (!$row) { header('Location: revisar_documentos.php'); exit; }
 
         <form id="form-approve" action="actualizar_estado.php" method="POST" style="margin-top:12px;">
             <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
-            <label>Observación (opcional):</label>
-            <textarea id="obs-approve" name="observacion" rows="4" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
-
             <div style="display:flex;gap:8px;">
                 <input type="hidden" name="estado" value="aprobado">
                 <button class="btn" type="submit">✔ Aprobar</button>
             </div>
         </form>
+
         <form id="form-reject" action="actualizar_estado.php" method="POST" style="margin-top:8px;">
             <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
             <input type="hidden" name="estado" value="rechazado">
-            <label>Motivo / observación (recomendado):</label>
-            <textarea id="obs-reject" name="observacion" rows="3" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
             <button class="btn-secundario" type="submit">✖ Rechazar</button>
+        </form>
+
+        <hr style="margin:14px 0;">
+        <h3>Enviar observación</h3>
+        <form id="form-observacion" action="agregar_observacion.php" method="POST" style="margin-top:8px;">
+            <input type="hidden" name="id" value="<?php echo (int)$row['id_documento']; ?>">
+            <label>Observación (texto que se registrará en el historial):</label>
+            <textarea id="obs-only" name="observacion" rows="4" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;"></textarea>
+            <div style="display:flex;gap:8px;"><button class="btn" type="submit">✉ Enviar observación</button></div>
         </form>
     <div class="botones" style="margin-top:12px;"><a class="btn-secundario" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">⬅ Volver al perfil</a></div>
 </div>
