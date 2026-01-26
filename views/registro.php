@@ -44,14 +44,9 @@ if (isset($_GET['error'])) {
     <?php endif; ?>
         <?php
         session_start();
-        if (isset($_SESSION['flash_success'])) {
-            echo '<div class="flash" style="background:#e6ffed;border:1px solid #b7f0c6;padding:8px;margin:8px 0;">' . htmlspecialchars($_SESSION['flash_success']) . '</div>';
-            unset($_SESSION['flash_success']);
-        }
-        if (isset($_SESSION['flash_error'])) {
-            echo '<div class="flash" style="background:#ffecec;border:1px solid #f0b7b7;padding:8px;margin:8px 0;">' . htmlspecialchars($_SESSION['flash_error']) . '</div>';
-            unset($_SESSION['flash_error']);
-        }
+        $flash_success = $_SESSION['flash_success'] ?? null;
+        $flash_error = $_SESSION['flash_error'] ?? null;
+        unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         ?>
     <form action="../controllers/register_process.php" method="POST">
     <input type="text" name="nombre" placeholder="Nombre" required>
@@ -67,5 +62,34 @@ if (isset($_GET['error'])) {
     <button onclick="window.location.href='login.php'">Iniciar sesión</button>
 </div>
     </div>
-</body>
-</html>
+        <!-- Toast container -->
+        <div id="toast-container" aria-live="polite" style="position:fixed;right:16px;bottom:16px;z-index:9999"></div>
+        <style>
+        .toast { background:#333;color:#fff;padding:10px 14px;border-radius:6px;margin-top:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:320px;opacity:0;transform:translateY(10px);transition:all .25s ease; }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.success { background: linear-gradient(90deg,#2ecc71,#27ae60); }
+        .toast.error { background: linear-gradient(90deg,#e74c3c,#c0392b); }
+        </style>
+        <script>
+        (function(){
+            function showToast(msg, type){
+                if(!msg) return;
+                var c = document.getElementById('toast-container');
+                var t = document.createElement('div');
+                t.className = 'toast ' + (type==='error' ? 'error' : 'success');
+                t.textContent = msg;
+                c.appendChild(t);
+                void t.offsetWidth;
+                t.classList.add('show');
+                setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ c.removeChild(t); },300); }, 4200);
+            }
+            <?php if (!empty($flash_success)): ?>
+                showToast(<?php echo json_encode($flash_success); ?>, 'success');
+            <?php endif; ?>
+            <?php if (!empty($flash_error)): ?>
+                showToast(<?php echo json_encode($flash_error); ?>, 'error');
+            <?php endif; ?>
+        })();
+        </script>
+    </body>
+    </html>
