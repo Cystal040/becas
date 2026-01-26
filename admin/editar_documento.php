@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    header('Location: estudiante_perfil.php?id=' . ($_POST['estudiante_id'] ?? '0'));
+    header('Location: estudiante_perfil.php?id=' . ($_POST['estudiante_id'] ?? '0') . '&msg=estado_updated');
     exit;
 
 }

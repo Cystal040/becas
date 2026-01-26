@@ -24,6 +24,14 @@ $res = $conn->query($sql);
 <div class="contenedor">
     <h2>Historial de acciones</h2>
 
+    <?php if (isset($_GET['cleared']) && $_GET['cleared'] == '1'): ?>
+        <div class="alert success">Historial limpiado correctamente.</div>
+    <?php endif; ?>
+
+    <form method="POST" action="limpiar_historial.php" onsubmit="return confirm('¿Eliminar todo el historial? Esta acción no se puede deshacer.');" style="margin-bottom:12px;">
+        <button class="btn-secundario" type="submit">Limpiar historial</button>
+    </form>
+
     <div class="table-responsive">
     <table class="table-compact">
         <thead><tr><th>Fecha</th><th>Acción</th><th>Documento</th><th>Estudiante</th><th>Admin</th><th>Observación</th></tr></thead>

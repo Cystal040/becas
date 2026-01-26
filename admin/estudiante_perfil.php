@@ -37,6 +37,10 @@ if ($doc_stmt) { $doc_stmt->bind_param('i', $id); $doc_stmt->execute(); $docs = 
 <div class="contenedor">
     <h2>Perfil del estudiante</h2>
 
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'estado_updated'): ?>
+        <div class="alert success">Cambio guardado correctamente.</div>
+    <?php endif; ?>
+
     <div class="card">
         <p><strong>Nombre:</strong> <?php echo htmlspecialchars($student['nombre'] . ' ' . $student['apellido']); ?></p>
         <p><strong>Cédula:</strong> <?php echo htmlspecialchars($student['cedula']); ?></p>
