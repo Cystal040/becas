@@ -56,12 +56,12 @@ if (isset($_GET['error'])) {
             <input type="text" name="cedula" placeholder="Cédula" required>
             <input type="email" name="correo" placeholder="Correo" required>
             <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit" name="registrar">Registrarse</button>
+            <button class="btn" type="submit" name="registrar">Registrarse</button>
         </form>
 
         <div class="botones">
-            <button onclick="window.location.href='../index.php'">Volver al inicio</button>
-            <button onclick="window.location.href='login.php'">Iniciar sesión</button>
+            <button type="button" class="btn-secundario" onclick="window.location.href='../index.php'">Volver al inicio</button>
+            <button type="button" class="btn-secundario" onclick="window.location.href='login.php'">Iniciar sesión</button>
         </div>
     </div>
     <!-- Toast container -->
