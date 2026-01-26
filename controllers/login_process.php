@@ -32,6 +32,8 @@ if (filter_var($userInput, FILTER_VALIDATE_EMAIL)) {
         if (password_verify($password, $usuario['password'])) {
             $_SESSION['usuario_id'] = $usuario['id_estudiante'] ?? $usuario['id'] ?? null;
             $_SESSION['usuario_nombre'] = $usuario['nombre'] ?? '';
+            // Flash notification
+            $_SESSION['flash_success'] = 'Has iniciado sesión correctamente.';
             ini_set('session.gc_maxlifetime', 0);
             ini_set('session.cookie_lifetime', 0);
             header("Location: ../views/Interfaz_estudiante.php");
