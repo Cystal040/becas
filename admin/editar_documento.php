@@ -15,8 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $observacion = trim($_POST['observacion'] ?? '');
     $estado = $_POST['estado'] ?? null;
 
-    // No se permite subir archivos desde el admin en esta versión.
-
     // actualizar estado si viene
     if (in_array($estado, ['pendiente','aprobado','rechazado'])) {
         $u = $conn->prepare('UPDATE documento SET estado = ?, fecha_revision = NOW() WHERE id_documento = ?');
@@ -71,14 +69,13 @@ if (!$doc) { header('Location: revisar_documentos.php'); exit; }
     <title>Editar documento</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
- </head>
+</head>
 <body class="fondo">
 <div class="contenedor">
     <h2>Editar documento</h2>
     <div class="card">
         <p><strong>Documento:</strong> <?php echo htmlspecialchars($doc['nombre_documento'] ?? ''); ?></p>
         <p><strong>Estado actual:</strong> <?php echo htmlspecialchars($doc['estado'] ?? 'N/A'); ?></p>
-        <p><strong>Archivo actual:</strong> <?php if (!empty($doc['ruta_archivo'])): ?><a href="../<?php echo htmlspecialchars($doc['ruta_archivo']); ?>" target="_blank">Ver</a><?php endif; ?></p>
     </div>
 
     <form action="editar_documento.php" method="POST" style="margin-top:12px;">
