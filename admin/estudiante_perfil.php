@@ -32,7 +32,7 @@ if ($doc_stmt) { $doc_stmt->bind_param('i', $id); $doc_stmt->execute(); $docs = 
     <title>Perfil estudiante</title>
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="icon" href="../assets/img/icono.png">
- </head>
+</head>
 <body class="fondo">
 <div class="contenedor">
     <h2>Perfil del estudiante</h2>
