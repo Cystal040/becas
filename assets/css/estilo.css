@@ -41,7 +41,9 @@ body.fondo::before{
     max-width:var(--max-width);
     margin:60px auto;
     padding:32px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    /* Fondo blanco translúcido para resaltar sobre la imagen */
+    background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.06));
+    border: 1px solid rgba(255,255,255,0.12);
     box-shadow: 0 8px 30px rgba(2,6,23,0.6);
     border-radius:var(--radius);
     backdrop-filter: blur(6px) saturate(120%);
