@@ -10,7 +10,14 @@
     <style>
         /* Centrar el contenedor de login en esta página */
         body.fondo { display:flex; align-items:center; justify-content:center; padding:0; }
-        .contenedor { margin:0; width:100%; max-width:520px; }
+        .contenedor { margin:0; width:100%; max-width:760px; }
+        /* Agrandar tarjeta y formularios */
+        .login-card{ max-width:680px; margin:0 auto; padding:28px; }
+        .login-card label{ font-size:15px; }
+        .login-card input[type="text"], .login-card input[type="password"]{ padding:12px 14px; font-size:16px; }
+        .login-card .botones .btn, .login-card .botones .btn-secundario{ padding:12px 18px; font-size:15px; }
+        .login-header img{ height:78px; }
+        .login-header h2{ font-size:1.4rem; }
     </style>
 </head>
 

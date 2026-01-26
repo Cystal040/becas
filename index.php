@@ -13,25 +13,49 @@ include("config/conexion.php");
 
 <body class="fondo">
 
-    <header style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px;">
+    <header style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
         <div style="display:flex;align-items:center;gap:12px;">
-            <img src="assets/img/icono.png" alt="UNEFA" style="height:48px;object-fit:contain;border-radius:6px;">
+            <img src="assets/img/icono.png" alt="UNEFA" style="height:56px;object-fit:contain;border-radius:6px;">
             <div>
                 <strong style="font-size:1.1rem;color:#fff">Sistema de Becas UNEFA</strong>
                 <div style="font-size:0.9rem;color:var(--muted)">Portal de gestión de documentos</div>
             </div>
         </div>
-        <nav>
+        <nav style="position:absolute;right:16px;top:12px;">
             <a class="btn" href="views/login.php">Iniciar sesión</a>
             <a class="btn" href="views/registro.php">Registrarse</a>
         </nav>
     </header>
 
-    <main class="contenedor">
-        <h1>Bienvenido al portal</h1>
-        <p>Envía tus documentos para aplicar a las becas de forma rápida y segura.</p>
+    <!-- Hero / Cita principal -->
+    <section style="margin:8px auto 20px; max-width:var(--max-width); padding:28px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+        <h1 style="font-size:2rem; margin:0 0 8px 0;">Sistema de Gestión de Becas</h1>
+        <p style="margin:0 0 16px;color:var(--muted);font-size:1.05rem;">Accede a los módulos de la UNEFA y gestiona tus solicitudes de beca.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+            <a class="btn" href="#unefa" target="_blank">Ir a UNEFA</a>
+            <a class="btn" href="views/registro.php">Optar por beca</a>
+            <a class="btn-secundario" href="views/documentos.php">Ver requisitos</a>
+        </div>
+    </section>
 
-        <div class="botones">
+    <main class="contenedor">
+        <h2>Bienvenido</h2>
+        <p>Bienvenido al Sistema de Becas de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Bolivariana (UNEFA).</p>
+
+        <section style="margin-top:12px; background:transparent;">
+            <p>
+                Este espacio ha sido creado para brindar a los estudiantes la oportunidad de acceder a beneficios académicos que apoyen su formación profesional y personal.
+            </p>
+            <p>
+                Aquí encontrarás información sobre los programas de becas disponibles, requisitos, procesos de postulación y seguimiento de solicitudes. Nuestro objetivo es facilitar el acceso a recursos que impulsen tu desarrollo y fortalezcan tu compromiso con la excelencia y el servicio a la comunidad.
+            </p>
+            <p>
+                La UNEFA reafirma su misión de formar ciudadanos responsables, con valores éticos y disciplina, ofreciendo este sistema como un puente hacia nuevas oportunidades de crecimiento.
+            </p>
+        </section>
+
+        <div class="botones" style="margin-top:18px;">
+            <a href="views/registro.php" class="btn">Crear cuenta</a>
             <a href="views/documentos.php" class="btn-secundario">Documentos requeridos</a>
         </div>
     </main>
