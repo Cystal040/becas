@@ -91,6 +91,18 @@ if (!$resultado) {
                     <td><?php if (!empty($fila['ruta_archivo'])): ?><a
                                 href="../<?php echo htmlspecialchars($fila['ruta_archivo']); ?>"
                                 target="_blank">Ver</a><?php endif; ?></td>
+                    <td>
+                        <form action="actualizar_estado.php" method="POST" style="display:inline">
+                            <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
+                            <input type="hidden" name="estado" value="aprobado">
+                            <button class="btn" type="submit">✔ Aprobar</button>
+                        </form>
+                        <form action="actualizar_estado.php" method="POST" style="display:inline; margin-left:8px;">
+                            <input type="hidden" name="id" value="<?php echo (int) $fila['id_documento']; ?>">
+                            <input type="hidden" name="estado" value="rechazado">
+                            <button class="btn-secundario" type="submit">✖ Rechazar</button>
+                        </form>
+                    </td>
                 </tr>
             <?php } ?>
 
