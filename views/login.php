@@ -12,6 +12,17 @@
 
 <div class="contenedor">
     <h2>Iniciar sesión</h2>
+    <?php
+    session_start();
+    if (isset($_SESSION['flash_success'])) {
+        echo '<div class="flash" style="background:#e6ffed;border:1px solid #b7f0c6;padding:8px;margin:8px 0;">' . htmlspecialchars($_SESSION['flash_success']) . '</div>';
+        unset($_SESSION['flash_success']);
+    }
+    if (isset($_SESSION['flash_error'])) {
+        echo '<div class="flash" style="background:#ffecec;border:1px solid #f0b7b7;padding:8px;margin:8px 0;">' . htmlspecialchars($_SESSION['flash_error']) . '</div>';
+        unset($_SESSION['flash_error']);
+    }
+    ?>
 
     <form action="../controllers/login_process.php" method="POST">
 
