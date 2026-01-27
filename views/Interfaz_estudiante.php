@@ -53,14 +53,35 @@ foreach ($tipos as $t) {
 // Estadísticas básicas
 $total_tipos = 0;
 $stmt = $conn->prepare("SELECT COUNT(*) AS total FROM tipo_documento");
-if ($stmt) { $stmt->execute(); $res = $stmt->get_result(); $r = $res->fetch_assoc(); $total_tipos = (int) ($r['total'] ?? 0); $stmt->close(); }
+if ($stmt) {
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $r = $res->fetch_assoc();
+    $total_tipos = (int) ($r['total'] ?? 0);
+    $stmt->close();
+}
 $enviados_count = 0;
 $stmt = $conn->prepare("SELECT COUNT(DISTINCT id_tipo_documento) AS enviados FROM documento WHERE id_estudiante = ?");
-if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $stmt->get_result(); $r = $res->fetch_assoc(); $enviados_count = (int) ($r['enviados'] ?? 0); $stmt->close(); }
+if ($stmt) {
+    $stmt->bind_param('i', $id_estudiante);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $r = $res->fetch_assoc();
+    $enviados_count = (int) ($r['enviados'] ?? 0);
+    $stmt->close();
+}
 $faltantes_count = max(0, $total_tipos - $enviados_count);
 $ultima_subida = '-';
 $stmt = $conn->prepare("SELECT fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC LIMIT 1");
-if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $stmt->get_result(); if ($r = $res->fetch_assoc()) { $ultima_subida = date('d/m/Y H:i', strtotime($r['fecha_subida'])); } $stmt->close(); }
+if ($stmt) {
+    $stmt->bind_param('i', $id_estudiante);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($r = $res->fetch_assoc()) {
+        $ultima_subida = date('d/m/Y H:i', strtotime($r['fecha_subida']));
+    }
+    $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -108,7 +129,8 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
             <div class="progress-track" aria-hidden="true">
                 <div id="progress-fill" class="progress-fill" style="width:0%;"></div>
             </div>
-            <div style="font-size:13px;color:var(--muted);margin-top:6px;">Progreso: <span id="progress-percent">0%</span></div>
+            <div style="font-size:13px;color:var(--muted);margin-top:6px;">Progreso: <span
+                    id="progress-percent">0%</span></div>
         </div>
 
         <section style="margin-top:12px;" class="animate-item stagger-2">
@@ -128,13 +150,15 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
             <div class="faq-item">
                 <div class="faq-toggle">¿Cómo subir un documento?</div>
                 <div class="faq-body" style="display:none;margin-top:8px;color:var(--muted);">
-                    Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.
+                    Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona "Subir documento".
+                    Asegúrate de que el tamaño sea menor a 5MB.
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
                 <div class="faq-body" style="display:none;margin-top:8px;color:var(--muted);">
-                    Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación cuando cambie el estado.
+                    Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación cuando cambie el
+                    estado.
                 </div>
             </div>
         </div>
@@ -240,13 +264,13 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
     <script src="../assets/js/animations.js"></script>
     <script>
         // Calcular y animar barra de progreso
-        (function(){
+        (function () {
             var total = <?php echo json_encode($total_tipos); ?> || 0;
             var enviados = <?php echo json_encode($enviados_count); ?> || 0;
             var pct = total > 0 ? Math.round((enviados / total) * 100) : 0;
             var fill = document.getElementById('progress-fill');
             var pctEl = document.getElementById('progress-percent');
-            if (fill) { setTimeout(function(){ fill.style.width = pct + '%'; }, 80); }
+            if (fill) { setTimeout(function () { fill.style.width = pct + '%'; }, 80); }
             if (pctEl) pctEl.textContent = pct + '%';
         })();
 
