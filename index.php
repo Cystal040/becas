@@ -44,9 +44,43 @@ include("config/conexion.php");
         </section>
 
         <div class="botones" style="margin-top:18px;">
-        <!--<a href="views/tipo_becas.php" class="btn">Becas disponibles</a> -->
-            <a href="views/documentos.php" class="btn-secundario">Documentos requeridos</a>
+            <button id="btn-docs" class="btn-secundario" type="button">Documentos requeridos</button>
         </div>
+
+        <div id="docs-panel" style="display:none; margin-top:18px; text-align:left;">
+            <div class="card">
+                <h3>Documentos Solicitados para la Beca</h3>
+                <ul style="font-size:18px;">
+                    <li>Constancia de inscripción (PDF)</li>
+                    <li>Récord académico (PDF)</li>
+                    <li>Fotocopia de la cédula (PDF, JPG, PNG)</li>
+                    <li>RIF (PDF o DOC)</li>
+                    <li>Foto tipo carnet (Imagen, PDF o DOC)</li>
+                </ul>
+                <div class="botones" style="justify-content:flex-start;">
+                    <a href="views/login.php" class="btn">Iniciar sesión</a>
+                    <a href="views/registro.php" class="btn-secundario">Registrarse</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                var btn = document.getElementById('btn-docs');
+                var panel = document.getElementById('docs-panel');
+                if(!btn || !panel) return;
+                btn.addEventListener('click', function(){
+                    if(panel.style.display === 'none' || panel.style.display === ''){
+                        panel.style.display = 'block';
+                        btn.textContent = 'Ocultar requisitos';
+                        panel.scrollIntoView({behavior:'smooth', block:'start'});
+                    } else {
+                        panel.style.display = 'none';
+                        btn.textContent = 'Documentos requeridos';
+                    }
+                });
+            })();
+        </script>
     </main>
 
 </body>
