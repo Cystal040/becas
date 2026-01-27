@@ -58,7 +58,7 @@
 <body class="fondo">
 
     <div class="contenedor">
-        <div class="login-header" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <div class="login-header animate-item logo-float stagger-1" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
             <a href="../index.php" style="display:inline-block;">
                 <img src="../assets/img/icono.png" alt="UNEFA"
                     style="height:96px;object-fit:contain;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.18);">
@@ -76,7 +76,7 @@
         unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         ?>
 
-        <div class="login-card"
+        <div class="login-card animate-item stagger-2"
             style="background:rgba(255,255,255,0.03);padding:36px;border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,0.25);max-width:720px;margin:0 auto;">
             <form action="../controllers/login_process.php" method="POST">
 
@@ -87,11 +87,9 @@
                 <input type="password" name="password" required style="font-size:16px;">
 
                 <div class="botones" style="display:flex;gap:10px;margin-top:10px;">
-                    <button class="btn" type="submit">Entrar</button>
-                    <button class="btn-secundario" type="button"
-                        onclick="window.location.href='../index.php'">Inicio</button>
-                    <a class="btn" href="registro.php"
-                        style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
+                    <button class="btn btn-animated" type="submit">Entrar</button>
+                    <button class="btn-secundario btn-animated" type="button" onclick="window.location.href='../index.php'">Inicio</button>
+                    <a class="btn btn-animated" href="registro.php" style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
                 </div>
             </form>
 
@@ -154,6 +152,15 @@
                 showToast(<?php echo json_encode($flash_error); ?>, 'error');
             <?php endif; ?>
         })();
+    </script>
+    <script>
+        // Activar animaciones de entrada con pequeño stagger
+        document.addEventListener('DOMContentLoaded', function () {
+            var items = document.querySelectorAll('.animate-item');
+            items.forEach(function (el, idx) {
+                setTimeout(function () { el.classList.add('enter'); }, idx * 120 + 60);
+            });
+        });
     </script>
 </body>
 
