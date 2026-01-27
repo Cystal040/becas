@@ -57,10 +57,7 @@ include("config/conexion.php");
                     <li>RIF (PDF o DOC)</li>
                     <li>Foto tipo carnet (Imagen, PDF o DOC)</li>
                 </ul>
-                <div class="botones" style="justify-content:flex-start;">
-                    <a href="views/login.php" class="btn">Iniciar sesión</a>
-                    <a href="views/registro.php" class="btn-secundario">Registrarse</a>
-                </div>
+                <!-- Información solamente; botones removidos por solicitud -->
             </div>
         </div>
 
@@ -74,7 +71,6 @@ include("config/conexion.php");
             (function(){
                 var btn = document.getElementById('btn-docs');
                 var panel = document.getElementById('docs-panel');
-                var topnav = document.getElementById('top-nav');
                 if(!btn || !panel) return;
                 btn.addEventListener('click', function(){
                     var isOpen = panel.classList.contains('open');
@@ -82,13 +78,11 @@ include("config/conexion.php");
                         panel.classList.remove('collapsed');
                         panel.classList.add('open');
                         btn.textContent = 'Ocultar requisitos';
-                        if(topnav) topnav.style.display = 'none';
                         setTimeout(function(){ panel.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
                     } else {
                         panel.classList.remove('open');
                         panel.classList.add('collapsed');
                         btn.textContent = 'Documentos requeridos';
-                        if(topnav) topnav.style.display = '';
                     }
                 });
             })();
