@@ -95,10 +95,12 @@
                 </div>
             </form>
 
-            <div
-                style="margin-top:12px; display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;">
-                <a href="documentos.php">Documentos requeridos</a>
+            <div style="margin-top:12px; display:flex;justify-content:flex-end;align-items:center;font-size:0.95rem;">
                 <a href="#" onclick="alert('Contacto: soporte@unefa.edu.ve')">Ayuda</a>
+            </div>
+
+            <div style="margin-top:12px; text-align:center; font-size:0.98rem;">
+                ¿No tienes cuenta? <a href="registro.php" style="color:var(--accent); font-weight:600;">Regístrate</a>
             </div>
         </div>
     </div>
