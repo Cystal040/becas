@@ -74,7 +74,42 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
 
 <body class="fondo">
     <div class="contenedor animate-item stagger-1">
-        <h1 class="animate-item stagger-2">Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <h1 class="animate-item stagger-2">Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+            <div class="quick-actions animate-item stagger-2">
+                <a class="btn btn-animated" href="subir_documentos.php">➕ Subir documento</a>
+                <a class="btn btn-animated" href="mis_envios.php">📂 Mis envíos</a>
+                <a class="btn btn-animated" href="dashboard.php">📊 Panel</a>
+                <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
+                <a class="btn-secundario" href="mailto:soporte@unefa.edu.ve">✉️ Soporte</a>
+            </div>
+        </div>
+
+        <div class="stat-cards animate-item stagger-2">
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Total requeridos</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $total_tipos; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Enviados</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $enviados_count; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Faltantes</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $faltantes_count; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Última subida</div>
+                <div style="font-size:14px;color:#fff;"><?php echo htmlspecialchars($ultima_subida); ?></div>
+            </div>
+        </div>
+
+        <div style="margin-top:12px;" class="animate-item stagger-2">
+            <div class="progress-track" aria-hidden="true">
+                <div id="progress-fill" class="progress-fill" style="width:0%;"></div>
+            </div>
+            <div style="font-size:13px;color:var(--muted);margin-top:6px;">Progreso: <span id="progress-percent">0%</span></div>
+        </div>
 
         <section style="margin-top:12px;" class="animate-item stagger-2">
             <h3>Documentos faltantes</h3>
@@ -88,6 +123,21 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
                 </ul>
             <?php endif; ?>
         </section>
+
+        <div class="faq animate-item stagger-3">
+            <div class="faq-item">
+                <div class="faq-toggle">¿Cómo subir un documento?</div>
+                <div class="faq-body" style="display:none;margin-top:8px;color:var(--muted);">
+                    Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
+                <div class="faq-body" style="display:none;margin-top:8px;color:var(--muted);">
+                    Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación cuando cambie el estado.
+                </div>
+            </div>
+        </div>
 
         <section style="margin-top:14px;" class="animate-item stagger-3">
             <h3>Estado de tus documentos</h3>
@@ -129,8 +179,8 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
         </section>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
             <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
+            <a class="btn-secundario btn-animated" href="mis_envios.php">Ver mis envíos</a>
         </div>
     </div>
     <!-- Toast container -->
@@ -188,6 +238,32 @@ if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $s
         })();
     </script>
     <script src="../assets/js/animations.js"></script>
+    <script>
+        // Calcular y animar barra de progreso
+        (function(){
+            var total = <?php echo json_encode($total_tipos); ?> || 0;
+            var enviados = <?php echo json_encode($enviados_count); ?> || 0;
+            var pct = total > 0 ? Math.round((enviados / total) * 100) : 0;
+            var fill = document.getElementById('progress-fill');
+            var pctEl = document.getElementById('progress-percent');
+            if (fill) { setTimeout(function(){ fill.style.width = pct + '%'; }, 80); }
+            if (pctEl) pctEl.textContent = pct + '%';
+        })();
+
+        // FAQ toggle simple
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('.faq-toggle')) {
+                var body = e.target.nextElementSibling;
+                if (!body) return;
+                if (body.style.display === 'none' || !body.style.display) {
+                    body.style.display = 'block';
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                } else {
+                    body.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
