@@ -190,31 +190,8 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
 
         <!-- Información removida según solicitud del usuario -->
 
-        <!-- Plantillas de ejemplo y contactos rápidos -->
-        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-top:12px;">
-            <div class="card">
-                <h3>Ejemplos y plantillas</h3>
-                <p style="color:var(--muted);">Descarga ejemplos o plantillas sugeridas por tipo de documento (si están disponibles).</p>
-                <div>
-                    <ul style="color:var(--muted);margin:0;padding-left:18px;">
-                        <?php foreach ($tipos as $t):
-                            $slug = preg_replace('/[^a-z0-9]+/','_', strtolower($t['nombre_documento']));
-                            $template_fs = __DIR__ . '/../assets/templates/' . $slug . '.pdf';
-                            $template_rel = '../assets/templates/' . $slug . '.pdf';
-                        ?>
-                            <li style="margin-bottom:8px;">
-                                <strong><?php echo htmlspecialchars($t['nombre_documento']); ?>:</strong>
-                                <?php if (file_exists($template_fs)): ?>
-                                    <a href="<?php echo $template_rel; ?>" download>Descargar plantilla</a>
-                                <?php else: ?>
-                                    <span style="color:var(--muted);">(Plantilla no disponible)</span>
-                                <?php endif; ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-
+        <!-- Contactos rápidos (se eliminó la sección de plantillas) -->
+        <div style="margin-top:12px;">
             <div class="card">
                 <h3>Contactos rápidos</h3>
                 <p style="color:var(--muted);margin-bottom:8px;">¿Necesitas ayuda? Contáctanos por cualquiera de estos medios:</p>
