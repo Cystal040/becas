@@ -21,7 +21,7 @@ include("config/conexion.php");
                 <div style="font-size:0.9rem;color:var(--muted)">Portal de gestión de documentos</div>
             </div>
         </div>
-        <nav style="position:absolute;right:16px;top:12px;">
+        <nav id="top-nav" style="position:absolute;right:16px;top:12px;">
             <a class="btn" href="views/login.php">Iniciar sesión</a>
             <a class="btn" href="views/registro.php">Registrarse</a>
         </nav>
@@ -47,8 +47,8 @@ include("config/conexion.php");
             <button id="btn-docs" class="btn-secundario" type="button">Documentos requeridos</button>
         </div>
 
-        <div id="docs-panel" style="display:none; margin-top:18px; text-align:left;">
-            <div class="card">
+        <div id="docs-panel" class="collapsed" style="margin-top:18px; text-align:left; overflow:hidden;">
+            <div class="card" style="padding:18px;">
                 <h3>Documentos Solicitados para la Beca</h3>
                 <ul style="font-size:18px;">
                     <li>Constancia de inscripción (PDF)</li>
@@ -64,19 +64,31 @@ include("config/conexion.php");
             </div>
         </div>
 
+        <style>
+            /* Collapsible panel animation */
+            #docs-panel.collapsed { max-height: 0; transition: max-height 450ms ease; }
+            #docs-panel.open { max-height: 800px; transition: max-height 450ms ease; }
+        </style>
+
         <script>
             (function(){
                 var btn = document.getElementById('btn-docs');
                 var panel = document.getElementById('docs-panel');
+                var topnav = document.getElementById('top-nav');
                 if(!btn || !panel) return;
                 btn.addEventListener('click', function(){
-                    if(panel.style.display === 'none' || panel.style.display === ''){
-                        panel.style.display = 'block';
+                    var isOpen = panel.classList.contains('open');
+                    if(!isOpen){
+                        panel.classList.remove('collapsed');
+                        panel.classList.add('open');
                         btn.textContent = 'Ocultar requisitos';
-                        panel.scrollIntoView({behavior:'smooth', block:'start'});
+                        if(topnav) topnav.style.display = 'none';
+                        setTimeout(function(){ panel.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
                     } else {
-                        panel.style.display = 'none';
+                        panel.classList.remove('open');
+                        panel.classList.add('collapsed');
                         btn.textContent = 'Documentos requeridos';
+                        if(topnav) topnav.style.display = '';
                     }
                 });
             })();
