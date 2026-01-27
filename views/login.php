@@ -58,15 +58,14 @@
 <body class="fondo">
 
     <div class="contenedor">
-        <div class="login-header" style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div class="login-header" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
             <a href="../index.php" style="display:inline-block;">
                 <img src="../assets/img/icono.png" alt="UNEFA"
-                    style="height:58px;object-fit:contain;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12);">
+                    style="height:96px;object-fit:contain;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.18);">
             </a>
             <div>
-                <h2 style="margin:0;">Portal de Becas UNEFA</h2>
-                <p style="margin:2px 0 0 0;color:var(--muted);font-size:0.95rem;">Inicia sesión para gestionar tus
-                    documentos</p>
+                <h2 style="margin:0;font-size:1.6rem;">Portal de Becas UNEFA</h2>
+                <p style="margin:4px 0 0 0;color:var(--muted);font-size:1rem;">Inicia sesión para gestionar tus documentos</p>
             </div>
         </div>
 
@@ -78,14 +77,14 @@
         ?>
 
         <div class="login-card"
-            style="background:rgba(255,255,255,0.02);padding:18px;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.08);max-width:420px;">
+            style="background:rgba(255,255,255,0.03);padding:36px;border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,0.25);max-width:720px;margin:0 auto;">
             <form action="../controllers/login_process.php" method="POST">
 
                 <label>Usuario o correo:</label>
-                <input type="text" name="user" placeholder="Usuario o correo" required>
+                <input type="text" name="user" placeholder="Usuario o correo" required style="font-size:16px;">
 
                 <label>Contraseña:</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" required style="font-size:16px;">
 
                 <div class="botones" style="display:flex;gap:10px;margin-top:10px;">
                     <button class="btn" type="submit">Entrar</button>
