@@ -63,11 +63,11 @@ if (empty($tipos)) {
 
 <body class="fondo">
 
-    <div class="contenedor">
+    <div class="contenedor animate-item stagger-1">
 
-        <h2>Subir documentos para la beca</h2>
+        <h2 class="animate-item stagger-2">Subir documentos para la beca</h2>
 
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" class="animate-item stagger-3">
 
             <label>Tipo de documento:</label>
             <select name="tipo_documento" required>
@@ -85,11 +85,11 @@ if (empty($tipos)) {
 
             <br><br>
 
-            <button type="submit" name="subir">Subir documento</button>
+            <button type="submit" name="subir" class="btn btn-animated">Subir documento</button>
         </form>
 
         <div class="botones">
-            <button class="btn" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al
+            <button class="btn btn-animated" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al
                 panel</button>
         </div>
 
@@ -225,3 +225,4 @@ if (isset($_POST['subir'])) {
     }
 }
 ?>
+<script src="../assets/js/animations.js"></script>

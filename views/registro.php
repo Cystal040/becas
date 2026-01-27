@@ -38,9 +38,9 @@ if (isset($_GET['error'])) {
 </head>
 
 <body class="fondo">
-    <div class="contenedor">
+    <div class="contenedor animate-item stagger-1">
         <?php if ($msg !== ''): ?>
-            <div style="margin-bottom:12px; padding:10px; background:rgba(255,255,255,0.12); border-radius:6px;">
+            <div class="animate-item stagger-2" style="margin-bottom:12px; padding:10px; background:rgba(255,255,255,0.12); border-radius:6px;">
                 <?php echo htmlspecialchars($msg); ?>
             </div>
         <?php endif; ?>
@@ -50,18 +50,18 @@ if (isset($_GET['error'])) {
         $flash_error = $_SESSION['flash_error'] ?? null;
         unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         ?>
-        <form action="../controllers/register_process.php" method="POST">
+        <form action="../controllers/register_process.php" method="POST" class="animate-item stagger-3">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
             <input type="text" name="cedula" placeholder="Cédula" required>
             <input type="email" name="correo" placeholder="Correo" required>
             <input type="password" name="password" placeholder="Contraseña" required>
-            <button class="btn" type="submit" name="registrar">Registrarse</button>
+            <button class="btn btn-animated" type="submit" name="registrar">Registrarse</button>
         </form>
 
         <div class="botones">
-            <button type="button" class="btn-secundario" onclick="window.location.href='../index.php'">Volver al inicio</button>
-            <button type="button" class="btn-secundario" onclick="window.location.href='login.php'">Iniciar sesión</button>
+            <button type="button" class="btn-secundario btn-animated" onclick="window.location.href='../index.php'">Volver al inicio</button>
+            <button type="button" class="btn-secundario btn-animated" onclick="window.location.href='login.php'">Iniciar sesión</button>
         </div>
     </div>
     <!-- Toast container -->
@@ -114,6 +114,7 @@ if (isset($_GET['error'])) {
             <?php endif; ?>
         })();
     </script>
+    <script src="../assets/js/animations.js"></script>
 </body>
 
 </html>
