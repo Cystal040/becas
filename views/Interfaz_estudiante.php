@@ -62,10 +62,10 @@ foreach ($tipos as $t) {
 </head>
 
 <body class="fondo">
-    <div class="contenedor">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+    <div class="contenedor animate-item stagger-1">
+        <h1 class="animate-item stagger-2">Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
 
-        <section style="margin-top:12px;">
+        <section style="margin-top:12px;" class="animate-item stagger-2">
             <h3>Documentos faltantes</h3>
             <?php if (empty($faltantes)): ?>
                 <p>Has subido todos los documentos requeridos.</p>
@@ -78,7 +78,7 @@ foreach ($tipos as $t) {
             <?php endif; ?>
         </section>
 
-        <section style="margin-top:14px;">
+        <section style="margin-top:14px;" class="animate-item stagger-3">
             <h3>Estado de tus documentos</h3>
             <div class="table-responsive">
                 <table class="table-compact">
@@ -118,8 +118,8 @@ foreach ($tipos as $t) {
         </section>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
-            <a class="btn" href="subir_documentos.php">Subir documento</a>
+            <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
+            <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
         </div>
     </div>
     <!-- Toast container -->
@@ -176,6 +176,7 @@ foreach ($tipos as $t) {
             <?php endif; ?>
         })();
     </script>
+    <script src="../assets/js/animations.js"></script>
 </body>
 
 </html>

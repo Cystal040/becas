@@ -14,7 +14,7 @@ include("config/conexion.php");
 
 <body class="fondo">
 
-    <header style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
+    <header class="animate-item stagger-1" style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
         <div style="display:flex;align-items:center;gap:12px;">
             <img src="assets/img/icono.png" alt="UNEFA" style="height:56px;object-fit:contain;border-radius:6px;">
             <div>
@@ -23,12 +23,12 @@ include("config/conexion.php");
             </div>
         </div>
         <nav id="top-nav" style="position:absolute;right:16px;top:12px;">
-            <a class="btn" href="views/login.php">Iniciar sesión</a>
-            <a class="btn" href="views/registro.php">Registrarse</a>
+            <a class="btn btn-animated" href="views/login.php">Iniciar sesión</a>
+            <a class="btn btn-animated" href="views/registro.php">Registrarse</a>
         </nav>
     </header>
 
-    <main class="contenedor">
+    <main class="contenedor animate-item stagger-2">
         <h2>Bienvenido</h2>
         <p>Bienvenido al Sistema de Becas de la Universidad Nacional Experimental Politécnica de la Fuerza Armada
             Bolivariana (UNEFA).</p>
@@ -50,10 +50,10 @@ include("config/conexion.php");
         </section>
 
         <div class="botones" style="margin-top:18px;">
-            <button id="btn-docs" class="btn-secundario" type="button">Documentos requeridos</button>
+            <button id="btn-docs" class="btn-secundario btn-animated">Documentos requeridos</button>
         </div>
 
-        <div id="docs-panel" class="collapsed" style="margin-top:18px; text-align:left; overflow:hidden;">
+        <div id="docs-panel" class="collapsed animate-item stagger-3" style="margin-top:18px; text-align:left; overflow:hidden;">
             <div class="card" style="padding:18px;">
                 <h3>Documentos Solicitados para la Beca</h3>
                 <ul style="font-size:18px;">
@@ -100,6 +100,7 @@ include("config/conexion.php");
                 });
             })();
         </script>
+    <script src="assets/js/animations.js"></script>
     </main>
 
 </body>
