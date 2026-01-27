@@ -181,10 +181,18 @@ if ($stmt) {
             <?php else: ?>
                 <p style="color:var(--muted);">Has enviado todos los documentos requeridos.</p>
             <?php endif; ?>
+        </div>
 
-            <h4 style="margin-top:12px;">Preguntas frecuentes</h4>
-            <p style="color:var(--muted);">Cómo subir: selecciona el tipo, el archivo (PDF/JPG/PNG/DOC) y presiona "Subir documento". Tamaño máximo 5MB.</p>
-            <p style="color:var(--muted);">Tiempo de revisión: 3-7 días hábiles. Te notificaremos cuando cambie el estado.</p>
+        <!-- FAQ: fuera de la tarjeta, items desplegables -->
+        <div class="faq" aria-label="Preguntas frecuentes">
+            <div class="faq-item animate-item stagger-3">
+                <div class="faq-toggle">¿Cómo subir un documento?</div>
+                <div class="faq-body">Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.</div>
+            </div>
+            <div class="faq-item animate-item stagger-3">
+                <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
+                <div class="faq-body">Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación cuando cambie el estado.</div>
+            </div>
         </div>
     </div>
     <!-- Toast container -->
@@ -242,6 +250,21 @@ if ($stmt) {
         })();
     </script>
     <script src="../assets/js/animations.js"></script>
+    <script>
+        // Toggle FAQ items: add/remove class .open on .faq-body
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('.faq-toggle')) {
+                var body = e.target.nextElementSibling;
+                if (!body) return;
+                var isOpen = body.classList.contains('open');
+                if (isOpen) {
+                    body.classList.remove('open');
+                } else {
+                    body.classList.add('open');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

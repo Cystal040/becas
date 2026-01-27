@@ -199,3 +199,6 @@ a:hover{ text-decoration:underline; }
 .faq { margin-top:16px; }
 .faq-item { background: rgba(255,255,255,0.02); padding:12px; border-radius:8px; margin-bottom:8px; }
 .faq-toggle { cursor:pointer; color:var(--accent); font-weight:600; }
+/* FAQ body for collapsible items */
+.faq-body { color:var(--muted); margin-top:8px; overflow: hidden; max-height: 0; transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; opacity: 0; }
+.faq-body.open { max-height: 420px; opacity: 1; }
