@@ -40,7 +40,8 @@ if (isset($_GET['error'])) {
 <body class="fondo">
     <div class="contenedor animate-item stagger-1">
         <?php if ($msg !== ''): ?>
-            <div class="animate-item stagger-2" style="margin-bottom:12px; padding:10px; background:rgba(255,255,255,0.12); border-radius:6px;">
+            <div class="animate-item stagger-2"
+                style="margin-bottom:12px; padding:10px; background:rgba(255,255,255,0.12); border-radius:6px;">
                 <?php echo htmlspecialchars($msg); ?>
             </div>
         <?php endif; ?>
@@ -60,8 +61,10 @@ if (isset($_GET['error'])) {
         </form>
 
         <div class="botones">
-            <button type="button" class="btn-secundario btn-animated" onclick="window.location.href='../index.php'">Volver al inicio</button>
-            <button type="button" class="btn-secundario btn-animated" onclick="window.location.href='login.php'">Iniciar sesión</button>
+            <button type="button" class="btn-secundario btn-animated"
+                onclick="window.location.href='../index.php'">Volver al inicio</button>
+            <button type="button" class="btn-secundario btn-animated" onclick="window.location.href='login.php'">Iniciar
+                sesión</button>
         </div>
     </div>
     <!-- Toast container -->

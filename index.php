@@ -14,7 +14,8 @@ include("config/conexion.php");
 
 <body class="fondo">
 
-    <header class="animate-item stagger-1" style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
+    <header class="animate-item stagger-1"
+        style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
         <div style="display:flex;align-items:center;gap:12px;">
             <img src="assets/img/icono.png" alt="UNEFA" style="height:56px;object-fit:contain;border-radius:6px;">
             <div>
@@ -53,7 +54,8 @@ include("config/conexion.php");
             <button id="btn-docs" class="btn-secundario btn-animated">Documentos requeridos</button>
         </div>
 
-        <div id="docs-panel" class="collapsed animate-item stagger-3" style="margin-top:18px; text-align:left; overflow:hidden;">
+        <div id="docs-panel" class="collapsed animate-item stagger-3"
+            style="margin-top:18px; text-align:left; overflow:hidden;">
             <div class="card" style="padding:18px;">
                 <h3>Documentos Solicitados para la Beca</h3>
                 <ul style="font-size:18px;">
@@ -100,7 +102,7 @@ include("config/conexion.php");
                 });
             })();
         </script>
-    <script src="assets/js/animations.js"></script>
+        <script src="assets/js/animations.js"></script>
     </main>
 
 </body>

@@ -58,14 +58,16 @@
 <body class="fondo">
 
     <div class="contenedor">
-        <div class="login-header animate-item logo-float stagger-1" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <div class="login-header animate-item logo-float stagger-1"
+            style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
             <a href="../index.php" style="display:inline-block;">
                 <img src="../assets/img/icono.png" alt="UNEFA"
                     style="height:96px;object-fit:contain;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.18);">
             </a>
             <div>
                 <h2 style="margin:0;font-size:1.6rem;">Portal de Becas UNEFA</h2>
-                <p style="margin:4px 0 0 0;color:var(--muted);font-size:1rem;">Inicia sesión para gestionar tus documentos</p>
+                <p style="margin:4px 0 0 0;color:var(--muted);font-size:1rem;">Inicia sesión para gestionar tus
+                    documentos</p>
             </div>
         </div>
 
@@ -88,8 +90,10 @@
 
                 <div class="botones" style="display:flex;gap:10px;margin-top:10px;">
                     <button class="btn btn-animated" type="submit">Entrar</button>
-                    <button class="btn-secundario btn-animated" type="button" onclick="window.location.href='../index.php'">Inicio</button>
-                    <a class="btn btn-animated" href="registro.php" style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
+                    <button class="btn-secundario btn-animated" type="button"
+                        onclick="window.location.href='../index.php'">Inicio</button>
+                    <a class="btn btn-animated" href="registro.php"
+                        style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
                 </div>
             </form>
 

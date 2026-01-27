@@ -89,7 +89,8 @@ if (empty($tipos)) {
         </form>
 
         <div class="botones">
-            <button class="btn btn-animated" onclick="window.location.href='Interfaz_estudiante.php'" type="button">Volver al
+            <button class="btn btn-animated" onclick="window.location.href='Interfaz_estudiante.php'"
+                type="button">Volver al
                 panel</button>
         </div>
 
