@@ -102,7 +102,6 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <h1 class="animate-item stagger-2">Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
             <div class="quick-actions animate-item stagger-2">
-                <a class="btn btn-animated" href="subir_documentos.php">➕ Subir documento</a>
                 <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
                 <a class="btn-secundario" href="mailto:soporte@unefa.edu.ve">✉️ Soporte</a>
             </div>
@@ -189,20 +188,7 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
             <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
         </div>
 
-        <div style="margin-top:20px;" class="card">
-            <h3>Información</h3>
-            <p style="color:var(--muted);">Documentos faltantes: <strong><?php echo $faltantes_count; ?></strong>.</p>
-            <?php if (!empty($faltantes)): ?>
-                <p style="color:var(--muted);">Lista de documentos aún no enviados:</p>
-                <ul style="color:var(--muted);">
-                    <?php foreach ($faltantes as $f): ?>
-                        <li><?php echo htmlspecialchars($f); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p style="color:var(--muted);">Has enviado todos los documentos requeridos.</p>
-            <?php endif; ?>
-        </div>
+        <!-- Información removida según solicitud del usuario -->
 
         <!-- Plantillas de ejemplo y contactos rápidos -->
         <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-top:12px;">
