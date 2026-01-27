@@ -50,6 +50,17 @@ foreach ($tipos as $t) {
         $faltantes[] = $t['nombre_documento'];
     }
 }
+// Estadísticas básicas
+$total_tipos = 0;
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM tipo_documento");
+if ($stmt) { $stmt->execute(); $res = $stmt->get_result(); $r = $res->fetch_assoc(); $total_tipos = (int) ($r['total'] ?? 0); $stmt->close(); }
+$enviados_count = 0;
+$stmt = $conn->prepare("SELECT COUNT(DISTINCT id_tipo_documento) AS enviados FROM documento WHERE id_estudiante = ?");
+if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $stmt->get_result(); $r = $res->fetch_assoc(); $enviados_count = (int) ($r['enviados'] ?? 0); $stmt->close(); }
+$faltantes_count = max(0, $total_tipos - $enviados_count);
+$ultima_subida = '-';
+$stmt = $conn->prepare("SELECT fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC LIMIT 1");
+if ($stmt) { $stmt->bind_param('i', $id_estudiante); $stmt->execute(); $res = $stmt->get_result(); if ($r = $res->fetch_assoc()) { $ultima_subida = date('d/m/Y H:i', strtotime($r['fecha_subida'])); } $stmt->close(); }
 ?>
 <!DOCTYPE html>
 <html lang="es">
