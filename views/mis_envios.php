@@ -57,11 +57,11 @@ foreach ($tipos as $t) {
 </head>
 
 <body class="fondo">
-    <div class="contenedor">
-        <h2>Mis envíos</h2>
+    <div class="contenedor animate-item stagger-1">
+        <h2 class="animate-item stagger-2">Mis envíos</h2>
 
         <!-- Compact table: Documento | Estado | Fecha | Acción -->
-        <div class="table-responsive">
+        <div class="table-responsive animate-item stagger-2">
             <table class="table-compact">
                 <thead>
                     <tr>
@@ -99,11 +99,11 @@ foreach ($tipos as $t) {
                                 <a class="btn" href="subir_documentos.php">➕ Subir</a>
                             <?php else: ?>
                                 <?php if (!empty($info['ruta_archivo'])): ?>
-                                    <a class="btn-secundario btn-small"
+                                    <a class="btn-secundario btn-small btn-animated"
                                         href="../<?php echo htmlspecialchars($info['ruta_archivo']); ?>" target="_blank">Ver</a>
                                 <?php endif; ?>
                                 <?php if ($info['estado'] === 'rechazado'): ?>
-                                    <a class="btn btn-small" href="subir_documentos.php">🔄 Volver a subir</a>
+                                    <a class="btn btn-small btn-animated" href="subir_documentos.php">🔄 Volver a subir</a>
                                 <?php elseif ($info['estado'] === 'pendiente'): ?>
                                     <span style="color:#95a5a6;">⏳ En espera</span>
                                 <?php else: ?>
@@ -117,10 +117,11 @@ foreach ($tipos as $t) {
         </div>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario" href="Interfaz_estudiante.php">⬅ Volver</a>
-            <a class="btn" href="subir_documentos.php">Subir documento</a>
+            <a class="btn-secundario btn-animated" href="Interfaz_estudiante.php">⬅ Volver</a>
+            <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
         </div>
     </div>
+    <script src="../assets/js/animations.js"></script>
 </body>
 
 </html>
