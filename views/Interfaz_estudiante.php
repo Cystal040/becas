@@ -167,7 +167,7 @@ if ($stmt) {
         <div class="botones" style="margin-top:12px;">
             <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
         </div>
-        
+
         <div style="margin-top:20px;" class="card">
             <h3>Información</h3>
             <p style="color:var(--muted);">Documentos faltantes: <strong><?php echo $faltantes_count; ?></strong>.</p>
@@ -187,11 +187,13 @@ if ($stmt) {
         <div class="faq" aria-label="Preguntas frecuentes">
             <div class="faq-item animate-item stagger-3">
                 <div class="faq-toggle">¿Cómo subir un documento?</div>
-                <div class="faq-body">Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.</div>
+                <div class="faq-body">Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona
+                    "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.</div>
             </div>
             <div class="faq-item animate-item stagger-3">
                 <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
-                <div class="faq-body">Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación cuando cambie el estado.</div>
+                <div class="faq-body">Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación
+                    cuando cambie el estado.</div>
             </div>
         </div>
     </div>
