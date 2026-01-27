@@ -4,6 +4,7 @@ include("config/conexion.php");
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Becas</title>
@@ -29,17 +30,22 @@ include("config/conexion.php");
 
     <main class="contenedor">
         <h2>Bienvenido</h2>
-        <p>Bienvenido al Sistema de Becas de la Universidad Nacional Experimental Politécnica de la Fuerza Armada Bolivariana (UNEFA).</p>
+        <p>Bienvenido al Sistema de Becas de la Universidad Nacional Experimental Politécnica de la Fuerza Armada
+            Bolivariana (UNEFA).</p>
 
         <section style="margin-top:12px; background:transparent;">
             <p>
-                Este espacio ha sido creado para brindar a los estudiantes la oportunidad de acceder a beneficios académicos que apoyen su formación profesional y personal.
+                Este espacio ha sido creado para brindar a los estudiantes la oportunidad de acceder a beneficios
+                académicos que apoyen su formación profesional y personal.
             </p>
             <p>
-                Aquí encontrarás información sobre los programas de becas disponibles, requisitos, procesos de postulación y seguimiento de solicitudes. Nuestro objetivo es facilitar el acceso a recursos que impulsen tu desarrollo y fortalezcan tu compromiso con la excelencia y el servicio a la comunidad.
+                Aquí encontrarás información sobre los programas de becas disponibles, requisitos, procesos de
+                postulación y seguimiento de solicitudes. Nuestro objetivo es facilitar el acceso a recursos que
+                impulsen tu desarrollo y fortalezcan tu compromiso con la excelencia y el servicio a la comunidad.
             </p>
             <p>
-                La UNEFA reafirma su misión de formar ciudadanos responsables, con valores éticos y disciplina, ofreciendo este sistema como un puente hacia nuevas oportunidades de crecimiento.
+                La UNEFA reafirma su misión de formar ciudadanos responsables, con valores éticos y disciplina,
+                ofreciendo este sistema como un puente hacia nuevas oportunidades de crecimiento.
             </p>
         </section>
 
@@ -63,22 +69,29 @@ include("config/conexion.php");
 
         <style>
             /* Collapsible panel animation */
-            #docs-panel.collapsed { max-height: 0; transition: max-height 450ms ease; }
-            #docs-panel.open { max-height: 800px; transition: max-height 450ms ease; }
+            #docs-panel.collapsed {
+                max-height: 0;
+                transition: max-height 450ms ease;
+            }
+
+            #docs-panel.open {
+                max-height: 800px;
+                transition: max-height 450ms ease;
+            }
         </style>
 
         <script>
-            (function(){
+            (function () {
                 var btn = document.getElementById('btn-docs');
                 var panel = document.getElementById('docs-panel');
-                if(!btn || !panel) return;
-                btn.addEventListener('click', function(){
+                if (!btn || !panel) return;
+                btn.addEventListener('click', function () {
                     var isOpen = panel.classList.contains('open');
-                    if(!isOpen){
+                    if (!isOpen) {
                         panel.classList.remove('collapsed');
                         panel.classList.add('open');
                         btn.textContent = 'Ocultar requisitos';
-                        setTimeout(function(){ panel.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+                        setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
                     } else {
                         panel.classList.remove('open');
                         panel.classList.add('collapsed');
@@ -90,4 +103,5 @@ include("config/conexion.php");
     </main>
 
 </body>
+
 </html>
