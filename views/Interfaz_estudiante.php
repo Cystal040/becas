@@ -83,6 +83,10 @@ if ($stmt) {
     $stmt->close();
 }
 ?>
+<?php
+// Porcentaje de avance
+$porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_tipos) * 100) : 0;
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -120,6 +124,23 @@ if ($stmt) {
             <div class="stat-card">
                 <div style="color:var(--muted);font-size:13px;">Última subida</div>
                 <div style="font-size:14px;color:#fff;"><?php echo htmlspecialchars($ultima_subida); ?></div>
+            </div>
+        </div>
+
+        <!-- Barra de progreso general -->
+        <div style="margin-top:12px;" class="animate-item stagger-2">
+            <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <div>
+                        <div style="color:var(--muted);font-size:13px;">Progreso de envío</div>
+                        <div style="font-size:16px;font-weight:700;color:#fff;"><?php echo $porcentaje_completado; ?>% completado</div>
+                    </div>
+                    <div style="min-width:220px;max-width:320px;flex:1;">
+                        <div class="progress-track" aria-hidden="true">
+                            <div class="progress-fill" style="width: <?php echo $porcentaje_completado; ?>%;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -181,6 +202,41 @@ if ($stmt) {
             <?php else: ?>
                 <p style="color:var(--muted);">Has enviado todos los documentos requeridos.</p>
             <?php endif; ?>
+        </div>
+
+        <!-- Plantillas de ejemplo y contactos rápidos -->
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-top:12px;">
+            <div class="card">
+                <h3>Ejemplos y plantillas</h3>
+                <p style="color:var(--muted);">Descarga ejemplos o plantillas sugeridas por tipo de documento (si están disponibles).</p>
+                <div>
+                    <ul style="color:var(--muted);margin:0;padding-left:18px;">
+                        <?php foreach ($tipos as $t):
+                            $slug = preg_replace('/[^a-z0-9]+/','_', strtolower($t['nombre_documento']));
+                            $template_fs = __DIR__ . '/../assets/templates/' . $slug . '.pdf';
+                            $template_rel = '../assets/templates/' . $slug . '.pdf';
+                        ?>
+                            <li style="margin-bottom:8px;">
+                                <strong><?php echo htmlspecialchars($t['nombre_documento']); ?>:</strong>
+                                <?php if (file_exists($template_fs)): ?>
+                                    <a href="<?php echo $template_rel; ?>" download>Descargar plantilla</a>
+                                <?php else: ?>
+                                    <span style="color:var(--muted);">(Plantilla no disponible)</span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Contactos rápidos</h3>
+                <p style="color:var(--muted);margin-bottom:8px;">¿Necesitas ayuda? Contáctanos por cualquiera de estos medios:</p>
+                <p style="margin:6px 0;color:var(--muted);">📧 Soporte: <a href="mailto:soporte@unefa.edu.ve?subject=Consulta%20de%20documentos%20-%20<?php echo urlencode($nombre_usuario); ?>">soporte@unefa.edu.ve</a></p>
+                <p style="margin:6px 0;color:var(--muted);">📞 Teléfono: <a href="tel:+582412345678">+58 241-234-5678</a></p>
+                <p style="margin-top:10px;color:var(--muted);">O envía una consulta rápida:</p>
+                <p><a class="btn btn-small" href="mailto:soporte@unefa.edu.ve?subject=Consulta%20rápida%20-%20<?php echo urlencode($nombre_usuario); ?>&body=Hola,%20tengo%20una%20consulta%20sobre%20mis%20documentos.">Enviar consulta</a></p>
+            </div>
         </div>
 
         <!-- FAQ: fuera de la tarjeta, items desplegables -->
