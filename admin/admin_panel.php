@@ -38,9 +38,9 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
     <link rel="stylesheet" href="../assets/css/estilo.css">
 </head>
 <body class="fondo">
-    <div class="contenedor">
-        <header style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-            <img src="../assets/img/icono.png" alt="Logo" style="width:48px;height:48px;border-radius:8px;">
+    <div class="contenedor animate-item stagger-1">
+        <header class="animate-item stagger-2" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <img src="../assets/img/icono.png" alt="Logo" style="width:48px;height:48px;border-radius:8px;" class="logo-float">
             <div>
                 <h2 style="margin:0;">Panel Administrativo</h2>
                 <p style="margin:2px 0 0;color:var(--muted);">Bienvenido, <?php echo htmlspecialchars($_SESSION['admin_usuario'] ?? ''); ?></p>
@@ -89,11 +89,12 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
                     <p style="color:var(--muted);margin:0;">Ver el registro de acciones administrativas sobre documentos.</p>
                 </a>
 
-                <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
-                    <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
+                <div class="card animate-item stagger-3" style="display:flex;flex-direction:column;justify-content:space-between;">
+                    <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
                 </div>
             </section>
         </main>
     </div>
+    <script src="../assets/js/animations.js"></script>
 </body>
 </html>
