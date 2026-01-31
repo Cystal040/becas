@@ -68,11 +68,6 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
             <section style="flex:1;">
                 <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
                     <div class="card">
-                        <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
-                        <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $totalStudents; ?></p>
-                    </div>
-
-                    <div class="card">
                         <h3 style="color:#fff;margin-bottom:6px;">🟡 En espera</h3>
                         <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $pendientes; ?></p>
                     </div>
@@ -87,7 +82,6 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
                         <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $rechazados; ?></p>
                     </div>
                 </section>
-
             </section>
         </main>
     </div>
