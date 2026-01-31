@@ -118,10 +118,10 @@ if (isset($_GET['error'])) {
         // Mapeo de semestres por carrera
         (function(){
             var mapping = {
-                'ingenieria_sistemas': 10,
-                'ingenieria_mecanica': 10,
+                'ingenieria_sistemas': 9,
+                'ingenieria_mecanica': 9,
                 'ingenieria_naval': 10,
-                'enfermeria': 8
+                'enfermeria': 5
             };
             var carrera = document.getElementById('carrera-select');
             var semestre = document.getElementById('semestre-select');
