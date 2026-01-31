@@ -72,7 +72,7 @@ if (!$resultado) {
 <body class="fondo">
 
     <div class="contenedor">
-        <h2>Documentos enviados</h2>
+        <h2>Documentos recibidos</h2>
 
         <table>
             <tr>
