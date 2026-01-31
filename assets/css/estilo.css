@@ -205,3 +205,43 @@ a:hover{ text-decoration:underline; }
 /* FAQ body for collapsible items */
 .faq-body { color:var(--muted); margin-top:8px; overflow: hidden; max-height: 0; transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; opacity: 0; }
 .faq-body.open { max-height: 420px; opacity: 1; }
+
+/* Forzar fondo blanco y texto negro en toda la aplicación */
+html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Asegurar que todo el texto sea negro */
+body * {
+    color: #000000 !important;
+}
+
+/* Forzar fondos blancos en contenedores y tarjetas */
+.contenedor, .card, .stat-card, .faq-item, .table-compact thead, table, .alert {
+    background-color: #ffffff !important;
+}
+
+/* Inputs y selects blancos con texto negro */
+input, select, textarea {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #d1d5db !important; /* gris claro */
+}
+
+/* Botones con texto negro (fondos pueden mantenerse) */
+.btn, .btn-secundario, .btn-small, .btn-animated {
+    color: #000000 !important;
+}
+
+/* Enlaces en negro por defecto */
+a { color: #000000 !important; }
+a:hover { text-decoration: underline !important; }
+
+/* Ajustes para barras y fills */
+.progress-track { background: #ffffff !important; }
+.progress-fill { background: #000000 !important; }
+
+/* Asegurar legibilidad en tablas */
+.table-compact th, .table-compact td, table th, table td { background: #ffffff !important; color: #000000 !important; }
+
