@@ -67,7 +67,6 @@ if ($r) {
             </div>
         </header>
 
-<<<<<<< HEAD
         <main style="display:flex;gap:18px;align-items:flex-start;">
             <aside style="width:260px;">
                 <div class="card" style="padding:14px;">
@@ -79,20 +78,10 @@ if ($r) {
                         <a class="nav-link" href="agregar_observacion.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Agregar observación</a>
                         <a class="btn-secundario" href="../logout.php" style="display:inline-block;margin-top:8px;">Cerrar sesión</a>
                     </nav>
-=======
         <main>
-            <!-- Resumen rápido -->
-            <section
-                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $totalStudents; ?></p>
->>>>>>> fa64e408c45a3a2b5bb55e0e33f39910189566b2
-                </div>
-            </aside>
+
 
             <section style="flex:1;">
-                <!-- Resumen rápido -->
                 <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
                     <div class="card">
                         <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
@@ -115,14 +104,12 @@ if ($r) {
                     </div>
                 </section>
 
-<<<<<<< HEAD
                 <section style="margin-top:8px;">
                     <div class="card">
                         <h3 style="color:#fff;margin-bottom:8px;">Accesos rápidos</h3>
                         <p style="color:var(--muted);margin:0;">Usa el menú a la izquierda para navegar entre las secciones administrativas.</p>
                     </div>
                 </section>
-=======
             <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
                 <a class="card" href="estudiantes.php" style="text-decoration:none;">
                     <h3 style="color:#fff;margin-bottom:8px;">Estudiantes</h3>
@@ -145,7 +132,6 @@ if ($r) {
                     style="display:flex;flex-direction:column;justify-content:space-between;">
                     <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
                 </div>
->>>>>>> fa64e408c45a3a2b5bb55e0e33f39910189566b2
             </section>
         </main>
     </div>
