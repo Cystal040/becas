@@ -212,9 +212,6 @@ html, body {
     color: #000000 !important;
 }
 
-/* Asegurar que todo el texto sea negro */
-    /* Mantener overlay y fondo del sitio; asegurar texto negro para legibilidad */
-    /* NOTA: no forzamos el fondo global para no eliminar el overlay translúcido */
     body * {
         color: #000000 !important;
     }
