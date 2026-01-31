@@ -78,7 +78,8 @@ select option{
 
 .btn{ background:var(--primary); color:#fff; padding:10px 18px; border-radius:8px; border:none; font-weight:600; }
 .btn:hover{ background:var(--primary-dark); }
-.btn-secundario{ background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); padding:10px 18px; border-radius:8px; }
+.btn-secundario{ background:var(--primary); color:#fff; padding:10px 18px; border-radius:8px; border:none; font-weight:600; }
+.btn-secundario:hover{ background:var(--primary-dark); }
 
 /* Mensajes */
 .alert{ padding:10px 14px; border-radius:8px; margin-bottom:12px; background:var(--glass); color:var(--muted); }
@@ -127,7 +128,6 @@ a:hover{ text-decoration:underline; }
 
 /* Ajustes botones compactos */
 .btn-small{ padding:6px 10px; font-size:14px; border-radius:6px; }
-.btn-secundario{ padding:8px 12px; }
 
 /* Tabla responsive: permitir scroll horizontal en pantallas pequeñas */
 .table-responsive{ overflow:auto; -webkit-overflow-scrolling:touch; }
@@ -145,3 +145,60 @@ a:hover{ text-decoration:underline; }
 @media (max-width:640px){
     .notif-bell svg{ width:18px; height:18px; }
 }
+
+/* Entrance animations for UI polish */
+.animate-item {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+    transition: opacity 420ms cubic-bezier(.2,.9,.2,1), transform 420ms cubic-bezier(.2,.9,.2,1);
+    will-change: transform, opacity;
+}
+.animate-item.enter {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Stagger helper classes for small delays */
+.stagger-1 { transition-delay: 90ms; }
+.stagger-2 { transition-delay: 180ms; }
+.stagger-3 { transition-delay: 270ms; }
+
+/* Button micro interaction */
+.btn-animated {
+    transition: transform 160ms cubic-bezier(.2,.9,.2,1), box-shadow 160ms ease;
+}
+.btn-animated:active {
+    transform: scale(0.985);
+}
+
+/* Subtle floating for logo */
+.logo-float { animation: float 4.5s ease-in-out infinite; }
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
+}
+
+/* Progress bar for document completion */
+.progress-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    height: 12px;
+    width: 100%;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #06b6d4, #2563eb);
+    width: 0%;
+    transition: width 600ms cubic-bezier(.2,.9,.2,1);
+}
+.stat-cards { display:flex; gap:12px; margin-top:12px; }
+.stat-card { background: rgba(255,255,255,0.03); padding:12px; border-radius:8px; flex:1; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+.quick-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.faq { margin-top:16px; }
+.faq-item { background: rgba(255,255,255,0.02); padding:12px; border-radius:8px; margin-bottom:8px; }
+.faq-toggle { cursor:pointer; color:var(--accent); font-weight:600; }
+/* FAQ body for collapsible items */
+.faq-body { color:var(--muted); margin-top:8px; overflow: hidden; max-height: 0; transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; opacity: 0; }
+.faq-body.open { max-height: 420px; opacity: 1; }

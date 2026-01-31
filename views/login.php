@@ -9,28 +9,65 @@
     <link rel="icon" href="../assets/img/icono.png">
     <style>
         /* Centrar el contenedor de login en esta página */
-        body.fondo { display:flex; align-items:center; justify-content:center; padding:0; }
-        .contenedor { margin:0; width:100%; max-width:760px; }
+        body.fondo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .contenedor {
+            margin: 0;
+            width: 100%;
+            max-width: 760px;
+        }
+
         /* Agrandar tarjeta y formularios */
-        .login-card{ max-width:680px; margin:0 auto; padding:28px; }
-        .login-card label{ font-size:15px; }
-        .login-card input[type="text"], .login-card input[type="password"]{ padding:12px 14px; font-size:16px; }
-        .login-card .botones .btn, .login-card .botones .btn-secundario{ padding:12px 18px; font-size:15px; }
-        .login-header img{ height:78px; }
-        .login-header h2{ font-size:1.4rem; }
+        .login-card {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 28px;
+        }
+
+        .login-card label {
+            font-size: 15px;
+        }
+
+        .login-card input[type="text"],
+        .login-card input[type="password"] {
+            padding: 12px 14px;
+            font-size: 16px;
+        }
+
+        .login-card .botones .btn,
+        .login-card .botones .btn-secundario {
+            padding: 12px 18px;
+            font-size: 15px;
+        }
+
+        .login-header img {
+            height: 78px;
+        }
+
+        .login-header h2 {
+            font-size: 1.4rem;
+        }
     </style>
 </head>
 
 <body class="fondo">
 
     <div class="contenedor">
-        <div class="login-header" style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div class="login-header animate-item logo-float stagger-1"
+            style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
             <a href="../index.php" style="display:inline-block;">
-                <img src="../assets/img/icono.png" alt="UNEFA" style="height:58px;object-fit:contain;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12);">
+                <img src="../assets/img/icono.png" alt="UNEFA"
+                    style="height:96px;object-fit:contain;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.18);">
             </a>
             <div>
-                <h2 style="margin:0;">Portal de Becas UNEFA</h2>
-                <p style="margin:2px 0 0 0;color:var(--muted);font-size:0.95rem;">Inicia sesión para gestionar tus documentos</p>
+                <h2 style="margin:0;font-size:1.6rem;">Portal de Becas UNEFA</h2>
+                <p style="margin:4px 0 0 0;color:var(--muted);font-size:1rem;">Inicia sesión para gestionar tus
+                    documentos</p>
             </div>
         </div>
 
@@ -41,25 +78,31 @@
         unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         ?>
 
-        <div class="login-card" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.08);max-width:420px;">
+        <div class="login-card animate-item stagger-2"
+            style="background:rgba(255,255,255,0.03);padding:36px;border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,0.25);max-width:720px;margin:0 auto;">
             <form action="../controllers/login_process.php" method="POST">
 
                 <label>Usuario o correo:</label>
-                <input type="text" name="user" placeholder="Usuario o correo" required>
+                <input type="text" name="user" placeholder="Usuario o correo" required style="font-size:16px;">
 
                 <label>Contraseña:</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" required style="font-size:16px;">
 
                 <div class="botones" style="display:flex;gap:10px;margin-top:10px;">
-                    <button class="btn" type="submit">Entrar</button>
-                    <button class="btn-secundario" type="button" onclick="window.location.href='../index.php'">Inicio</button>
-                    <a class="btn" href="registro.php" style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
+                    <button class="btn btn-animated" type="submit">Entrar</button>
+                    <button class="btn-secundario btn-animated" type="button"
+                        onclick="window.location.href='../index.php'">Inicio</button>
+                    <a class="btn btn-animated" href="registro.php"
+                        style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
                 </div>
             </form>
 
-            <div style="margin-top:12px; display:flex;justify-content:space-between;align-items:center;font-size:0.95rem;">
-                <a href="documentos.php">Documentos requeridos</a>
+            <div style="margin-top:12px; display:flex;justify-content:flex-end;align-items:center;font-size:0.95rem;">
                 <a href="#" onclick="alert('Contacto: soporte@unefa.edu.ve')">Ayuda</a>
+            </div>
+
+            <div style="margin-top:12px; text-align:center; font-size:0.98rem;">
+                ¿No tienes cuenta? <a href="registro.php" style="color:var(--accent); font-weight:600;">Regístrate</a>
             </div>
         </div>
     </div>
@@ -113,6 +156,15 @@
                 showToast(<?php echo json_encode($flash_error); ?>, 'error');
             <?php endif; ?>
         })();
+    </script>
+    <script>
+        // Activar animaciones de entrada con pequeño stagger
+        document.addEventListener('DOMContentLoaded', function () {
+            var items = document.querySelectorAll('.animate-item');
+            items.forEach(function (el, idx) {
+                setTimeout(function () { el.classList.add('enter'); }, idx * 120 + 60);
+            });
+        });
     </script>
 </body>
 

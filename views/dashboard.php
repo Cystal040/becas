@@ -82,39 +82,40 @@ if ($stmt) {
 </head>
 
 <body class="fondo">
-    <div class="contenedor">
-        <h2>Hola, <?php echo htmlspecialchars($nombre_usuario); ?></h2>
+    <div class="contenedor animate-item stagger-1">
+        <h2 class="animate-item stagger-2">Hola, <?php echo htmlspecialchars($nombre_usuario); ?></h2>
 
         <div class="panel-grid">
-            <div class="panel-card">
+            <div class="panel-card animate-item stagger-2">
                 <h4>Total requeridos</h4>
                 <p><?php echo $total; ?></p>
             </div>
-            <div class="panel-card">
+            <div class="panel-card animate-item stagger-2">
                 <h4>Enviados</h4>
                 <p><?php echo $enviados; ?></p>
             </div>
-            <div class="panel-card">
+            <div class="panel-card animate-item stagger-2">
                 <h4>Faltantes</h4>
                 <p><?php echo $faltantes; ?></p>
             </div>
-            <div class="panel-card">
+            <div class="panel-card animate-item stagger-2">
                 <h4>Última subida</h4>
                 <p><?php echo htmlspecialchars($ultima); ?></p>
             </div>
         </div>
 
         <div class="grid" style="gap:12px; margin-top:18px;">
-            <a class="card" href="Interfaz_estudiante.php">Resumen</a>
-            <a class="card" href="mis_envios.php">Mis envíos</a>
-            <a class="card" href="subir_documentos.php">Subir documento</a>
-            <a class="card" href="documentos.php">Documentos requeridos</a>
+            <a class="card animate-item stagger-3" href="Interfaz_estudiante.php">Resumen</a>
+            <a class="card animate-item stagger-3" href="mis_envios.php">Mis envíos</a>
+            <a class="card animate-item stagger-3" href="subir_documentos.php">Subir documento</a>
+            <a class="card animate-item stagger-3" href="documentos.php">Documentos requeridos</a>
         </div>
 
         <div style="margin-top:18px;">
-            <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
+            <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
         </div>
     </div>
+    <script src="../assets/js/animations.js"></script>
 </body>
 
 </html>

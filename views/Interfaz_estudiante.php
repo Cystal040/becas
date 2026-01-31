@@ -50,6 +50,42 @@ foreach ($tipos as $t) {
         $faltantes[] = $t['nombre_documento'];
     }
 }
+// Estadísticas básicas
+$total_tipos = 0;
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM tipo_documento");
+if ($stmt) {
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $r = $res->fetch_assoc();
+    $total_tipos = (int) ($r['total'] ?? 0);
+    $stmt->close();
+}
+$enviados_count = 0;
+$stmt = $conn->prepare("SELECT COUNT(DISTINCT id_tipo_documento) AS enviados FROM documento WHERE id_estudiante = ?");
+if ($stmt) {
+    $stmt->bind_param('i', $id_estudiante);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $r = $res->fetch_assoc();
+    $enviados_count = (int) ($r['enviados'] ?? 0);
+    $stmt->close();
+}
+$faltantes_count = max(0, $total_tipos - $enviados_count);
+$ultima_subida = '-';
+$stmt = $conn->prepare("SELECT fecha_subida FROM documento WHERE id_estudiante = ? ORDER BY fecha_subida DESC LIMIT 1");
+if ($stmt) {
+    $stmt->bind_param('i', $id_estudiante);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($r = $res->fetch_assoc()) {
+        $ultima_subida = date('d/m/Y H:i', strtotime($r['fecha_subida']));
+    }
+    $stmt->close();
+}
+?>
+<?php
+// Porcentaje de avance
+$porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_tipos) * 100) : 0;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -62,23 +98,54 @@ foreach ($tipos as $t) {
 </head>
 
 <body class="fondo">
-    <div class="contenedor">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+    <div class="contenedor animate-item stagger-1">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <h1 class="animate-item stagger-2">Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h1>
+            <div class="quick-actions animate-item stagger-2">
+                <a class="btn-secundario btn-animated" href="../logout.php">Cerrar sesión</a>
+                <a class="btn-secundario" href="mailto:soporte@unefa.edu.ve">✉️ Soporte</a>
+            </div>
+        </div>
 
-        <section style="margin-top:12px;">
-            <h3>Documentos faltantes</h3>
-            <?php if (empty($faltantes)): ?>
-                <p>Has subido todos los documentos requeridos.</p>
-            <?php else: ?>
-                <ul>
-                    <?php foreach ($faltantes as $f): ?>
-                        <li><?php echo htmlspecialchars($f); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-        </section>
+        <div class="stat-cards animate-item stagger-2">
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Total requeridos</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $total_tipos; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Enviados</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $enviados_count; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Faltantes</div>
+                <div style="font-size:20px;font-weight:700;color:#fff;"><?php echo $faltantes_count; ?></div>
+            </div>
+            <div class="stat-card">
+                <div style="color:var(--muted);font-size:13px;">Última subida</div>
+                <div style="font-size:14px;color:#fff;"><?php echo htmlspecialchars($ultima_subida); ?></div>
+            </div>
+        </div>
 
-        <section style="margin-top:14px;">
+        <!-- Barra de progreso general -->
+        <div style="margin-top:12px;" class="animate-item stagger-2">
+            <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <div>
+                        <div style="color:var(--muted);font-size:13px;">Progreso de envío</div>
+                        <div style="font-size:16px;font-weight:700;color:#fff;"><?php echo $porcentaje_completado; ?>% completado</div>
+                    </div>
+                    <div style="min-width:220px;max-width:320px;flex:1;">
+                        <div class="progress-track" aria-hidden="true">
+                            <div class="progress-fill" style="width: <?php echo $porcentaje_completado; ?>%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información final: faltantes y preguntas frecuentes (texto informativo) -->
+
+        <section style="margin-top:14px;" class="animate-item stagger-3">
             <h3>Estado de tus documentos</h3>
             <div class="table-responsive">
                 <table class="table-compact">
@@ -118,8 +185,35 @@ foreach ($tipos as $t) {
         </section>
 
         <div class="botones" style="margin-top:12px;">
-            <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
-            <a class="btn" href="subir_documentos.php">Subir documento</a>
+            <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
+        </div>
+
+        <!-- Información removida según solicitud del usuario -->
+
+        <!-- Contactos rápidos (se eliminó la sección de plantillas) -->
+        <div style="margin-top:12px;">
+            <div class="card">
+                <h3>Contactos rápidos</h3>
+                <p style="color:var(--muted);margin-bottom:8px;">¿Necesitas ayuda? Contáctanos por cualquiera de estos medios:</p>
+                <p style="margin:6px 0;color:var(--muted);">📧 Soporte: <a href="mailto:soporte@unefa.edu.ve?subject=Consulta%20de%20documentos%20-%20<?php echo urlencode($nombre_usuario); ?>">soporte@unefa.edu.ve</a></p>
+                <p style="margin:6px 0;color:var(--muted);">📞 Teléfono: <a href="tel:+582412345678">+58 241-234-5678</a></p>
+                <p style="margin-top:10px;color:var(--muted);">O envía una consulta rápida:</p>
+                <p><a class="btn btn-small" href="mailto:soporte@unefa.edu.ve?subject=Consulta%20rápida%20-%20<?php echo urlencode($nombre_usuario); ?>&body=Hola,%20tengo%20una%20consulta%20sobre%20mis%20documentos.">Enviar consulta</a></p>
+            </div>
+        </div>
+
+        <!-- FAQ: fuera de la tarjeta, items desplegables -->
+        <div class="faq" aria-label="Preguntas frecuentes">
+            <div class="faq-item animate-item stagger-3">
+                <div class="faq-toggle">¿Cómo subir un documento?</div>
+                <div class="faq-body">Selecciona el tipo de documento, elige el archivo (PDF, JPG, PNG, DOC) y presiona
+                    "Subir documento". Asegúrate de que el tamaño sea menor a 5MB.</div>
+            </div>
+            <div class="faq-item animate-item stagger-3">
+                <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
+                <div class="faq-body">Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación
+                    cuando cambie el estado.</div>
+            </div>
         </div>
     </div>
     <!-- Toast container -->
@@ -175,6 +269,22 @@ foreach ($tipos as $t) {
                 showToast(<?php echo json_encode($flash_error); ?>, 'error');
             <?php endif; ?>
         })();
+    </script>
+    <script src="../assets/js/animations.js"></script>
+    <script>
+        // Toggle FAQ items: add/remove class .open on .faq-body
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('.faq-toggle')) {
+                var body = e.target.nextElementSibling;
+                if (!body) return;
+                var isOpen = body.classList.contains('open');
+                if (isOpen) {
+                    body.classList.remove('open');
+                } else {
+                    body.classList.add('open');
+                }
+            }
+        });
     </script>
 </body>
 
