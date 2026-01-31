@@ -17,6 +17,8 @@
             <li>Fotocopia de la cédula (PDF, JPG, PNG)</li>
             <li>RIF (PDF o DOC)</li>
             <li>Foto tipo carnet (Imagen, PDF o DOC)</li>
+            <li>Carnet de la patria (Imagen o PDF)</li>
+            <li>Referencia bancaria (PDF o imagen)</li>
         </ul>
         <div class="botones">
             <a href="../index.php" class="btn">Volver al inicio</a>

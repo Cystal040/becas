@@ -26,7 +26,9 @@ if (empty($tipos)) {
         [2, 'Récord académico'],
         [3, 'Cédula'],
         [4, 'RIF'],
-        [5, 'Foto tipo carnet']
+        [5, 'Foto tipo carnet'],
+        [6, 'Carnet de la patria'],
+        [7, 'Referencia bancaria']
     ];
     $ins = $conn->prepare("INSERT INTO tipo_documento (id_tipo_documento, nombre_documento) VALUES (?, ?)");
     if ($ins) {
@@ -138,7 +140,9 @@ if (isset($_POST['subir'])) {
         2 => 'record/',
         3 => 'cedula/',
         4 => 'rif/',
-        5 => 'foto/'
+        5 => 'foto/',
+        6 => 'carnet/',
+        7 => 'referencia_bancaria/'
     ];
 
     if (!isset($folders[$id_tipo])) {
