@@ -92,7 +92,10 @@ table th, table td{ padding:10px 12px; text-align:left; border-bottom:1px solid 
 table th{ color:#fff; background:transparent; font-weight:600; }
 
 /* Tarjeta y lista */
-.card{ background: rgba(255,255,255,0.02); padding:16px; border-radius:8px; box-shadow: 0 6px 18px rgba(2,6,23,0.45); }
+.card{ background: #ffffff; padding:16px; border-radius:8px; box-shadow: 0 6px 18px rgba(2,6,23,0.12); color: #111; }
+/* Asegurar que el texto dentro de las tarjetas sea oscuro y enlaces mantengan el acento */
+.card * { color: #111; }
+.card a{ color: var(--accent); }
 
 /* Responsive */
 @media (max-width: 800px){
@@ -194,10 +197,10 @@ a:hover{ text-decoration:underline; }
     transition: width 600ms cubic-bezier(.2,.9,.2,1);
 }
 .stat-cards { display:flex; gap:12px; margin-top:12px; }
-.stat-card { background: rgba(255,255,255,0.03); padding:12px; border-radius:8px; flex:1; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+.stat-card { background: #ffffff; padding:12px; border-radius:8px; flex:1; box-shadow:0 6px 14px rgba(2,6,23,0.08); color:#111; }
 .quick-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
 .faq { margin-top:16px; }
-.faq-item { background: rgba(255,255,255,0.02); padding:12px; border-radius:8px; margin-bottom:8px; }
+.faq-item { background: #ffffff; padding:12px; border-radius:8px; margin-bottom:8px; color:#111; }
 .faq-toggle { cursor:pointer; color:var(--accent); font-weight:600; }
 /* FAQ body for collapsible items */
 .faq-body { color:var(--muted); margin-top:8px; overflow: hidden; max-height: 0; transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; opacity: 0; }
