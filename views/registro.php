@@ -56,6 +56,24 @@ if (isset($_GET['error'])) {
             <input type="text" name="apellido" placeholder="Apellido" required>
             <input type="text" name="cedula" placeholder="Cédula" required>
             <input type="email" name="correo" placeholder="Correo" required>
+
+            <label>Carrera</label>
+            <select name="carrera" id="carrera-select" required>
+                <option value="">Seleccione carrera</option>
+                <option value="ingenieria_sistemas">Ingeniería de Sistemas</option>
+                <option value="ingenieria_mecanica">Ingeniería Mecánica</option>
+                <option value="enfermeria">Enfermería</option>
+                <option value="ingenieria_naval">Ingeniería Naval</option>
+            </select>
+
+            <label>Sección</label>
+            <input type="text" name="seccion" id="seccion" placeholder="Sección (ej. A, B)" required>
+
+            <label>Semestre</label>
+            <select name="semestre" id="semestre-select" required>
+                <option value="">Seleccione semestre</option>
+            </select>
+
             <input type="password" name="password" placeholder="Contraseña" required>
             <button class="btn btn-animated" type="submit" name="registrar">Registrarse</button>
         </form>
@@ -97,6 +115,30 @@ if (isset($_GET['error'])) {
         }
     </style>
     <script>
+        // Mapeo de semestres por carrera
+        (function(){
+            var mapping = {
+                'ingenieria_sistemas': 10,
+                'ingenieria_mecanica': 10,
+                'ingenieria_naval': 10,
+                'enfermeria': 8
+            };
+            var carrera = document.getElementById('carrera-select');
+            var semestre = document.getElementById('semestre-select');
+            function populate() {
+                var val = carrera.value;
+                semestre.innerHTML = '<option value="">Seleccione semestre</option>';
+                if (!mapping[val]) return;
+                var max = mapping[val];
+                for (var i=1;i<=max;i++){
+                    var o = document.createElement('option'); o.value = i; o.textContent = i; semestre.appendChild(o);
+                }
+            }
+            if (carrera) carrera.addEventListener('change', populate);
+            // inicializar si ya hay valor
+            populate();
+        })();
+
         (function () {
             function showToast(msg, type) {
                 if (!msg) return;
