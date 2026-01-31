@@ -55,7 +55,7 @@ if (isset($_GET['error'])) {
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
             <input type="text" name="cedula" placeholder="Cédula" required>
-            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="email" name="correo" placeholder="Correo (ej. usuario@dominio.com)" required>
 
             <label>Carrera</label>
             <select name="carrera" id="carrera-select" required>
@@ -67,7 +67,7 @@ if (isset($_GET['error'])) {
             </select>
 
             <label>Sección</label>
-            <input type="text" name="seccion" id="seccion" placeholder="Sección (ej. A, B)" required>
+            <input type="text" name="seccion" id="seccion" placeholder="Sección (ej. D1, D2,...)" required>
 
             <label>Semestre</label>
             <select name="semestre" id="semestre-select" required>
