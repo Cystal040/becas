@@ -7,13 +7,11 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Obtener documentos (comprobar si la columna 'estado' existe para evitar errores en esquemas distintos)
 $has_estado = false;
 $col_q = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'documento' AND COLUMN_NAME = 'estado'");
 if ($col_q && $col_q->num_rows > 0) { $has_estado = true; }
 if ($col_q) { $col_q->close(); }
 
-// Detectar columna FK en `documento` que apunte al estudiante (si existe)
 $doc_student_col = null;
 $possible_doc_cols = ['id_estudiante','estudiante_id','id_usuario','usuario_id','user_id','student_id'];
 foreach ($possible_doc_cols as $c) {
@@ -23,7 +21,6 @@ foreach ($possible_doc_cols as $c) {
     if ($doc_student_col) break;
 }
 
-// Detectar PK en tabla estudiante
 $est_pk = null;
 $possible_est_cols = ['id_estudiante','id','usuario_id','id_usuario'];
 foreach ($possible_est_cols as $c) {
@@ -52,7 +49,6 @@ $sql .= "\n    ORDER BY d.fecha_subida DESC";
 $resultado = $conn->query($sql);
 if (!$resultado) {
     error_log('admin/revisar_documentos.php SQL error: ' . $conn->error);
-    // Crear un resultado vacío para que el resto del código no falle
     $resultado = new class {
         public function fetch_assoc() { return false; }
     };
@@ -111,15 +107,12 @@ if (!$resultado) {
         <div class="botones" style="margin-top:16px;">
             <a class="btn-secundario" href="admin_panel.php">⬅ Volver</a>
         </div>
-
-    </div> <!-- .contenedor -->
-
+    </div>
 </body>
 
 </html>
 
 <script>
-// Confirmar acciones de aprobar/rechazar desde la lista
 document.querySelectorAll('.confirm-action-form').forEach(function(f){
     f.addEventListener('submit', function(e){
         e.preventDefault();
