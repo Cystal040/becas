@@ -88,12 +88,6 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
                     </div>
                 </section>
 
-                <section style="margin-top:8px;">
-                    <div class="card">
-                        <h3 style="color:#fff;margin-bottom:8px;">Accesos rápidos</h3>
-                        <p style="color:var(--muted);margin:0;">Usa el menú a la izquierda para navegar entre las secciones administrativas.</p>
-                    </div>
-                </section>
             </section>
         </main>
     </div>
