@@ -47,51 +47,50 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
             </div>
         </header>
 
-        <main>
-            <!-- Resumen rápido -->
-            <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $totalStudents; ?></p>
+        <main style="display:flex;gap:18px;align-items:flex-start;">
+            <aside style="width:260px;">
+                <div class="card" style="padding:14px;">
+                    <h3 style="color:#fff;margin-top:0;margin-bottom:10px;">Menú</h3>
+                    <nav style="display:flex;flex-direction:column;gap:8px;">
+                        <a class="nav-link" href="estudiantes.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Estudiantes</a>
+                        <a class="nav-link" href="revisar_documentos.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Revisar documentos</a>
+                        <a class="nav-link" href="historial.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Historial</a>
+                        <a class="nav-link" href="agregar_observacion.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Agregar observación</a>
+                        <a class="btn-secundario" href="../logout.php" style="display:inline-block;margin-top:8px;">Cerrar sesión</a>
+                    </nav>
                 </div>
+            </aside>
 
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">🟡 En espera</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $pendientes; ?></p>
-                </div>
+            <section style="flex:1;">
+                <!-- Resumen rápido -->
+                <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
+                    <div class="card">
+                        <h3 style="color:#fff;margin-bottom:6px;">Total estudiantes</h3>
+                        <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $totalStudents; ?></p>
+                    </div>
 
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">✅ Aprobados</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $aprobados; ?></p>
-                </div>
+                    <div class="card">
+                        <h3 style="color:#fff;margin-bottom:6px;">🟡 En espera</h3>
+                        <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $pendientes; ?></p>
+                    </div>
 
-                <div class="card">
-                    <h3 style="color:#fff;margin-bottom:6px;">❌ Rechazados</h3>
-                    <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $rechazados; ?></p>
-                </div>
+                    <div class="card">
+                        <h3 style="color:#fff;margin-bottom:6px;">✅ Aprobados</h3>
+                        <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $aprobados; ?></p>
+                    </div>
 
-                <!-- Tarjeta de "Solicitudes pendientes" eliminada (redundante con En espera) -->
-            </section>
+                    <div class="card">
+                        <h3 style="color:#fff;margin-bottom:6px;">❌ Rechazados</h3>
+                        <p style="font-size:22px;margin:0;color:var(--muted);"><?php echo $rechazados; ?></p>
+                    </div>
+                </section>
 
-            <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-                <a class="card" href="estudiantes.php" style="text-decoration:none;">
-                    <h3 style="color:#fff;margin-bottom:8px;">Estudiantes</h3>
-                    <p style="color:var(--muted);margin:0;">Ver y buscar todos los estudiantes registrados.</p>
-                </a>
-
-                <a class="card" href="revisar_documentos.php" style="text-decoration:none;">
-                    <h3 style="color:#fff;margin-bottom:8px;">Revisar documentos</h3>
-                    <p style="color:var(--muted);margin:0;">Ver y gestionar los documentos pendientes de los estudiantes.</p>
-                </a>
-
-                <a class="card" href="historial.php" style="text-decoration:none;">
-                    <h3 style="color:#fff;margin-bottom:8px;">Historial</h3>
-                    <p style="color:var(--muted);margin:0;">Ver el registro de acciones administrativas sobre documentos.</p>
-                </a>
-
-                <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
-                    <a class="btn-secundario" href="../logout.php">Cerrar sesión</a>
-                </div>
+                <section style="margin-top:8px;">
+                    <div class="card">
+                        <h3 style="color:#fff;margin-bottom:8px;">Accesos rápidos</h3>
+                        <p style="color:var(--muted);margin:0;">Usa el menú a la izquierda para navegar entre las secciones administrativas.</p>
+                    </div>
+                </section>
             </section>
         </main>
     </div>
