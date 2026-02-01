@@ -57,39 +57,22 @@ if ($stmt) {
 
     <form method="GET" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
         <input type="text" name="cedula" placeholder="Cédula" value="<?php echo htmlspecialchars($cedula ?? ''); ?>">
-
-        <select name="carrera">
-            <option value="">Todas las carreras</option>
-            <?php if ($carreras && $carreras->num_rows): while ($c = $carreras->fetch_assoc()): $cv = $c['carrera']; ?>
-                <option value="<?php echo htmlspecialchars($cv); ?>" <?php echo ($f_carrera === $cv) ? 'selected' : ''; ?>><?php echo htmlspecialchars($cv); ?></option>
-            <?php endwhile; endif; ?>
-        </select>
-
-        <select name="semestre">
-            <option value="">Todos los semestres</option>
-            <?php if ($semestres && $semestres->num_rows): while ($s = $semestres->fetch_assoc()): $sv = $s['semestre']; ?>
-                <option value="<?php echo htmlspecialchars($sv); ?>" <?php echo ($f_semestre === $sv) ? 'selected' : ''; ?>><?php echo htmlspecialchars($sv); ?></option>
-            <?php endwhile; endif; ?>
-        </select>
-
-        <button class="btn" type="submit">Filtrar</button>
+        <button class="btn" type="submit">Buscar</button>
         <a class="btn-secundario" href="estudiantes.php">Limpiar</a>
     </form>
 
     <div class="table-responsive">
     <table class="table-compact">
         <thead>
-            <tr><th>Nombre</th><th>Cédula</th><th>Carrera</th><th>Semestre</th><th>Correo</th><th>Acción</th></tr>
+            <tr><th>Nombre</th><th>Cédula</th><th>Correo</th><th>Acción</th></tr>
         </thead>
         <tbody>
         <?php while ($row = $res->fetch_assoc()): ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['nombre'] . ' ' . $row['apellido']); ?></td>
                 <td><?php echo htmlspecialchars($row['cedula']); ?></td>
-                <td><?php echo htmlspecialchars($row['carrera'] ?? ''); ?></td>
-                <td><?php echo htmlspecialchars($row['semestre'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars($row['correo']); ?></td>
-                <td><a class="button" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">Ver perfil</a></td>
+                <td><a class="btn-small" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">Ver perfil</a></td>
             </tr>
         <?php endwhile; ?>
         </tbody>
