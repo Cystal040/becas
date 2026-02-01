@@ -60,10 +60,10 @@ if (isset($_GET['error'])) {
             <label>Carrera</label>
             <select name="carrera" id="carrera-select" required>
                 <option value="">Seleccione carrera</option>
-                <option value="ingenieria_sistemas">Ingeniería de Sistemas</option>
-                <option value="ingenieria_mecanica">Ingeniería Mecánica</option>
-                <option value="enfermeria">TSU en Enfermería</option>
-                <option value="ingenieria_naval">Ingeniería Naval</option>
+                <option value="Ingenieria Sistemas">Ingeniería de Sistemas</option>
+                <option value="Ingenieria Mecanica">Ingeniería Mecánica</option>
+                <option value="TSU en Enfermeria">TSU en Enfermería</option>
+                <option value="Ingenieria Naval">Ingeniería Naval</option>
             </select>
 
             <label>Sección</label>
