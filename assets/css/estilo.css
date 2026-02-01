@@ -130,7 +130,20 @@ a:hover{ text-decoration:underline; }
 .status-rechazado .status-dot{ background:#c0392b; }
 
 /* Ajustes botones compactos */
-.btn-small{ padding:6px 10px; font-size:14px; border-radius:6px; }
+.btn-small{ 
+    padding:6px 10px; 
+    font-size:14px; 
+    border-radius:6px; 
+    background: transparent !important;
+    border: none !important;
+    color: var(--primary) !important; /* azul por defecto */
+    text-decoration: underline !important; /* mostrar línea abajo */
+    display: inline-block;
+}
+.btn-small:hover{
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
 
 /* Tabla responsive: permitir scroll horizontal en pantallas pequeñas */
 .table-responsive{ overflow:auto; -webkit-overflow-scrolling:touch; }
