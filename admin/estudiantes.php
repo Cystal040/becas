@@ -81,13 +81,13 @@ if ($stmt) {
                     <option value="<?php echo htmlspecialchars($sv); ?>" <?php echo ($f_semestre === $sv) ? 'selected' : ''; ?>><?php echo htmlspecialchars($sv); ?></option>
                 <?php endwhile; endif; ?>
             </select>
-        </div>
 
-        <select name="doc_estado">
-            <option value="">Todos los estados</option>
-            <option value="todos_aprobados" <?php echo ($f_docestado === 'todos_aprobados') ? 'selected' : ''; ?>>Todos los documentos aprobados</option>
-            <option value="todos_rechazados" <?php echo ($f_docestado === 'todos_rechazados') ? 'selected' : ''; ?>>Todos los documentos rechazados</option>
-        </select>
+            <select name="doc_estado">
+                <option value="">Todos los estados</option>
+                <option value="todos_aprobados" <?php echo ($f_docestado === 'todos_aprobados') ? 'selected' : ''; ?>>Todos los documentos aprobados</option>
+                <option value="todos_rechazados" <?php echo ($f_docestado === 'todos_rechazados') ? 'selected' : ''; ?>>Todos los documentos rechazados</option>
+            </select>
+        </div>
 
         <button class="btn" type="submit">Filtrar</button>
         <a class="btn-secundario" href="estudiantes.php">Limpiar</a>
