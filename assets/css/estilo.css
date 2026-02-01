@@ -252,3 +252,17 @@ a:hover { text-decoration: underline !important; }
 /* Asegurar legibilidad en tablas */
 .table-compact th, .table-compact td, table th, table td { background: #ffffff !important; color: #000000 !important; }
 
+/* Asegurar que los enlaces/elementos con clase btn-small mantengan estilo azul y subrayado
+   incluso si hay reglas globales que fuerzan color negro con !important */
+a.btn-small, .btn-small {
+    background: transparent !important;
+    border: none !important;
+    color: var(--primary) !important;
+    text-decoration: underline !important;
+    display: inline-block;
+}
+a.btn-small:hover, .btn-small:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
+
