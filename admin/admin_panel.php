@@ -56,7 +56,7 @@ if ($r) { $t = $r->fetch_assoc(); $rechazados = (int) ($t['c'] ?? 0); $r->close(
                     <h3 style="color:#fff;margin-top:0;margin-bottom:10px;">Menú</h3>
                     <nav style="display:flex;flex-direction:column;gap:8px;">
                         <a class="nav-link" href="estudiantes.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Estudiantes</a>
-                        <a class="nav-link" href="revisar_documentos.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Revisar documentos</a>
+                        <a class="nav-link" href="revisar_documentos.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Revisar solicitudes</a>
                         <a class="nav-link" href="historial.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Historial</a>
                         <a class="nav-link" href="cambiar_credenciales.php" style="text-decoration:none;color:inherit;padding:8px;border-radius:6px;">Cambiar usuario/clave</a>
                         <a class="btn-secundario" href="../logout.php" style="display:inline-block;margin-top:8px;">Cerrar sesión</a>
