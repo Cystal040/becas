@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Mostrar últimas 500 acciones por defecto
 $sql = "SELECT h.id, h.id_documento, h.accion, h.admin_id, h.observacion, h.fecha, d.id_estudiante, td.nombre_documento, e.nombre AS est_nombre, e.apellido AS est_apellido, a.usuario AS admin_usuario FROM historial_acciones h LEFT JOIN documento d ON h.id_documento = d.id_documento LEFT JOIN tipo_documento td ON d.id_tipo_documento = td.id_tipo_documento LEFT JOIN estudiante e ON d.id_estudiante = e.id_estudiante LEFT JOIN administrador a ON h.admin_id = a.id_admin ORDER BY h.fecha DESC LIMIT 500";
 $res = $conn->query($sql);
 
