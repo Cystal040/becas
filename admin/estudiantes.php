@@ -89,7 +89,7 @@ if ($stmt) {
                 <td><?php echo htmlspecialchars($row['carrera'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars($row['semestre'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars($row['correo']); ?></td>
-                <td><a class="btn-small" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">Ver perfil</a></td>
+                <td><a class="button" href="estudiante_perfil.php?id=<?php echo (int)$row['id_estudiante']; ?>">Ver perfil</a></td>
             </tr>
         <?php endwhile; ?>
         </tbody>
