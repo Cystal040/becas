@@ -84,8 +84,8 @@ if ($stmt) {
 
             <select name="doc_estado">
                 <option value="">Todos los estados</option>
-                <option value="todos_aprobados" <?php echo ($f_docestado === 'todos_aprobados') ? 'selected' : ''; ?>>Todos los documentos aprobados</option>
-                <option value="todos_rechazados" <?php echo ($f_docestado === 'todos_rechazados') ? 'selected' : ''; ?>>Todos los documentos rechazados</option>
+                <option value="todos_aprobados" <?php echo ($f_docestado === 'todos_aprobados') ? 'selected' : ''; ?>>Aprobados</option>
+                <option value="todos_rechazados" <?php echo ($f_docestado === 'todos_rechazados') ? 'selected' : ''; ?>>Rechazados</option>
             </select>
         </div>
 
