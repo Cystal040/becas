@@ -138,7 +138,6 @@ if ($stmt = $conn->prepare($sql)) {
 
         <div style="margin-top:12px;display:flex;gap:8px;">
             <button class="btn-principal" id="btnExport">Exportar PDF</button>
-            <a class="btn-secundario" href="/">Ir al sitio</a>
         </div>
     </div>
 
