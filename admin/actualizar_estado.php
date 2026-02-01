@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Aceptar POST para mayor seguridad
 $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 $estado = isset($_POST['estado']) ? $_POST['estado'] : '';
 $observacion = isset($_POST['observacion']) ? trim($_POST['observacion']) : null;
@@ -17,7 +16,6 @@ if ($id <= 0 || !in_array($estado, ['aprobado','rechazado'])) {
     exit;
 }
 
-// Ver estado actual para bloquear cambios si ya está aprobado
 $cur = $conn->prepare("SELECT estado FROM documento WHERE id_documento = ? LIMIT 1");
 if ($cur) {
     $cur->bind_param('i', $id);
