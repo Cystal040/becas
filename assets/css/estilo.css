@@ -107,6 +107,16 @@ table th{ color:#000; background:transparent; font-weight:600; }
     input[type="text"], input[type="email"], input[type="password"], select{ font-size:14px; }
 }
 
+/* Fila de filtros compacta para listados: mantener elementos inline y con ancho reducido */
+.filters-row > input[type="text"], .filters-row > select {
+    flex: 0 0 170px;
+    max-width: 170px;
+}
+
+@media (max-width:640px){
+    .filters-row > input[type="text"], .filters-row > select { flex: 1 1 100%; max-width: none; }
+}
+
 /* Pequeños detalles */
 a{ color:var(--accent); text-decoration:none; }
 a:hover{ text-decoration:underline; }
