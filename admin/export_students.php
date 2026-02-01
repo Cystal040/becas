@@ -41,7 +41,6 @@ if (!empty($_GET['estado']) && $_GET['estado'] !== 'todos') { $sql .= ' HAVING e
 $students = [];
 if ($stmt = $conn->prepare($sql)) {
     if (!empty($params)) {
-        // Construir array de parámetros con el string de tipos al inicio
         $bind_names = [];
         $bind_names[] = $types;
         foreach ($params as $p) { $bind_names[] = $p; }
