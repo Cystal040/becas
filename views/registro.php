@@ -54,7 +54,7 @@ if (isset($_GET['error'])) {
         <form action="../controllers/register_process.php" method="POST" class="animate-item stagger-3">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
-            <input type="text" name="cedula" placeholder="Cédula" required>
+            <input type="text" name="cedula" placeholder="Cédula (ej. 123456789)" required>
             <input type="email" name="correo" placeholder="Correo (ej. usuario@dominio.com)" required>
 
             <label>Carrera</label>
@@ -62,7 +62,7 @@ if (isset($_GET['error'])) {
                 <option value="">Seleccione carrera</option>
                 <option value="ingenieria_sistemas">Ingeniería de Sistemas</option>
                 <option value="ingenieria_mecanica">Ingeniería Mecánica</option>
-                <option value="enfermeria">Enfermería</option>
+                <option value="enfermeria">TSU en Enfermería</option>
                 <option value="ingenieria_naval">Ingeniería Naval</option>
             </select>
 
