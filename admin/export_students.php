@@ -28,7 +28,12 @@ $types = '';
 if (!empty($_GET['carrera'])) { $conditions[] = 'e.carrera = ?'; $params[] = $_GET['carrera']; $types .= 's'; }
 if (!empty($_GET['semestre'])) { $conditions[] = 'e.semestre = ?'; $params[] = $_GET['semestre']; $types .= 's'; }
 
-$sql = "SELECT e.id, e.nombre, e.apellido, e.cedula, e.carrera, e.semestre,\n+CASE WHEN SUM(documento.estado='aprobado')>0 THEN 'aprobado' WHEN SUM(documento.estado='pendiente')>0 THEN 'pendiente' WHEN SUM(documento.estado='rechazado')>0 THEN 'rechazado' ELSE 'sin_documentos' END AS estado_solicitud\n+FROM estudiante e\n+LEFT JOIN documento ON documento.estudiante_id = e.id";
+$sql = "SELECT e.id, e.nombre, e.apellido, e.cedula, e.carrera, e.semestre, "
+    . "CASE WHEN SUM(documento.estado='aprobado')>0 THEN 'aprobado' "
+    . "WHEN SUM(documento.estado='pendiente')>0 THEN 'pendiente' "
+    . "WHEN SUM(documento.estado='rechazado')>0 THEN 'rechazado' "
+    . "ELSE 'sin_documentos' END AS estado_solicitud "
+    . "FROM estudiante e LEFT JOIN documento ON documento.estudiante_id = e.id";
 if (!empty($conditions)) { $sql .= ' WHERE ' . implode(' AND ', $conditions); }
 $sql .= ' GROUP BY e.id';
 if (!empty($_GET['estado']) && $_GET['estado'] !== 'todos') { $sql .= ' HAVING estado_solicitud = ?'; $params[] = $_GET['estado']; $types .= 's'; }
