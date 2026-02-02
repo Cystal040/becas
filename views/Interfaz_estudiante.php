@@ -132,7 +132,8 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
                     <div>
                         <div style="color:var(--muted);font-size:13px;">Progreso de envío</div>
-                        <div style="font-size:16px;font-weight:700;color:#fff;"><?php echo $porcentaje_completado; ?>% completado</div>
+                        <div style="font-size:16px;font-weight:700;color:#fff;"><?php echo $porcentaje_completado; ?>%
+                            completado</div>
                     </div>
                     <div style="min-width:220px;max-width:320px;flex:1;">
                         <div class="progress-track" aria-hidden="true">
@@ -194,11 +195,17 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
         <div style="margin-top:12px;">
             <div class="card">
                 <h3>Contactos rápidos</h3>
-                <p style="color:var(--muted);margin-bottom:8px;">¿Necesitas ayuda? Contáctanos por cualquiera de estos medios:</p>
-                <p style="margin:6px 0;color:var(--muted);">📧 Soporte: <a href="mailto:soporte@unefa.edu.ve?subject=Consulta%20de%20documentos%20-%20<?php echo urlencode($nombre_usuario); ?>">soporte@unefa.edu.ve</a></p>
-                <p style="margin:6px 0;color:var(--muted);">📞 Teléfono: <a href="tel:+582412345678">+58 241-234-5678</a></p>
+                <p style="color:var(--muted);margin-bottom:8px;">¿Necesitas ayuda? Contáctanos por cualquiera de estos
+                    medios:</p>
+                <p style="margin:6px 0;color:var(--muted);">📧 Soporte: <a
+                        href="mailto:soporte@unefa.edu.ve?subject=Consulta%20de%20documentos%20-%20<?php echo urlencode($nombre_usuario); ?>">soporte@unefa.edu.ve</a>
+                </p>
+                <p style="margin:6px 0;color:var(--muted);">📞 Teléfono: <a href="tel:+582412345678">+58
+                        241-234-5678</a></p>
                 <p style="margin-top:10px;color:var(--muted);">O envía una consulta rápida:</p>
-                <p><a class="btn btn-small" href="mailto:soporte@unefa.edu.ve?subject=Consulta%20rápida%20-%20<?php echo urlencode($nombre_usuario); ?>&body=Hola,%20tengo%20una%20consulta%20sobre%20mis%20documentos.">Enviar consulta</a></p>
+                <p><a class="btn btn-small"
+                        href="mailto:soporte@unefa.edu.ve?subject=Consulta%20rápida%20-%20<?php echo urlencode($nombre_usuario); ?>&body=Hola,%20tengo%20una%20consulta%20sobre%20mis%20documentos.">Enviar
+                        consulta</a></p>
             </div>
         </div>
 
