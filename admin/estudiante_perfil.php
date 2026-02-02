@@ -10,7 +10,7 @@ if (!isset($_SESSION['admin_id'])) {
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) { header('Location: estudiantes.php'); exit; }
 
-$stmt = $conn->prepare("SELECT id_estudiante, nombre, apellido, cedula, correo FROM estudiante WHERE id_estudiante = ? LIMIT 1");
+$stmt = $conn->prepare("SELECT id_estudiante, nombre, apellido, cedula, correo, carrera, semestre FROM estudiante WHERE id_estudiante = ? LIMIT 1");
 if (!$stmt) { header('Location: estudiantes.php'); exit; }
 $stmt->bind_param('i', $id);
 $stmt->execute();
@@ -45,6 +45,8 @@ if ($doc_stmt) { $doc_stmt->bind_param('i', $id); $doc_stmt->execute(); $docs = 
         <p><strong>Nombre:</strong> <?php echo htmlspecialchars($student['nombre'] . ' ' . $student['apellido']); ?></p>
         <p><strong>Cédula:</strong> <?php echo htmlspecialchars($student['cedula']); ?></p>
         <p><strong>Correo:</strong> <?php echo htmlspecialchars($student['correo']); ?></p>
+        <p><strong>Carrera:</strong> <?php echo htmlspecialchars($student['carrera'] ?? 'N/D'); ?></p>
+        <p><strong>Semestre:</strong> <?php echo htmlspecialchars($student['semestre'] ?? 'N/D'); ?></p>
     </div>
 
     <h3 style="margin-top:14px;">Documentos enviados</h3>

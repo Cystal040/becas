@@ -92,8 +92,6 @@
                     <button class="btn btn-animated" type="submit">Entrar</button>
                     <button class="btn-secundario btn-animated" type="button"
                         onclick="window.location.href='../index.php'">Inicio</button>
-                    <a class="btn btn-animated" href="registro.php"
-                        style="background:linear-gradient(90deg,#3498db,#2980b9);">Registrarse</a>
                 </div>
             </form>
 

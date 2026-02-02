@@ -54,8 +54,26 @@ if (isset($_GET['error'])) {
         <form action="../controllers/register_process.php" method="POST" class="animate-item stagger-3">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
-            <input type="text" name="cedula" placeholder="Cédula" required>
-            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="text" name="cedula" placeholder="Cédula (ej. 123456789)" required>
+            <input type="email" name="correo" placeholder="Correo (ej. usuario@dominio.com)" required>
+
+            <label>Carrera</label>
+            <select name="carrera" id="carrera-select" required>
+                <option value="">Seleccione carrera</option>
+                <option value="Ingenieria Sistemas">Ingeniería de Sistemas</option>
+                <option value="Ingenieria Mecanica">Ingeniería Mecánica</option>
+                <option value="TSU en Enfermeria">TSU en Enfermería</option>
+                <option value="Ingenieria Naval">Ingeniería Naval</option>
+            </select>
+
+            <label>Sección</label>
+            <input type="text" name="seccion" id="seccion" placeholder="Sección (ej. D1, D2,...)" required>
+
+            <label>Semestre</label>
+            <select name="semestre" id="semestre-select" required>
+                <option value="">Seleccione semestre</option>
+            </select>
+
             <input type="password" name="password" placeholder="Contraseña" required>
             <button class="btn btn-animated" type="submit" name="registrar">Registrarse</button>
         </form>
@@ -97,6 +115,30 @@ if (isset($_GET['error'])) {
         }
     </style>
     <script>
+        // Mapeo de semestres por carrera
+        (function(){
+            var mapping = {
+                'Ingenieria Sistemas': 9,
+                'Ingenieria Mecanica': 9,
+                'Ingenieria Naval': 10,
+                'TSU en Enfermeria': 5
+            };
+            var carrera = document.getElementById('carrera-select');
+            var semestre = document.getElementById('semestre-select');
+            function populate() {
+                var val = carrera.value;
+                semestre.innerHTML = '<option value="">Seleccione semestre</option>';
+                if (!mapping[val]) return;
+                var max = mapping[val];
+                for (var i=1;i<=max;i++){
+                    var o = document.createElement('option'); o.value = i; o.textContent = i; semestre.appendChild(o);
+                }
+            }
+            if (carrera) carrera.addEventListener('change', populate);
+            // inicializar si ya hay valor
+            populate();
+        })();
+
         (function () {
             function showToast(msg, type) {
                 if (!msg) return;

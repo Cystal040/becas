@@ -189,9 +189,6 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
             <a class="btn btn-animated" href="subir_documentos.php">Subir documento</a>
         </div>
 
-        <!-- Información removida según solicitud del usuario -->
-
-        <!-- Contactos rápidos (se eliminó la sección de plantillas) -->
         <div style="margin-top:12px;">
             <div class="card">
                 <h3>Contactos rápidos</h3>
@@ -218,8 +215,8 @@ $porcentaje_completado = ($total_tipos > 0) ? round(($enviados_count / $total_ti
             </div>
             <div class="faq-item animate-item stagger-3">
                 <div class="faq-toggle">¿Cuánto tarda la revisión?</div>
-                <div class="faq-body">Los documentos suelen revisarse en 3-7 días hábiles. Recibirás una notificación
-                    cuando cambie el estado.</div>
+                <div class="faq-body">Los documentos suelen revisarse en 3-7 días. Recibirás una notificación
+                    cuando cambie el estado(Aprobado/Rechazado).</div>
             </div>
         </div>
     </div>

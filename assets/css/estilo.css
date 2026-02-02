@@ -4,7 +4,7 @@
     --primary-dark: #1e40af;
     --accent: #06b6d4;
     --success: #16a34a;
-    --muted: rgba(255,255,255,0.75);
+    --muted: rgba(0,0,0,0.75);
     --panel-bg: rgba(0,0,0,0.5);
     --glass: rgba(255,255,255,0.04);
     --radius: 10px;
@@ -49,7 +49,7 @@ body.fondo::before{
     backdrop-filter: blur(6px) saturate(120%);
 }
 
-h1, h2, h3{ color: #fff; margin:0 0 12px 0; }
+h1, h2, h3{ color: #000; margin:0 0 12px 0; }
 p{ color: var(--muted); margin:0 0 14px 0; }
 
 /* Formularios */
@@ -67,7 +67,6 @@ input[type="text"], input[type="email"], input[type="password"], select, input[t
 }
 input:focus, select:focus{ outline:none; border-color:var(--accent); box-shadow:0 6px 20px rgba(6,182,212,0.08); }
 
-/* Asegurar que las opciones del dropdown sean legibles (texto negro sobre fondo blanco) */
 select option{
     color: #000;
     background: #fff;
@@ -81,20 +80,18 @@ select option{
 .btn-secundario{ background:var(--primary); color:#fff; padding:10px 18px; border-radius:8px; border:none; font-weight:600; }
 .btn-secundario:hover{ background:var(--primary-dark); }
 
-/* Mensajes */
 .alert{ padding:10px 14px; border-radius:8px; margin-bottom:12px; background:var(--glass); color:var(--muted); }
 .alert.success{ border-left:4px solid var(--success); color:#e6ffed; background: linear-gradient(90deg, rgba(16,185,129,0.08), rgba(255,255,255,0.02)); }
 .alert.error{ border-left:4px solid #ef4444; color:#ffecee; background: linear-gradient(90deg, rgba(239,68,68,0.06), rgba(255,255,255,0.02)); }
 
-/* Tabla de documentos */
 table{ width:100%; border-collapse:collapse; margin-top:18px; background:transparent; }
-table th, table td{ padding:10px 12px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted); }
-table th{ color:#fff; background:transparent; font-weight:600; }
+table th, table td{ padding:10px 12px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); color:var(--muted); }
+table th{ color:#000; background:transparent; font-weight:600; }
 
-/* Tarjeta y lista */
-.card{ background: rgba(255,255,255,0.02); padding:16px; border-radius:8px; box-shadow: 0 6px 18px rgba(2,6,23,0.45); }
+.card{ background: #ffffff; padding:16px; border-radius:8px; box-shadow: 0 6px 18px rgba(2,6,23,0.12); color: #111; }
+.card * { color: #111; }
+.card a{ color: var(--accent); }
 
-/* Responsive */
 @media (max-width: 800px){
     .contenedor{ margin:30px 16px; padding:20px; }
     .botones{ justify-content:space-between; }
@@ -102,6 +99,15 @@ table th{ color:#fff; background:transparent; font-weight:600; }
 
 @media (max-width:480px){
     input[type="text"], input[type="email"], input[type="password"], select{ font-size:14px; }
+}
+
+.filters-row > input[type="text"], .filters-row > select {
+    flex: 0 0 170px;
+    max-width: 170px;
+}
+
+@media (max-width:640px){
+    .filters-row > input[type="text"], .filters-row > select { flex: 1 1 100%; max-width: none; }
 }
 
 /* Pequeños detalles */
@@ -115,7 +121,7 @@ a:hover{ text-decoration:underline; }
 .table-compact{ width:100%; border-collapse:collapse; overflow:hidden; border-radius:8px; }
 .table-compact thead{ background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
 .table-compact th, .table-compact td{ padding:10px 12px; vertical-align:middle; color:var(--muted); }
-.table-compact th{ color:#fff; font-weight:600; }
+.table-compact th{ color:#000; font-weight:600; }
 .table-compact tr{ transition: background .12s ease, transform .06s ease; }
 .table-compact tr:hover{ background: rgba(255,255,255,0.02); transform: translateY(-1px); }
 
@@ -127,7 +133,20 @@ a:hover{ text-decoration:underline; }
 .status-rechazado .status-dot{ background:#c0392b; }
 
 /* Ajustes botones compactos */
-.btn-small{ padding:6px 10px; font-size:14px; border-radius:6px; }
+.btn-small{ 
+    padding:6px 10px; 
+    font-size:14px; 
+    border-radius:6px; 
+    background: transparent !important;
+    border: none !important;
+    color: var(--primary) !important; /* azul por defecto */
+    text-decoration: underline !important; /* mostrar línea abajo */
+    display: inline-block;
+}
+.btn-small:hover{
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
 
 /* Tabla responsive: permitir scroll horizontal en pantallas pequeñas */
 .table-responsive{ overflow:auto; -webkit-overflow-scrolling:touch; }
@@ -194,11 +213,59 @@ a:hover{ text-decoration:underline; }
     transition: width 600ms cubic-bezier(.2,.9,.2,1);
 }
 .stat-cards { display:flex; gap:12px; margin-top:12px; }
-.stat-card { background: rgba(255,255,255,0.03); padding:12px; border-radius:8px; flex:1; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+.stat-card { background: #ffffff; padding:12px; border-radius:8px; flex:1; box-shadow:0 6px 14px rgba(2,6,23,0.08); color:#111; }
 .quick-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
 .faq { margin-top:16px; }
-.faq-item { background: rgba(255,255,255,0.02); padding:12px; border-radius:8px; margin-bottom:8px; }
+.faq-item { background: #ffffff; padding:12px; border-radius:8px; margin-bottom:8px; color:#111; }
 .faq-toggle { cursor:pointer; color:var(--accent); font-weight:600; }
 /* FAQ body for collapsible items */
 .faq-body { color:var(--muted); margin-top:8px; overflow: hidden; max-height: 0; transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; opacity: 0; }
 .faq-body.open { max-height: 420px; opacity: 1; }
+
+/* Nota: no forzamos fondo global; mantenemos overlay. Forzar texto negro para legibilidad */
+body * {
+    color: #000000 !important;
+}
+
+/* Forzar fondos blancos en contenedores y tarjetas */
+.contenedor, .card, .stat-card, .faq-item, .table-compact thead, table, .alert {
+    background-color: #ffffff !important;
+}
+
+/* Inputs y selects blancos con texto negro */
+input, select, textarea {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #d1d5db !important; /* gris claro */
+}
+
+/* Botones con texto negro (fondos pueden mantenerse) */
+.btn, .btn-secundario, .btn-small, .btn-animated {
+    color: #000000 !important;
+}
+
+/* Enlaces en negro por defecto */
+a { color: #000000 !important; }
+a:hover { text-decoration: underline !important; }
+
+/* Ajustes para barras y fills */
+.progress-track { background: #ffffff !important; }
+.progress-fill { background: #000000 !important; }
+
+/* Asegurar legibilidad en tablas */
+.table-compact th, .table-compact td, table th, table td { background: #ffffff !important; color: #000000 !important; }
+
+/* Asegurar que los enlaces/elementos con clase btn-small mantengan estilo azul y subrayado
+   incluso si hay reglas globales que fuerzan color negro con !important */
+a.btn-small, .btn-small {
+    background: transparent !important;
+    border: none !important;
+    color: var(--primary) !important;
+    text-decoration: underline !important;
+    display: inline-block;
+}
+a.btn-small:hover, .btn-small:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
+
