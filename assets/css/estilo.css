@@ -269,3 +269,9 @@ a.btn-small:hover, .btn-small:hover {
     text-decoration: underline !important;
 }
 
+/* Header específico: asegurar texto blanco sobre el fondo
+   Esto anula la regla global `body * { color: #000000 !important; }` */
+header .site-title, header .site-title * {
+    color: #ffffff !important;
+}
+

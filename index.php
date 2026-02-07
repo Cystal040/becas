@@ -18,7 +18,7 @@ include("config/conexion.php");
         style="position:relative;z-index:1;max-width:var(--max-width);margin:18px auto 8px;padding:8px 16px;">
         <div style="display:flex;align-items:center;gap:12px;">
             <img src="assets/img/icono.png" alt="UNEFA" style="height:56px;object-fit:contain;border-radius:6px;">
-            <div style="color:#fff !important;">
+            <div class="site-title">
                 <strong style="font-size:1.1rem;">Sistema de Becas UNEFA</strong>
                 <div style="font-size:0.9rem;">Portal de gestión de documentos</div>
             </div>
